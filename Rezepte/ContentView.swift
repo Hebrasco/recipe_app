@@ -21,8 +21,7 @@ struct ContentView: View {
                     }
                 }
                 .tag(0)
-            Text("Second View")
-                .font(.title)
+            RecipePlanView()
                 .tabItem {
                     VStack {
                         Image("second")
