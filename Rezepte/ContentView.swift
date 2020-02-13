@@ -37,6 +37,14 @@ struct ContentView: View {
                     }
                 }
                 .tag(2)
+            ShoppingListView()
+                .tabItem {
+                    VStack {
+                        Image("second")
+                        Text("Fourth")
+                    }
+                }
+                .tag(3)
         }
     }
 }
