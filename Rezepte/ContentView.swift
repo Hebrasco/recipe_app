@@ -29,6 +29,14 @@ struct ContentView: View {
                     }
                 }
                 .tag(1)
+            SearchView()
+                .tabItem {
+                    VStack {
+                        Image("first")
+                        Text("Third")
+                    }
+                }
+                .tag(2)
         }
     }
 }
