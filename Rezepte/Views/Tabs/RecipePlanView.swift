@@ -12,7 +12,7 @@ struct RecipePlanView: View {
     @ObservedObject var viewModel = RecipePlanViewModel()
     
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        Text("Wochenplan")
     }
 }
 

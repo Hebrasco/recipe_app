@@ -17,7 +17,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("first")
-                        Text("First")
+                        Text("Rezepte")
                     }
                 }
                 .tag(0)
@@ -25,7 +25,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("second")
-                        Text("Second")
+                        Text("Wochenplan")
                     }
                 }
                 .tag(1)
@@ -33,7 +33,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("first")
-                        Text("Third")
+                        Text("Suche")
                     }
                 }
                 .tag(2)
@@ -41,7 +41,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("second")
-                        Text("Fourth")
+                        Text("Einkaufsliste")
                     }
                 }
                 .tag(3)
@@ -49,7 +49,7 @@ struct ContentView: View {
                 .tabItem {
                     VStack {
                         Image("first")
-                        Text("Fifth")
+                        Text("Favoriten")
                     }
                 }
                 .tag(3)

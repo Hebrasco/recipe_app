@@ -103,16 +103,32 @@
 		6515DC0823F5410000271AEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				6515DC1E23F5486600271AEA /* Tabs */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		6515DC0923F5410500271AEA /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				6515DC1F23F5488100271AEA /* Tabs */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		6515DC1E23F5486600271AEA /* Tabs */ = {
+			isa = PBXGroup;
+			children = (
 				6515DC0A23F5414B00271AEA /* RecipesView.swift */,
 				6515DC0E23F5446C00271AEA /* RecipePlanView.swift */,
 				6515DC1223F5467600271AEA /* SearchView.swift */,
 				6515DC1823F5479800271AEA /* ShoppingListView.swift */,
 				6515DC1A23F5480500271AEA /* FavoritesView.swift */,
 			);
-			path = Views;
+			path = Tabs;
 			sourceTree = "<group>";
 		};
-		6515DC0923F5410500271AEA /* ViewModels */ = {
+		6515DC1F23F5488100271AEA /* Tabs */ = {
 			isa = PBXGroup;
 			children = (
 				6515DC0C23F5416A00271AEA /* RecipesViewModel.swift */,
@@ -121,7 +137,7 @@
 				6515DC1623F5476300271AEA /* ShoppingListViewModel.swift */,
 				6515DC1C23F5482500271AEA /* FavoritesViewModel.swift */,
 			);
-			path = ViewModels;
+			path = Tabs;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
