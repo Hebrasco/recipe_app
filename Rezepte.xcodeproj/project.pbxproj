@@ -24,6 +24,7 @@
 		6515DC1923F5479800271AEA /* ShoppingListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6515DC1823F5479800271AEA /* ShoppingListView.swift */; };
 		6515DC1B23F5480500271AEA /* FavoritesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6515DC1A23F5480500271AEA /* FavoritesView.swift */; };
 		6515DC1D23F5482500271AEA /* FavoritesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6515DC1C23F5482500271AEA /* FavoritesViewModel.swift */; };
+		65A3A0CD23F5642B0073242B /* Recipes.csv in Resources */ = {isa = PBXBuildFile; fileRef = 65A3A0CC23F5642B0073242B /* Recipes.csv */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,6 +47,7 @@
 		6515DC1823F5479800271AEA /* ShoppingListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShoppingListView.swift; sourceTree = "<group>"; };
 		6515DC1A23F5480500271AEA /* FavoritesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesView.swift; sourceTree = "<group>"; };
 		6515DC1C23F5482500271AEA /* FavoritesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewModel.swift; sourceTree = "<group>"; };
+		65A3A0CC23F5642B0073242B /* Recipes.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Recipes.csv; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 		6515DBF023F536F700271AEA /* Rezepte */ = {
 			isa = PBXGroup;
 			children = (
+				65A3A0CC23F5642B0073242B /* Recipes.csv */,
 				6515DC0923F5410500271AEA /* ViewModels */,
 				6515DC0823F5410000271AEA /* Views */,
 				6515DBF123F536F700271AEA /* AppDelegate.swift */,
@@ -199,6 +202,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6515DC0123F536F800271AEA /* LaunchScreen.storyboard in Resources */,
+				65A3A0CD23F5642B0073242B /* Recipes.csv in Resources */,
 				6515DBFE23F536F800271AEA /* Preview Assets.xcassets in Resources */,
 				6515DBFB23F536F800271AEA /* Assets.xcassets in Resources */,
 			);
