@@ -45,6 +45,14 @@ struct ContentView: View {
                     }
                 }
                 .tag(3)
+            FavoritesView()
+                .tabItem {
+                    VStack {
+                        Image("first")
+                        Text("Fifth")
+                    }
+                }
+                .tag(3)
         }
     }
 }
