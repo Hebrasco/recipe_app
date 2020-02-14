@@ -16,7 +16,8 @@ struct ContentView: View {
             RecipesView()
                 .tabItem {
                     VStack {
-                        Image("first")
+                        Image(systemName: "book")
+                            .imageScale(.large)
                         Text("Rezepte")
                     }
                 }
@@ -24,7 +25,8 @@ struct ContentView: View {
             RecipePlanView()
                 .tabItem {
                     VStack {
-                        Image("second")
+                        Image(systemName: "calendar")
+                            .imageScale(.large)
                         Text("Wochenplan")
                     }
                 }
@@ -32,7 +34,8 @@ struct ContentView: View {
             SearchView()
                 .tabItem {
                     VStack {
-                        Image("first")
+                        Image(systemName: "magnifyingglass")
+                            .imageScale(.large)
                         Text("Suche")
                     }
                 }
@@ -40,7 +43,8 @@ struct ContentView: View {
             ShoppingListView()
                 .tabItem {
                     VStack {
-                        Image("second")
+                        Image(systemName: "tag")
+                            .imageScale(.large)
                         Text("Einkaufsliste")
                     }
                 }
@@ -48,7 +52,8 @@ struct ContentView: View {
             FavoritesView()
                 .tabItem {
                     VStack {
-                        Image("first")
+                        Image(systemName: "heart")
+                            .imageScale(.large)
                         Text("Favoriten")
                     }
                 }
