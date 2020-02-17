@@ -57,7 +57,7 @@ struct ContentView: View {
                         Text("Favoriten")
                     }
                 }
-                .tag(3)
+                .tag(4)
         }
     }
 }
