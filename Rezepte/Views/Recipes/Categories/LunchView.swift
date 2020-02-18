@@ -10,7 +10,30 @@ import SwiftUI
 
 struct LunchView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        ScrollView {
+            VStack(alignment: .center, spacing: 10) {
+                Category(name: "Fleisch",
+                          image: "meat",
+                          destination: AnyView(MeatView()))
+                Category(name: "Fish",
+                          image: "fish",
+                          destination: AnyView(FishView()))
+                Category(name: "Vegetarisch",
+                          image: "vegetarian",
+                          destination: AnyView(VegetarianView()))
+                Category(name: "Pasta & Co",
+                          image: "pasta",
+                          destination: AnyView(PastaView()))
+                Category(name: "Süßes",
+                          image: "sweets",
+                          destination: AnyView(SweetsView()))
+                Category(name: "Suppen",
+                          image: "soup",
+                          destination: AnyView(SoupView()))
+            }
+            .frame(width: UIScreen.main.bounds.width)
+        }
+        .navigationBarTitle("Mittagessen", displayMode: .inline)
     }
 }
 

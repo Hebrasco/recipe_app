@@ -1,5 +1,5 @@
 //
-//  FastFoodView.swift
+//  FishView.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 18.02.20.
@@ -8,14 +8,14 @@
 
 import SwiftUI
 
-struct FastFoodView: View {
+struct FishView: View {
     var body: some View {
         Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
     }
 }
 
-struct FastFoodView_Previews: PreviewProvider {
+struct FishView_Previews: PreviewProvider {
     static var previews: some View {
-        FastFoodView()
+        FishView()
     }
 }

@@ -13,19 +13,22 @@ struct RecipesView: View {
     
     var body: some View {
         NavigationView {
-            VStack(alignment: .center) {
-                Category(name: "Früchstück",
-                          image: "breakfast",
-                          destination: AnyView(BreakfastView()))
-                Category(name: "Mittagessen",
-                          image: "lunch",
-                          destination: AnyView(LunchView()))
-                Category(name: "Nachtisch/Snack",
-                          image: "snack",
-                          destination: AnyView(SnackView()))
-                Category(name: "Motto/Anlässe",
-                          image: "motto",
-                          destination: AnyView(MottoView()))
+            ScrollView {
+                VStack(alignment: .center) {
+                    Category(name: "Früchstück",
+                              image: "breakfast",
+                              destination: AnyView(BreakfastView()))
+                    Category(name: "Mittagessen",
+                              image: "lunch",
+                              destination: AnyView(LunchView()))
+                    Category(name: "Nachtisch/Snack",
+                              image: "snack",
+                              destination: AnyView(SnackView()))
+                    Category(name: "Motto/Anlässe",
+                              image: "motto",
+                              destination: AnyView(MottoView()))
+                }
+                .frame(width: UIScreen.main.bounds.width)
             }
             .navigationBarTitle("Rezepte")
         }
