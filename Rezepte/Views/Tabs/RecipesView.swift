@@ -32,27 +32,6 @@ struct RecipesView: View {
     }
 }
 
-struct Category: View {
-    let name: String
-    let image: String
-    let destination: AnyView
-    
-    var body: some View {
-        NavigationLink(
-            destination: destination,
-            label: {
-                VStack {
-                Image(image)
-                    .resizable()
-                    .frame(width: 100, height: 100)
-                Text(name)
-                    .foregroundColor(.primary)
-                }
-            }
-        )
-    }
-}
-
 struct RecipesView_Previews: PreviewProvider {
     static var previews: some View {
         RecipesView()

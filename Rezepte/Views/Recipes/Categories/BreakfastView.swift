@@ -10,7 +10,21 @@ import SwiftUI
 
 struct BreakfastView: View {
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        VStack(alignment: .center, spacing: 10) {
+            Category(name: "Schnelle Rezepte",
+                      image: "fastfood",
+                      destination: AnyView(FastFoodView()))
+            Category(name: "Backen",
+                      image: "bake",
+                      destination: AnyView(BakeView()))
+            Category(name: "Obst",
+                      image: "fruits",
+                      destination: AnyView(FruitsView()))
+            Category(name: "Aufstriche",
+                      image: "spread",
+                      destination: AnyView(SpreadView()))
+        }
+        .navigationBarTitle("Frühstück", displayMode: .inline)
     }
 }
 
