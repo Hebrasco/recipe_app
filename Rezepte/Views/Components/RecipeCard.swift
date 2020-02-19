@@ -50,7 +50,7 @@ struct RecipeCard: View {
                 .font(.caption)
                 .padding([.horizontal, .bottom])
         }
-        .background(Color.white)
+        .background(Color.init(UIColor.systemBackground))
         .cornerRadius(10)
         .padding(.vertical)
         .shadow(radius: 10)
