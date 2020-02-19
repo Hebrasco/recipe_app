@@ -12,8 +12,8 @@ import SwiftUI
 struct Recipe {
     let image: String
     let title: String
-    let ingredients: Ingredients
-    let intolerances: [Substring]
+    let ingredients: [Ingredient]
+    let intolerances: [Intolerance]
     let category: String
     let tags: String
     let time: Int
@@ -28,9 +28,24 @@ struct Recipe {
         case hard = "Schwer"
     }
     
-    struct Ingredients {
-        let type: [String]
-        let amount: [String]
+    enum IntolerancesImages: String {
+        case vegetarian = "vegetarian"
+        case nuts = "nuts"
+        case halal = "halal"
+        case vegan = "vegan"
+        case lactose = "lactose_free"
+        case gluten = "gluten"
+        case wheat  = "wheat"
+    }
+    
+    struct Ingredient {
+        let type: String
+        let amount: String
+    }
+    
+    struct Intolerance {
+        let type: String
+        let image: IntolerancesImages
     }
 }
 

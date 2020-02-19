@@ -41,8 +41,8 @@ struct RecipeCard: View {
             }
             .padding(.horizontal)
             HStack {
-                ForEach(recipe.intolerances, id: \.self) { intolerance in
-                    Intolerances(intolerance: String(intolerance))
+                ForEach(recipe.intolerances.indices, id: \.self) { index in
+                    Intolerances(intolerance: self.recipe.intolerances[index])
                 }
             }
             .padding(.horizontal)
@@ -58,17 +58,17 @@ struct RecipeCard: View {
 }
 
 struct Intolerances: View {
-    let intolerance: String
+    let intolerance: Recipe.Intolerance
     
     var body: some View {
         VStack(spacing: 0) {
-            Image(intolerance)
+            Image(intolerance.image.rawValue)
                 .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
                 .foregroundColor(.accentColor)
-            Text(intolerance)
+            Text(intolerance.type)
                 .font(.caption)
         }
         .padding(.trailing, 5)
@@ -79,8 +79,10 @@ struct Recipe_Previews: PreviewProvider {
     static var previews: some View {
         let image = "placeholder"
         let title = "Avocadoaufstrich"
-        let ingredients = Recipe.Ingredients(type: ["reife Avocados", "Zitrone", "Hüttenkäse", "Salz", "Pfeffer"], amount: ["2", "1", "200 g", "1 TL", "1 Prise"])
-        let intolerances = "Laktose,Halal,Vegetarisch".split(separator: ",")
+        let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2"),
+                           Recipe.Ingredient(type: "Salz", amount: "3")]
+        let intolerances = [Recipe.Intolerance(type: "Gluten", image: .gluten),
+                            Recipe.Intolerance(type: "Wheizen", image: .wheat)]
         let category = "Frühstück,Mittagessen"
         let tags = "Frühstück,Mittagessen,Aufstriche,Vegetarisch,Laktose,Halal"
         let preperation = "1. Die Avocados halbieren und mit einem Löffel das Fruchtfleisch aus den Schalenhälften schälen und den Kern entfernen.\n2. Anschließend das Fruchtfleisch mit einer Gabel zerdrücken und die zerdrückte Avocado in eine Schüssel geben.\n3. Zitronensaft über das Avocadomus träufeln.\n4. Hüttenkäse dazuschütten und gut verrühren.\n5. Zum Schluss mit Salz und Pfeffer würzen."

@@ -61,28 +61,57 @@ class JSONParser {
         return []
     }
     
-    func getIngredients(recipe: [String: Any]) -> Recipe.Ingredients {
-        var ingredients: [String] = []
-        var ingredientsAmount: [String] = []
+    func getIngredients(recipe: [String: Any]) -> [Recipe.Ingredient] {
+        var ingredients: [Recipe.Ingredient] = []
         var count = 1
         
         while count != 0 {
             guard let ingredient = recipe["Zutat \(count)"] as? String else { break }
             guard let ingredientAmount = recipe["Menge \(count)"] as? String else { break }
             
-            ingredients.append(ingredient)
-            ingredientsAmount.append(ingredientAmount)
+            ingredients.append(Recipe.Ingredient(type: ingredient, amount: ingredientAmount))
             
             count += 1
         }
         
-        return Recipe.Ingredients(type: ingredients, amount: ingredientsAmount)
+        return ingredients
     }
     
-    func getIntolerances(recipe: [String: Any]) -> [Substring]? {
-        guard let ingredients = recipe["Inhalt"] as? String else { return nil }
+    func getIntolerances(recipe: [String: Any]) -> [Recipe.Intolerance]? {
+        guard let intolerancesResult = recipe["Inhalt"] as? String else { return nil }
         
-        return ingredients.split(separator: ",")
+        let intolerancesObjects = intolerancesResult.split(separator: ",")
+        var intolerances: [Recipe.Intolerance] = []
+        
+        for intolerancesObject in intolerancesObjects {
+            let intolerance = String(intolerancesObject)
+            switch intolerance {
+            case "Vegetarisch":
+                intolerances.append(Recipe.Intolerance(type: intolerance, image: .vegetarian))
+                break
+            case "Nüsse":
+                intolerances.append(Recipe.Intolerance(type: intolerance, image: .nuts))
+                break
+            case "Halal":
+                intolerances.append(Recipe.Intolerance(type: intolerance, image: .halal))
+                break
+            case "Vegan":
+                intolerances.append(Recipe.Intolerance(type: intolerance, image: .vegan))
+                break
+            case "Laktose":
+                intolerances.append(Recipe.Intolerance(type: intolerance, image: .lactose))
+                break
+            case "Gluten":
+                intolerances.append(Recipe.Intolerance(type: intolerance, image: .gluten))
+                break
+            case "Weizen":
+                intolerances.append(Recipe.Intolerance(type: intolerance, image: .wheat))
+                break
+            default:
+                break
+            }
+        }
+        return intolerances
     }
     
     func getDifficulty(recipe: String) -> Recipe.Difficulty {
