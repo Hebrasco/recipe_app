@@ -9,8 +9,26 @@
 import SwiftUI
 
 struct SnackView: View {
+    let testRecipe = Recipe(image: "placeholder", title: "Bananenaufstrich", ingredients: [], intolerances: ["halal", "wheat"], category: "Frühstück", tags: "Erster, Zweiter, Dritter Tag", time: 30, difficulty: .medium)
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            Category(name: "Obst",
+                      image: "fruits",
+                      destination: AnyView(FastFoodView()))
+            Category(name: "Quark & Co",
+                      image: "quark",
+                      destination: AnyView(BakeView()))
+            Category(name: "Süßes",
+                      image: "sweets",
+                      destination: AnyView(FruitsView()))
+            Category(name: "Herzhaftes",
+                      image: "hearty",
+                      destination: AnyView(SpreadView()))
+            RecipeCard(recipe: testRecipe)
+            RecipeCard(recipe: testRecipe)
+        }
+        .navigationBarTitle("Nachtisch/Snack", displayMode: .inline)
     }
 }
 
