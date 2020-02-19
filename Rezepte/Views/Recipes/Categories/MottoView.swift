@@ -9,8 +9,26 @@
 import SwiftUI
 
 struct MottoView: View {
+    let testRecipe = Recipe(image: "placeholder", title: "Bananenaufstrich", ingredients: [], intolerances: ["halal", "wheat"], category: "Frühstück", tags: "Erster, Zweiter, Dritter Tag", time: 30, difficulty: .medium)
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            Category(name: "Fasching",
+                      image: "carnevall",
+                      destination: AnyView(FastFoodView()))
+            Category(name: "Ostern",
+                      image: "easter",
+                      destination: AnyView(BakeView()))
+            Category(name: "Halloween",
+                      image: "halloween",
+                      destination: AnyView(FruitsView()))
+            Category(name: "Weihnachten",
+                      image: "xmas",
+                      destination: AnyView(SpreadView()))
+            RecipeCard(recipe: testRecipe)
+            RecipeCard(recipe: testRecipe)
+        }
+        .navigationBarTitle("Motto/Anlässe", displayMode: .inline)
     }
 }
 
