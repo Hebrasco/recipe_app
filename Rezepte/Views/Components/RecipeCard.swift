@@ -41,12 +41,9 @@ struct RecipeCard: View {
             }
             .padding(.horizontal)
             HStack {
-                Intolerances(intolerance: recipe.intolerances[0])
-                Intolerances(intolerance: recipe.intolerances[1])
-                Intolerances(intolerance: recipe.intolerances[0])
-                Intolerances(intolerance: recipe.intolerances[1])
-                Intolerances(intolerance: recipe.intolerances[0])
-                Intolerances(intolerance: recipe.intolerances[1])
+                ForEach(recipe.intolerances, id: \.self) { intolerance in
+                    Intolerances(intolerance: intolerance)
+                }
             }
             .padding(.horizontal)
             Text(recipe.tags)
