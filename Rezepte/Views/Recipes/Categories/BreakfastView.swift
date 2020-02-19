@@ -9,21 +9,29 @@
 import SwiftUI
 
 struct BreakfastView: View {
+    let testRecipe = Recipe(image: "placeholder", title: "Bananenaufstrich", ingredients: [], intolerances: ["halal", "wheat"], category: "Frühstück", tags: "Erster, Zweiter, Dritter Tag", time: 30, difficulty: .medium)
+
     var body: some View {
-        VStack(alignment: .center, spacing: 10) {
-            Category(name: "Schnelle Rezepte",
-                      image: "fastfood",
-                      destination: AnyView(FastFoodView()))
-            Category(name: "Backen",
-                      image: "bake",
-                      destination: AnyView(BakeView()))
-            Category(name: "Obst",
-                      image: "fruits",
-                      destination: AnyView(FruitsView()))
-            Category(name: "Aufstriche",
-                      image: "spread",
-                      destination: AnyView(SpreadView()))
+        VStack(alignment: .leading, spacing: 10) {
+            List {
+                Category(name: "Schnelle Rezepte",
+                          image: "fastfood",
+                          destination: AnyView(FastFoodView()))
+                Category(name: "Backen",
+                          image: "bake",
+                          destination: AnyView(BakeView()))
+                Category(name: "Obst",
+                          image: "fruits",
+                          destination: AnyView(FruitsView()))
+                Category(name: "Aufstriche",
+                          image: "spread",
+                          destination: AnyView(SpreadView()))
+                RecipeCard(recipe: testRecipe)
+                RecipeCard(recipe: testRecipe)
+            }
+           
         }
+        
         .navigationBarTitle("Frühstück", displayMode: .inline)
     }
 }

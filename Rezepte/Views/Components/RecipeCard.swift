@@ -9,36 +9,24 @@
 import SwiftUI
 
 struct RecipeCard: View {
-    let image: String
-    let title: String
-    let ingredients: [String]
-    let intolerances: [String]
-    let category: String
-    let tags: String
-    let time: Int
-    let difficulty: Difficulty
-    
-    enum Difficulty: String {
-        case easy = "Einfach"
-        case medium = "Mittel"
-        case hard = "Schwer"
-    }
+    let recipe: Recipe
     
     var body: some View {
         VStack(alignment: .leading, spacing: 20) {
-            Image(image)
+            Image(recipe.image)
                 .resizable()
                 .scaledToFill()
                 .frame(height: 150)
                 .clipped()
             HStack {
-                Text(title)
+                Text(recipe.title)
                     .font(.headline)
                 Spacer()
                 VStack {
                     Image(systemName: "timer")
                         .multilineTextAlignment(.trailing)
-                    Text("\(time) Minuten")
+                        .foregroundColor(.accentColor)
+                    Text("\(recipe.time) Minuten")
                         .font(.caption)
                 }
                 .frame(width: 90)
@@ -46,27 +34,28 @@ struct RecipeCard: View {
                 VStack {
                     Image(systemName: "gauge")
                         .frame(alignment: .trailing)
-                    Text(difficulty.rawValue)
+                        .foregroundColor(.accentColor)
+                    Text(recipe.difficulty.rawValue)
                         .font(.caption)
                 }
             }
             .padding(.horizontal)
             HStack {
-                Intolerances(intolerance: intolerances[0])
-                Intolerances(intolerance: intolerances[1])
-                Intolerances(intolerance: intolerances[0])
-                Intolerances(intolerance: intolerances[1])
-                Intolerances(intolerance: intolerances[0])
-                Intolerances(intolerance: intolerances[1])
+                Intolerances(intolerance: recipe.intolerances[0])
+                Intolerances(intolerance: recipe.intolerances[1])
+                Intolerances(intolerance: recipe.intolerances[0])
+                Intolerances(intolerance: recipe.intolerances[1])
+                Intolerances(intolerance: recipe.intolerances[0])
+                Intolerances(intolerance: recipe.intolerances[1])
             }
             .padding(.horizontal)
-            Text(tags)
+            Text(recipe.tags)
                 .font(.caption)
                 .padding([.horizontal, .bottom])
         }
-        .background(Color.gray)
+        .background(Color.white)
         .cornerRadius(10)
-        .padding()
+        .padding(.vertical)
         .shadow(radius: 10)
     }
 }
@@ -77,9 +66,11 @@ struct Intolerances: View {
     var body: some View {
         VStack(spacing: 0) {
             Image(intolerance)
+                .renderingMode(.template)
                 .resizable()
                 .scaledToFit()
                 .frame(width: 20, height: 20)
+                .foregroundColor(.accentColor)
             Text(intolerance)
                 .font(.caption)
         }
@@ -89,6 +80,6 @@ struct Intolerances: View {
 
 struct Recipe_Previews: PreviewProvider {
     static var previews: some View {
-        RecipeCard(image: "placeholder", title: "Aufstrich", ingredients: [], intolerances: ["wheat", "halal"], category: "Frühstück", tags: "Frühstück, Essen, Sonstige Tags", time: 20, difficulty: .medium)
+        RecipeCard(recipe: Recipe(image: "placeholder", title: "Aufstrich", ingredients: [], intolerances: ["wheat", "halal"], category: "Frühstück", tags: "Frühstück, Essen, Sonstige Tags", time: 20, difficulty: .medium))
     }
 }
