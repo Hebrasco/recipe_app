@@ -38,7 +38,11 @@ class JSONParser {
                 guard let tips = jsonObject["Tipps"] as? String else { break }
                 guard let source = jsonObject["Link, Quelle"] as? String else { break }
                 
-                image = String(image.dropLast(4))
+                if image == "" {
+                    image = "placeholder"
+                } else {
+                    image = String(image.dropLast(4))
+                }
                 
                 let recipe = Recipe(image: image,
                                     title: title,
