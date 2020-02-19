@@ -9,7 +9,12 @@
 import SwiftUI
 
 struct BreakfastView: View {
-    let testRecipe = Recipe(image: "placeholder", title: "Bananenaufstrich", ingredients: [], intolerances: ["halal", "wheat", "vegan"], category: "Frühstück", tags: "Erster, Zweiter, Dritter Tag", time: 30, difficulty: .medium)
+    let recipies: [Recipe]
+    
+    init() {
+        let jsonParser = JSONParser()
+        recipies = jsonParser.parse()
+    }
 
     var body: some View {
         List {
@@ -25,10 +30,11 @@ struct BreakfastView: View {
             Category(name: "Aufstriche",
                       image: "spread",
                       destination: AnyView(SpreadView()))
-            RecipeCard(recipe: testRecipe)
-            RecipeCard(recipe: testRecipe)
+            ForEach(recipies.indices, id: \.self) { index in
+                RecipeCard(recipe: self.recipies[index])
+            }
         }
-        .navigationBarTitle("Frühstück", displayMode: .inline)
+        .navigationBarTitle("Frühstück")
     }
 }
 

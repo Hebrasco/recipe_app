@@ -10,7 +10,12 @@ import SwiftUI
 
 struct RecipesView: View {
     @ObservedObject var viewModel = RecipesViewModel()
-    let testRecipe = Recipe(image: "placeholder", title: "Bananenaufstrich", ingredients: [], intolerances: ["halal", "wheat"], category: "Frühstück", tags: "Erster, Zweiter, Dritter Tag", time: 30, difficulty: .medium)
+    let recipies: [Recipe]
+    
+    init() {
+        let jsonParser = JSONParser()
+        recipies = jsonParser.parse()
+    }
     
     var body: some View {
         NavigationView {
@@ -27,12 +32,19 @@ struct RecipesView: View {
                 Category(name: "Motto/Anlässe",
                           image: "motto",
                           destination: AnyView(MottoView()))
-                RecipeCard(recipe: testRecipe)
-                RecipeCard(recipe: testRecipe)
+                ForEach(recipies.indices, id: \.self) { index in
+                    RecipeCard(recipe: self.recipies[index])
+                }
             }
             .navigationBarTitle("Rezepte")
         }
     }
+}
+
+extension Collection {
+  func enumeratedArray() -> Array<(offset: Int, element: Self.Element)> {
+    return Array(self.enumerated())
+  }
 }
 
 struct RecipesView_Previews: PreviewProvider {
