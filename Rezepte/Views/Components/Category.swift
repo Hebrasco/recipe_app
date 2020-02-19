@@ -17,10 +17,12 @@ struct Category: View {
         NavigationLink(
             destination: destination,
             label: {
-                VStack {
+                HStack {
                 Image(image)
+                .renderingMode(.template)
                     .resizable()
-                    .frame(width: 100, height: 100)
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.accentColor)
                 Text(name)
                     .foregroundColor(.primary)
                 }
