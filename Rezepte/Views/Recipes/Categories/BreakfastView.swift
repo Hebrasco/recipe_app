@@ -13,23 +13,23 @@ struct BreakfastView: View {
     
     init() {
         let jsonParser = JSONParser()
-        recipies = jsonParser.parse()
+        recipies = jsonParser.parseFile(name: "Recipes", type: "json")
     }
 
     var body: some View {
         List {
             Category(name: "Schnelle Rezepte",
-                      image: "fastfood",
-                      destination: AnyView(FastFoodView()))
+                     image: "fastfood",
+                     destination: AnyView(FastFoodView()))
             Category(name: "Backen",
-                      image: "bake",
-                      destination: AnyView(BakeView()))
+                     image: "bake",
+                     destination: AnyView(BakeView()))
             Category(name: "Obst",
-                      image: "fruits",
-                      destination: AnyView(FruitsView()))
+                     image: "fruits",
+                     destination: AnyView(FruitsView()))
             Category(name: "Aufstriche",
-                      image: "spread",
-                      destination: AnyView(SpreadView()))
+                     image: "spread",
+                     destination: AnyView(SpreadView()))
             ForEach(recipies.indices, id: \.self) { index in
                 RecipeCard(recipe: self.recipies[index])
             }

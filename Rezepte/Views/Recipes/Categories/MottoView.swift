@@ -13,23 +13,23 @@ struct MottoView: View {
     
     init() {
         let jsonParser = JSONParser()
-        recipies = jsonParser.parse()
+        recipies = jsonParser.parseFile(name: "Recipes", type: "json")
     }
     
     var body: some View {
         List {
             Category(name: "Fasching",
-                      image: "carnevall",
-                      destination: AnyView(FastFoodView()))
+                     image: "carnevall",
+                     destination: AnyView(FastFoodView()))
             Category(name: "Ostern",
-                      image: "easter",
-                      destination: AnyView(BakeView()))
+                     image: "easter",
+                     destination: AnyView(BakeView()))
             Category(name: "Halloween",
-                      image: "halloween",
-                      destination: AnyView(FruitsView()))
+                     image: "halloween",
+                     destination: AnyView(FruitsView()))
             Category(name: "Weihnachten",
-                      image: "xmas",
-                      destination: AnyView(SpreadView()))
+                     image: "xmas",
+                     destination: AnyView(SpreadView()))
             ForEach(recipies.indices, id: \.self) { index in
                 RecipeCard(recipe: self.recipies[index])
             }

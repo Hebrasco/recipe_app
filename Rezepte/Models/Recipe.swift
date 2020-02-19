@@ -48,4 +48,3 @@ struct Recipe {
         let image: IntolerancesImages
     }
 }
-

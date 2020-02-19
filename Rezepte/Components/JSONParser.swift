@@ -9,12 +9,9 @@
 import Foundation
 
 class JSONParser {    
-    func parse() -> [Recipe] {
-        let fileName = "Recipes"
-        let fileType = "json"
-        
-        guard let path = Bundle.main.path(forResource: fileName, ofType: fileType) else {
-            print("File (\(fileName).\(fileType)) not found!")
+    func parseFile(name: String, type: String) -> [Recipe] {        
+        guard let path = Bundle.main.path(forResource: name, ofType: type) else {
+            print("File (\(name).\(type)) not found!")
             return []
         }
             
@@ -26,17 +23,18 @@ class JSONParser {
             var recipies: [Recipe] = []
             
             for jsonObject in jsonArray {
-                guard var image = jsonObject["Bild"] as? String else { break }
-                guard let title = jsonObject["Rezeptname"] as? String else { break }
                 let ingredients = getIngredients(recipe: jsonObject)
                 let intolerances = getIntolerances(recipe: jsonObject)
+                let difficulty = getDifficulty(recipe: jsonObject["Schwierigkeitsgrad"] as! String)
+                
+                guard let title = jsonObject["Rezeptname"] as? String else { break }
                 guard let category = jsonObject["Hauptkategorie"] as? String else { break }
                 guard let tags = jsonObject["tags"] as? String else { break }
                 guard let time = jsonObject["Zubereitungszeit"] as? Int else { break }
-                let difficulty = getDifficulty(recipe: jsonObject["Schwierigkeitsgrad"] as! String)
                 guard let preparation = jsonObject["Zubereitung"] as? String else { break }
                 guard let tips = jsonObject["Tipps"] as? String else { break }
                 guard let source = jsonObject["Link, Quelle"] as? String else { break }
+                guard var image = jsonObject["Bild"] as? String else { break }
                 
                 if image == "" {
                     image = "placeholder"
@@ -60,7 +58,7 @@ class JSONParser {
             }
             return recipies
         } catch {
-            print("Error while parsing JSON data. File: (\(fileName).\(fileType))")
+            print("Error while parsing JSON data. File: (\(name).\(type))")
         }
         return []
     }
@@ -83,12 +81,12 @@ class JSONParser {
     
     func getIntolerances(recipe: [String: Any]) -> [Recipe.Intolerance]? {
         guard let intolerancesResult = recipe["Inhalt"] as? String else { return nil }
-        
         let intolerancesObjects = intolerancesResult.split(separator: ",")
         var intolerances: [Recipe.Intolerance] = []
         
         for intolerancesObject in intolerancesObjects {
             let intolerance = String(intolerancesObject)
+            
             switch intolerance {
             case "Vegetarisch":
                 intolerances.append(Recipe.Intolerance(type: intolerance, image: .vegetarian))

@@ -14,24 +14,24 @@ struct RecipesView: View {
     
     init() {
         let jsonParser = JSONParser()
-        recipies = jsonParser.parse()
+        recipies = jsonParser.parseFile(name: "Recipes", type: "json")
     }
     
     var body: some View {
         NavigationView {
             List {
                 Category(name: "Früchstück",
-                          image: "breakfast",
-                          destination: AnyView(BreakfastView()))
+                         image: "breakfast",
+                         destination: AnyView(BreakfastView()))
                 Category(name: "Mittagessen",
-                          image: "lunch",
-                          destination: AnyView(LunchView()))
+                         image: "lunch",
+                         destination: AnyView(LunchView()))
                 Category(name: "Nachtisch/Snack",
-                          image: "snack",
-                          destination: AnyView(SnackView()))
+                         image: "snack",
+                         destination: AnyView(SnackView()))
                 Category(name: "Motto/Anlässe",
-                          image: "motto",
-                          destination: AnyView(MottoView()))
+                         image: "motto",
+                         destination: AnyView(MottoView()))
                 ForEach(recipies.indices, id: \.self) { index in
                     RecipeCard(recipe: self.recipies[index])
                 }
@@ -39,12 +39,6 @@ struct RecipesView: View {
             .navigationBarTitle("Rezepte")
         }
     }
-}
-
-extension Collection {
-  func enumeratedArray() -> Array<(offset: Int, element: Self.Element)> {
-    return Array(self.enumerated())
-  }
 }
 
 struct RecipesView_Previews: PreviewProvider {

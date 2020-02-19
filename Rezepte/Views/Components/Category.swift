@@ -19,7 +19,7 @@ struct Category: View {
             label: {
                 HStack {
                 Image(image)
-                .renderingMode(.template)
+                    .renderingMode(.template)
                     .resizable()
                     .frame(width: 30, height: 30)
                     .foregroundColor(.accentColor)
