@@ -74,7 +74,7 @@ struct Intolerances: View {
             Text(intolerance)
                 .font(.caption)
         }
-        .padding([.leading, .trailing], 5)
+        .padding(.trailing, 5)
     }
 }
 
