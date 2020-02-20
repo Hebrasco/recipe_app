@@ -10,7 +10,7 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var selection = 0
- 
+    
     var body: some View {
         TabView(selection: $selection){
             RecipesView()
@@ -59,6 +59,7 @@ struct ContentView: View {
                 }
                 .tag(4)
         }
+        .accentColor(.init("AccentColor"))
     }
 }
 

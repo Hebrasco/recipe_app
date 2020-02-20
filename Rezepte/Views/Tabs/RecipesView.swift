@@ -10,9 +10,29 @@ import SwiftUI
 
 struct RecipesView: View {
     @ObservedObject var viewModel = RecipesViewModel()
+    let recipes = Recipes.recipes
     
     var body: some View {
-        Text("Rezepte")
+        NavigationView {
+            List {
+                Category(name: "Früchstück",
+                         image: "breakfast",
+                         destination: AnyView(BreakfastView()))
+                Category(name: "Mittagessen",
+                         image: "lunch",
+                         destination: AnyView(LunchView()))
+                Category(name: "Nachtisch/Snack",
+                         image: "snack",
+                         destination: AnyView(SnackView()))
+                Category(name: "Motto/Anlässe",
+                         image: "motto",
+                         destination: AnyView(MottoView()))
+                ForEach(recipes.indices, id: \.self) { index in
+                    RecipeCard(recipe: self.recipes[index])
+                }
+            }
+            .navigationBarTitle("Rezepte")
+        }
     }
 }
 
