@@ -10,17 +10,12 @@ import SwiftUI
 
 struct HalloweenView: View {
     
-    let recipies: [Recipe]
-    
-    init() {
-        let jsonParser = JSONParser()
-        recipies = jsonParser.parseRecipes()
-    }
+    let recipes = Recipes.recipes
     
     var body: some View {
         List {
-            ForEach(recipies.indices, id: \.self) { index in
-                RecipeCard(recipe: self.recipies[index])
+            ForEach(recipes.indices, id: \.self) { index in
+                RecipeCard(recipe: self.recipes[index])
             }
         }
         .navigationBarTitle("Halloween")

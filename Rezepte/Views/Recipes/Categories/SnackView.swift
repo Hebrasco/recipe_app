@@ -9,12 +9,7 @@
 import SwiftUI
 
 struct SnackView: View {
-    let recipies: [Recipe]
-    
-    init() {
-        let jsonParser = JSONParser()
-        recipies = jsonParser.parseRecipes()
-    }
+    let recipes = Recipes.recipes
     
     var body: some View {
         List {
@@ -30,8 +25,8 @@ struct SnackView: View {
             Category(name: "Herzhaftes",
                      image: "hearty",
                      destination: AnyView(HeartyView()))
-            ForEach(recipies.indices, id: \.self) { index in
-                RecipeCard(recipe: self.recipies[index])
+            ForEach(recipes.indices, id: \.self) { index in
+                RecipeCard(recipe: self.recipes[index])
             }
         }
         .navigationBarTitle("Nachtisch/Snack")

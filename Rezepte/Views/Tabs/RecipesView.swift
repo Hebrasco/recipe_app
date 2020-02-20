@@ -10,12 +10,7 @@ import SwiftUI
 
 struct RecipesView: View {
     @ObservedObject var viewModel = RecipesViewModel()
-    let recipies: [Recipe]
-    
-    init() {
-        let jsonParser = JSONParser()
-        recipies = jsonParser.parseRecipes()
-    }
+    let recipes = Recipes.recipes
     
     var body: some View {
         NavigationView {
@@ -32,8 +27,8 @@ struct RecipesView: View {
                 Category(name: "Motto/Anlässe",
                          image: "motto",
                          destination: AnyView(MottoView()))
-                ForEach(recipies.indices, id: \.self) { index in
-                    RecipeCard(recipe: self.recipies[index])
+                ForEach(recipes.indices, id: \.self) { index in
+                    RecipeCard(recipe: self.recipes[index])
                 }
             }
             .navigationBarTitle("Rezepte")

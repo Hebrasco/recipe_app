@@ -1,5 +1,5 @@
 //
-//  JSONParser.swift
+//  Recipes.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 19.02.20.
@@ -8,22 +8,24 @@
 
 import Foundation
 
-class JSONParser {    
-    func parseRecipes() -> [Recipe] {
+class Recipes {
+    static var recipes: [Recipe] = []
+    
+    static func parse() {
         let name = "Recipes"
         let type = "json"
         
         guard let path = Bundle.main.path(forResource: name, ofType: type) else {
             print("File (\(name).\(type)) not found!")
-            return []
+            return
         }
             
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
             let jsonResult = try JSONSerialization.jsonObject(with: data, options: [])
-            guard let jsonArray = jsonResult as? [[String: Any]] else { return [] }
+            guard let jsonArray = jsonResult as? [[String: Any]] else { return }
             
-            var recipies: [Recipe] = []
+            var recipes: [Recipe] = []
             
             for jsonObject in jsonArray {
                 let ingredients = getIngredients(recipe: jsonObject)
@@ -57,16 +59,15 @@ class JSONParser {
                                     tips: tips,
                                     source: source)
                 
-                recipies.append(recipe)
+                recipes.append(recipe)
             }
-            return recipies
+            self.recipes = recipes
         } catch {
             print("Error while parsing JSON data. File: (\(name).\(type))")
         }
-        return []
     }
     
-    func getIngredients(recipe: [String: Any]) -> [Recipe.Ingredient] {
+    private static func getIngredients(recipe: [String: Any]) -> [Recipe.Ingredient] {
         var ingredients: [Recipe.Ingredient] = []
         var count = 1
         
@@ -82,7 +83,7 @@ class JSONParser {
         return ingredients
     }
     
-    func getIntolerances(recipe: [String: Any]) -> [Recipe.Intolerance]? {
+    private static func getIntolerances(recipe: [String: Any]) -> [Recipe.Intolerance]? {
         guard let intolerancesResult = recipe["Inhalt"] as? String else { return nil }
         let intolerancesObjects = intolerancesResult.split(separator: ",")
         var intolerances: [Recipe.Intolerance] = []
@@ -119,7 +120,7 @@ class JSONParser {
         return intolerances
     }
     
-    func getDifficulty(recipe: String) -> Recipe.Difficulty {
+    private static func getDifficulty(recipe: String) -> Recipe.Difficulty {
         switch recipe {
         case "einfach":
             return Recipe.Difficulty.easy
