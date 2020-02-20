@@ -1,14 +1,15 @@
 //
-//  FastFoodView.swift
+//  CarnevallView.swift
 //  Rezepte
 //
-//  Created by Daniel Bedrich on 18.02.20.
+//  Created by Daniel Bedrich on 20.02.20.
 //  Copyright © 2020 Daniel Bedrich. All rights reserved.
 //
 
 import SwiftUI
 
-struct FastFoodView: View {
+struct CarnevallView: View {
+    
     let recipies: [Recipe]
     
     init() {
@@ -22,12 +23,12 @@ struct FastFoodView: View {
                 RecipeCard(recipe: self.recipies[index])
             }
         }
-        .navigationBarTitle("Schnelle Rezepte")
+        .navigationBarTitle("Fasching")
     }
 }
 
-struct FastFoodView_Previews: PreviewProvider {
+struct CarnevallView_Previews: PreviewProvider {
     static var previews: some View {
-        FastFoodView()
+        CarnevallView()
     }
 }

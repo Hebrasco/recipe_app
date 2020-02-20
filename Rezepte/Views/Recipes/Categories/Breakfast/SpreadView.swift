@@ -9,8 +9,20 @@
 import SwiftUI
 
 struct SpreadView: View {
+    let recipies: [Recipe]
+    
+    init() {
+        let jsonParser = JSONParser()
+        recipies = jsonParser.parseRecipes()
+    }
+    
     var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+        List {
+            ForEach(recipies.indices, id: \.self) { index in
+                RecipeCard(recipe: self.recipies[index])
+            }
+        }
+        .navigationBarTitle("Aufstriche")
     }
 }
 

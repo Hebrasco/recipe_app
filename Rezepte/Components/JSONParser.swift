@@ -9,7 +9,10 @@
 import Foundation
 
 class JSONParser {    
-    func parseFile(name: String, type: String) -> [Recipe] {        
+    func parseRecipes() -> [Recipe] {
+        let name = "Recipes"
+        let type = "json"
+        
         guard let path = Bundle.main.path(forResource: name, ofType: type) else {
             print("File (\(name).\(type)) not found!")
             return []

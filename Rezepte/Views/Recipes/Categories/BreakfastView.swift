@@ -13,7 +13,7 @@ struct BreakfastView: View {
     
     init() {
         let jsonParser = JSONParser()
-        recipies = jsonParser.parseFile(name: "Recipes", type: "json")
+        recipies = jsonParser.parseRecipes()
     }
 
     var body: some View {
@@ -26,7 +26,7 @@ struct BreakfastView: View {
                      destination: AnyView(BakeView()))
             Category(name: "Obst",
                      image: "fruits",
-                     destination: AnyView(FruitsView()))
+                     destination: AnyView(BreakfastFruitsView()))
             Category(name: "Aufstriche",
                      image: "spread",
                      destination: AnyView(SpreadView()))

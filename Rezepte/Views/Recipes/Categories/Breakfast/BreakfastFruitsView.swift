@@ -1,5 +1,5 @@
 //
-//  FastFoodView.swift
+//  BreakfastFruitsView.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 18.02.20.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct FastFoodView: View {
+struct BreakfastFruitsView: View {
     let recipies: [Recipe]
     
     init() {
@@ -22,12 +22,12 @@ struct FastFoodView: View {
                 RecipeCard(recipe: self.recipies[index])
             }
         }
-        .navigationBarTitle("Schnelle Rezepte")
+        .navigationBarTitle("Obst")
     }
 }
 
-struct FastFoodView_Previews: PreviewProvider {
+struct FruitsView_Previews: PreviewProvider {
     static var previews: some View {
-        FastFoodView()
+        BreakfastFruitsView()
     }
 }

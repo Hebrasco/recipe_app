@@ -14,7 +14,7 @@ struct RecipesView: View {
     
     init() {
         let jsonParser = JSONParser()
-        recipies = jsonParser.parseFile(name: "Recipes", type: "json")
+        recipies = jsonParser.parseRecipes()
     }
     
     var body: some View {
