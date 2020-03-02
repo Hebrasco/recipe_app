@@ -72,10 +72,11 @@ class Recipes {
         var count = 1
         
         while count != 0 {
-            guard let ingredient = recipe["Zutat \(count)"] as? String else { break }
+            guard let ingredientName = recipe["Zutat \(count)"] as? String else { break }
             guard let ingredientAmount = recipe["Menge \(count)"] as? String else { break }
             
-            ingredients.append(Recipe.Ingredient(type: ingredient, amount: ingredientAmount))
+            let ingredient = Recipe.Ingredient(type: ingredientName, amount: ingredientAmount)
+            ingredients.append(ingredient)
             
             count += 1
         }
@@ -89,33 +90,38 @@ class Recipes {
         var intolerances: [Recipe.Intolerance] = []
         
         for intolerancesObject in intolerancesObjects {
-            let intolerance = String(intolerancesObject)
+            let intoleranceName = String(intolerancesObject)
+            var image: Recipe.IntolerancesImages
             
-            switch intolerance {
+            switch intoleranceName {
             case "Vegetarisch":
-                intolerances.append(Recipe.Intolerance(type: intolerance, image: .vegetarian))
+                image = .vegetarian
                 break
             case "Nüsse":
-                intolerances.append(Recipe.Intolerance(type: intolerance, image: .nuts))
+                image = .nuts
                 break
             case "Halal":
-                intolerances.append(Recipe.Intolerance(type: intolerance, image: .halal))
+                image = .halal
                 break
             case "Vegan":
-                intolerances.append(Recipe.Intolerance(type: intolerance, image: .vegan))
+                image = .vegan
                 break
             case "Laktose":
-                intolerances.append(Recipe.Intolerance(type: intolerance, image: .lactose))
+                image = .lactose
                 break
             case "Gluten":
-                intolerances.append(Recipe.Intolerance(type: intolerance, image: .gluten))
+                image = .gluten
                 break
             case "Weizen":
-                intolerances.append(Recipe.Intolerance(type: intolerance, image: .wheat))
+                image = .wheat
                 break
             default:
+                image = .defaultCase
                 break
             }
+            
+            let intolerance = Recipe.Intolerance(type: intoleranceName, image: image)
+            intolerances.append(intolerance)
         }
         return intolerances
     }
@@ -129,7 +135,7 @@ class Recipes {
         case "schwer":
             return Recipe.Difficulty.hard
         default:
-            return Recipe.Difficulty.easy
+            return Recipe.Difficulty.defaultCase
         }
     }
 }
