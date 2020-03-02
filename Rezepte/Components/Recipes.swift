@@ -75,6 +75,10 @@ class Recipes {
             guard let ingredient = recipe["Zutat \(count)"] as? String else { break }
             guard let ingredientAmount = recipe["Menge \(count)"] as? String else { break }
             
+            if ingredient == ""{
+                break
+            }
+            
             ingredients.append(Recipe.Ingredient(type: ingredient, amount: ingredientAmount))
             
             count += 1

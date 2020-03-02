@@ -12,48 +12,50 @@ struct RecipeCard: View {
     let recipe: Recipe
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Image(recipe.image)
-                .resizable()
-                .scaledToFill()
-                .frame(height: 150)
-                .clipped()
-            HStack {
-                Text(recipe.title)
-                    .font(.headline)
-                Spacer()
-                VStack {
-                    Image(systemName: "timer")
-                        .multilineTextAlignment(.trailing)
-                        .foregroundColor(.accentColor)
-                    Text("\(recipe.time) Minuten")
-                        .font(.caption)
+        NavigationLink(destination: RecipeView(recipe: recipe)) {
+            VStack(alignment: .leading, spacing: 20) {
+                Image(recipe.image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 150)
+                    .clipped()
+                HStack {
+                    Text(recipe.title)
+                        .font(.headline)
+                    Spacer()
+                    VStack {
+                        Image(systemName: "timer")
+                            .multilineTextAlignment(.trailing)
+                            .foregroundColor(.accentColor)
+                        Text("\(recipe.time) Minuten")
+                            .font(.caption)
+                    }
+                    .frame(width: 90)
+                    Spacer().frame(width: 5)
+                    VStack {
+                        Image(systemName: "gauge")
+                            .frame(alignment: .trailing)
+                            .foregroundColor(.accentColor)
+                        Text(recipe.difficulty.rawValue)
+                            .font(.caption)
+                    }
                 }
-                .frame(width: 90)
-                Spacer().frame(width: 5)
-                VStack {
-                    Image(systemName: "gauge")
-                        .frame(alignment: .trailing)
-                        .foregroundColor(.accentColor)
-                    Text(recipe.difficulty.rawValue)
-                        .font(.caption)
+                .padding(.horizontal)
+                HStack {
+                    ForEach(recipe.intolerances.indices, id: \.self) { index in
+                        Intolerances(intolerance: self.recipe.intolerances[index])
+                    }
                 }
+                .padding(.horizontal)
+                Text(recipe.tags)
+                    .font(.caption)
+                    .padding([.horizontal, .bottom])
             }
-            .padding(.horizontal)
-            HStack {
-                ForEach(recipe.intolerances.indices, id: \.self) { index in
-                    Intolerances(intolerance: self.recipe.intolerances[index])
-                }
-            }
-            .padding(.horizontal)
-            Text(recipe.tags)
-                .font(.caption)
-                .padding([.horizontal, .bottom])
+            .background(Color.init(UIColor.systemBackground))
+            .cornerRadius(10)
+            .padding(.vertical)
+            .shadow(radius: 10)
         }
-        .background(Color.init(UIColor.systemBackground))
-        .cornerRadius(10)
-        .padding(.vertical)
-        .shadow(radius: 10)
     }
 }
 
