@@ -23,12 +23,14 @@ struct Recipe {
     let source: String
     
     enum Difficulty: String {
+        case defaultCase = "difficulty_placeholder"
         case easy = "Einfach"
         case medium = "Mittel"
         case hard = "Schwer"
     }
     
     enum IntolerancesImages: String {
+        case defaultCase = "intolerance_placeholder"
         case vegetarian = "vegetarian"
         case nuts = "nuts"
         case halal = "halal"
