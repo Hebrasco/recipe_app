@@ -13,56 +13,108 @@ struct RecipeView: View {
     
     var body: some View {
         ScrollView {
-            Image(recipe.image)
-                .resizable()
-                .scaledToFill()
-                .frame(width: 250, height: 250)
-                .clipped()
-                .clipShape(Circle())
+            RecipeImage(recipe: recipe)
             HStack {
-                VStack(alignment: .leading) {
-                    Text(recipe.title)
-                        .font(.headline)
-                        .padding(.bottom, 5)
-                    Text(recipe.category)
-                        .font(.footnote)
-                }
+                RecipeTitle(recipe: recipe)
                 Spacer()
-                Circle()
-                    .foregroundColor(.accentColor)
-                    .overlay(
-                        VStack {
-                            Text("\(recipe.time)")
-                            Text("min")
-                                .font(.footnote)
-                        }
-                        .foregroundColor(Color(UIColor.systemBackground))
-                    )
-                .frame(width: 50, height: 50)
+                PreperationTime(recipe: recipe)
             }
             .padding(.horizontal)
             VStack(alignment: .leading) {
-                Image(systemName: "heart.fill")
-                    .foregroundColor(.red)
-                    .font(.title)
-                    .padding(.bottom)
+                Favorite()
                 Divider()
-                Text("Zutaten:")
-                ForEach(recipe.ingredients.indices, id: \.self) { index in
-                    HStack {
-                        Text("\(self.recipe.ingredients[index].amount)")
-                        Text("\(self.recipe.ingredients[index].type)")
-                        Spacer()
-                    }
-                    .padding(.horizontal, 35)
-                }
+                Ingredients(recipe: recipe)
                 Spacer().frame(height: 20)
-                Text("Zubereitung:")
-                Text(recipe.preparation)
-                    .fixedSize(horizontal: false, vertical: true)
-                    .padding(.horizontal, 35)
+                Preperation(recipe: recipe)
             }
             .padding(.horizontal)
+        }
+        .navigationBarTitle("", displayMode: .inline)
+    }
+}
+
+private struct RecipeImage: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        Image(recipe.image)
+            .resizable()
+            .scaledToFill()
+            .frame(width: 250, height: 250)
+            .clipped()
+            .clipShape(Circle())
+            .padding()
+    }
+}
+
+private struct RecipeTitle: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        VStack(alignment: .leading) {
+            Text(recipe.title)
+                .font(.headline)
+                .padding(.bottom, 5)
+            Text(recipe.category)
+                .font(.footnote)
+        }
+    }
+}
+
+private struct Favorite: View {
+    var body: some View {
+        Image(systemName: "heart.fill")
+        .foregroundColor(.red)
+        .font(.title)
+        .padding(.bottom)
+    }
+}
+
+private struct PreperationTime: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        Circle()
+            .foregroundColor(.accentColor)
+            .overlay(
+                VStack {
+                    Text("\(recipe.time)")
+                    Text("min")
+                        .font(.footnote)
+                }
+                .foregroundColor(Color(UIColor.systemBackground))
+            )
+        .frame(width: 60, height: 60)
+    }
+}
+
+private struct Ingredients: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        Group {
+            Text("Zutaten:")
+            ForEach(recipe.ingredients.indices, id: \.self) { index in
+                HStack {
+                    Text("\(self.recipe.ingredients[index].amount)")
+                    Text("\(self.recipe.ingredients[index].type)")
+                    Spacer()
+                }
+                .padding(.horizontal, 35)
+            }
+        }
+    }
+}
+
+private struct Preperation: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        Group {
+            Text("Zubereitung:")
+            Text(recipe.preparation)
+                .fixedSize(horizontal: false, vertical: true)
+                .padding(.horizontal, 35)
         }
     }
 }
