@@ -87,7 +87,7 @@ struct Recipe_Previews: PreviewProvider {
                             Recipe.Intolerance(type: "Wheizen", image: .wheat)]
         let category = "Frühstück,Mittagessen"
         let tags = "Frühstück,Mittagessen,Aufstriche,Vegetarisch,Laktose,Halal"
-        let preperation = "1. Die Avocados halbieren und mit einem Löffel das Fruchtfleisch aus den Schalenhälften schälen und den Kern entfernen.\n2. Anschließend das Fruchtfleisch mit einer Gabel zerdrücken und die zerdrückte Avocado in eine Schüssel geben.\n3. Zitronensaft über das Avocadomus träufeln.\n4. Hüttenkäse dazuschütten und gut verrühren.\n5. Zum Schluss mit Salz und Pfeffer würzen."
+        let preparation = "1. Die Avocados halbieren und mit einem Löffel das Fruchtfleisch aus den Schalenhälften schälen und den Kern entfernen.\n2. Anschließend das Fruchtfleisch mit einer Gabel zerdrücken und die zerdrückte Avocado in eine Schüssel geben.\n3. Zitronensaft über das Avocadomus träufeln.\n4. Hüttenkäse dazuschütten und gut verrühren.\n5. Zum Schluss mit Salz und Pfeffer würzen."
         let tips = "Passt sehr gut zu warmen Pellkartoffeln oder Ofenkartoffeln. Als Dip oder Aufstrich verwendbar."
         let source = "\"Das Kita-Kinder-Kochbuch\", S.22/23"
         
@@ -99,7 +99,7 @@ struct Recipe_Previews: PreviewProvider {
                                   tags: tags,
                                   time: 10,
                                   difficulty: .easy,
-                                  preparation: preperation,
+                                  preparation: preparation,
                                   tips: tips,
                                   source: source))
     }
