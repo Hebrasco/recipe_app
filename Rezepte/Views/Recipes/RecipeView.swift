@@ -21,7 +21,6 @@ struct RecipeView: View {
                 PreparationTime(recipe: recipe)
             }
             .padding(.horizontal)
-            Divider()
             Picker(selection: $selectedTab, label: Text("")) {
                 Text("Zutaten").tag(0)
                 Text("Zubereitung").tag(1)
@@ -118,17 +117,19 @@ private struct Ingredients: View {
                     Image(systemName: "plus.circle").font(.largeTitle)
                 })
             }
-            .padding(.bottom)
+            Divider()
             ForEach(recipe.ingredients.indices, id: \.self) { index in
-                HStack {
-                    Text("\(self.recipe.ingredients[index].amount)")
-                        .frame(width: 75, alignment: .trailing)
-                        .padding(.trailing)
-                    Text("\(self.recipe.ingredients[index].type)")
-                    Spacer()
+                Group {
+                    HStack {
+                        Text(self.recipe.ingredients[index].amount)
+                            .frame(width: 75, alignment: .trailing)
+                            .padding(.trailing)
+                        Text(self.recipe.ingredients[index].type)
+                        Spacer()
+                    }
+                    .padding(.horizontal, 25)
+                    Divider()
                 }
-                .padding(.bottom, 5)
-                .padding(.horizontal, 25)
             }
         }
     }
@@ -138,10 +139,14 @@ private struct Preparation: View {
     let recipe: Recipe
     
     var body: some View {
-        Group {
-            Text(recipe.preparation)
-                .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 25)
+        VStack(alignment: .leading) {
+            ForEach(recipe.preparation, id: \.self) { preparation in
+                Group {
+                    Text(preparation)
+                    Divider()
+                }
+                .padding(.horizontal)
+            }
         }
     }
 }
