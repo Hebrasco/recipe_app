@@ -9,6 +9,7 @@
 import SwiftUI
 
 struct RecipeView: View {
+    @State private var selectedTab: Int = 0
     let recipe: Recipe
     
     var body: some View {
@@ -21,11 +22,21 @@ struct RecipeView: View {
             }
             .padding(.horizontal)
             Divider()
-            Ingredients(recipe: recipe)
-            Spacer().frame(height: 25)
-            Preperation(recipe: recipe)
-            Tips(recipe: recipe)
-                .padding(.top, 25)
+            Picker(selection: $selectedTab, label: Text("")) {
+                Text("Zutaten").tag(0)
+                Text("Zubereitung").tag(1)
+            }
+            .pickerStyle(SegmentedPickerStyle())
+            .padding()
+            .labelsHidden()
+
+            if selectedTab == 0 {
+                Ingredients(recipe: recipe)
+            } else {
+                Preperation(recipe: recipe)
+                Tips(recipe: recipe)
+                    .padding(.top, 25)
+            }
             Spacer().frame(height: 50)
         }
         .navigationBarTitle("", displayMode: .inline)
