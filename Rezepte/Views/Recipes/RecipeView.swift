@@ -92,7 +92,7 @@ private struct PreperationTime: View {
                     Text("min")
                         .font(.footnote)
                 }
-                .foregroundColor(Color(UIColor.systemBackground))
+                .foregroundColor(.white)
             )
         .frame(width: 60, height: 60)
     }
