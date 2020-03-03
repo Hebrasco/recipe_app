@@ -20,16 +20,16 @@ struct RecipeView: View {
                 PreperationTime(recipe: recipe)
             }
             .padding(.horizontal)
-            VStack(alignment: .leading) {
-                Favorite()
-                Divider()
-                Ingredients(recipe: recipe)
-                Spacer().frame(height: 20)
-                Preperation(recipe: recipe)
-            }
-            .padding(.horizontal)
+            Divider()
+            Ingredients(recipe: recipe)
+            Spacer().frame(height: 25)
+            Preperation(recipe: recipe)
+            Tips(recipe: recipe)
+                .padding(.top, 25)
+            Spacer().frame(height: 50)
         }
         .navigationBarTitle("", displayMode: .inline)
+        .navigationBarItems(trailing: Favorite())
     }
 }
 
@@ -64,9 +64,8 @@ private struct RecipeTitle: View {
 private struct Favorite: View {
     var body: some View {
         Image(systemName: "heart.fill")
-        .foregroundColor(.red)
-        .font(.title)
-        .padding(.bottom)
+            .foregroundColor(.red)
+            .font(.title)
     }
 }
 
@@ -93,14 +92,32 @@ private struct Ingredients: View {
     
     var body: some View {
         Group {
-            Text("Zutaten:")
+            HStack {
+                Button(action: {
+//                  Subtract 1 to amount
+                }, label: {
+                    Image(systemName: "minus.circle").font(.largeTitle)
+                })
+                Spacer().frame(width: 50)
+                Text("1").font(.largeTitle)
+                Spacer().frame(width: 50)
+                Button(action: {
+//                  Add 1 from amount
+                }, label: {
+                    Image(systemName: "plus.circle").font(.largeTitle)
+                })
+            }
+            .padding(.bottom)
             ForEach(recipe.ingredients.indices, id: \.self) { index in
                 HStack {
                     Text("\(self.recipe.ingredients[index].amount)")
+                        .frame(width: 75, alignment: .trailing)
+                        .padding(.trailing)
                     Text("\(self.recipe.ingredients[index].type)")
                     Spacer()
                 }
-                .padding(.horizontal, 35)
+                .padding(.bottom, 5)
+                .padding(.horizontal, 25)
             }
         }
     }
@@ -111,11 +128,25 @@ private struct Preperation: View {
     
     var body: some View {
         Group {
-            Text("Zubereitung:")
             Text(recipe.preparation)
                 .fixedSize(horizontal: false, vertical: true)
-                .padding(.horizontal, 35)
+                .padding(.horizontal, 25)
         }
+    }
+}
+
+private struct Tips: View {
+    let recipe: Recipe
+    
+    var body: some View {
+        HStack {
+            Image(systemName: "exclamationmark.circle")
+                .font(.title)
+                .padding(.trailing)
+            Text(recipe.tips)
+        }
+        .padding(.bottom)
+        .padding(.horizontal, 25)
     }
 }
 
@@ -124,7 +155,8 @@ struct RecipeView_Previews: PreviewProvider {
         let image = "placeholder"
         let title = "Avocadoaufstrich"
         let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2"),
-                           Recipe.Ingredient(type: "Salz", amount: "3")]
+                           Recipe.Ingredient(type: "Salz", amount: "1 TL"),
+                           Recipe.Ingredient(type: "Hüttenkäse", amount: "200 g")]
         let intolerances = [Recipe.Intolerance(type: "Gluten", image: .gluten),
                             Recipe.Intolerance(type: "Wheizen", image: .wheat)]
         let category = "Frühstück,Mittagessen"
