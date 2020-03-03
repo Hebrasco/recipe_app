@@ -47,6 +47,9 @@ class Recipes {
                     image = String(image.dropLast(4))
                 }
                 
+                let preparationArray = preparation.split(separator: "\n")
+                                                  .map{String($0)}
+                
                 let recipe = Recipe(image: image,
                                     title: title,
                                     ingredients: ingredients,
@@ -55,7 +58,7 @@ class Recipes {
                                     tags: tags,
                                     time: time,
                                     difficulty: difficulty,
-                                    preparation: preparation,
+                                    preparation: preparationArray,
                                     tips: tips,
                                     source: source)
                 
