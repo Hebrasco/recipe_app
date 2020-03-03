@@ -37,7 +37,7 @@ struct RecipeView: View {
                 Tips(recipe: recipe)
                     .padding(.top, 25)
             }
-            Spacer().frame(height: 50)
+            Spacer().frame(height: 25)
         }
         .navigationBarTitle("", displayMode: .inline)
         .navigationBarItems(trailing: Favorite())
