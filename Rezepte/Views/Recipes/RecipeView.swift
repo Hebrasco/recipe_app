@@ -151,7 +151,7 @@ private struct Tips: View {
     
     var body: some View {
         HStack {
-            Image(systemName: "exclamationmark.circle")
+            Image(systemName: "info.circle")
                 .font(.title)
                 .padding(.trailing)
             Text(recipe.tips)
