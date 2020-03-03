@@ -121,11 +121,12 @@ private struct Ingredients: View {
             ForEach(recipe.ingredients.indices, id: \.self) { index in
                 Group {
                     HStack {
+                        Spacer()
                         Text(self.recipe.ingredients[index].amount)
-                            .frame(width: 75, alignment: .trailing)
+                            .frame(width: 100, alignment: .trailing)
                             .padding(.trailing)
                         Text(self.recipe.ingredients[index].type)
-                        Spacer()
+                            .frame(width: 175, alignment: .leading)
                     }
                     .padding(.horizontal, 25)
                     Divider()
