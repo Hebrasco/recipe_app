@@ -28,27 +28,18 @@ class Recipes {
             var recipes: [Recipe] = []
             
             for jsonObject in jsonArray {
-                let ingredients = getIngredients(recipe: jsonObject)
-                let intolerances = getIntolerances(recipe: jsonObject)
-                let difficulty = getDifficulty(recipe: jsonObject["Schwierigkeitsgrad"] as! String)
+                let ingredients = parseIngredients(result: jsonObject)
+                let intolerances = parseIntolerances(result: jsonObject["Inhalt"] as! String)
+                let difficulty = parseDifficulty(result: jsonObject["Schwierigkeitsgrad"] as! String)
+                let preparation = parsePreparation(result: jsonObject["Zubereitung"] as! String)
+                let image = parseImage(result: jsonObject["Bild"] as! String)
+                let tags = parseTags(result: jsonObject["tags"] as! String)
+                let category = parseCategory(result: jsonObject["Hauptkategorie"] as! String)
                 
                 guard let title = jsonObject["Rezeptname"] as? String else { break }
-                guard let category = jsonObject["Hauptkategorie"] as? String else { break }
-                guard let tags = jsonObject["tags"] as? String else { break }
                 guard let time = jsonObject["Zubereitungszeit"] as? Int else { break }
-                guard let preparation = jsonObject["Zubereitung"] as? String else { break }
                 guard let tips = jsonObject["Tipps"] as? String else { break }
                 guard let source = jsonObject["Link, Quelle"] as? String else { break }
-                guard var image = jsonObject["Bild"] as? String else { break }
-                
-                if image == "" {
-                    image = "placeholder"
-                } else {
-                    image = String(image.dropLast(4))
-                }
-                
-                let preparationArray = preparation.split(separator: "\n")
-                                                  .map{String($0)}
                 
                 let recipe = Recipe(image: image,
                                     title: title,
@@ -58,7 +49,7 @@ class Recipes {
                                     tags: tags,
                                     time: time,
                                     difficulty: difficulty,
-                                    preparation: preparationArray,
+                                    preparation: preparation,
                                     tips: tips,
                                     source: source)
                 
@@ -70,13 +61,47 @@ class Recipes {
         }
     }
     
-    private static func getIngredients(recipe: [String: Any]) -> [Recipe.Ingredient] {
+    private static func parseImage(result: String) -> String {
+        if result == "" {
+            return "placeholder"
+        } else {
+            return String(result.dropLast(4))
+        }
+    }
+    
+    private static func parseTags(result: String) -> String {
+        let tagsResult = result.split(separator: ",").map{String($0)}
+        var tags = ""
+        
+        for tag in tagsResult {
+            tags += "#\(tag), "
+        }
+        
+        return String(tags.dropLast(2))
+    }
+
+    private static func parseCategory(result: String) -> String {
+        let categoryResult = result.split(separator: ",").map{String($0)}
+        var categories = ""
+        
+        for category in categoryResult {
+            categories += "\(category), "
+        }
+        
+        return String(categories.dropLast(2))
+    }
+    
+    private static func parsePreparation(result: String) -> [String] {
+        return result.split(separator: "\n").map{String($0)}
+    }
+    
+    private static func parseIngredients(result: [String: Any]) -> [Recipe.Ingredient] {
         var ingredients: [Recipe.Ingredient] = []
         var count = 1
         
         while count != 0 {
-            guard let ingredientName = recipe["Zutat \(count)"] as? String else { break }
-            guard let ingredientAmount = recipe["Menge \(count)"] as? String else { break }
+            guard let ingredient = result["Zutat \(count)"] as? String else { break }
+            guard let ingredientAmount = result["Menge \(count)"] as? String else { break }
             
             if ingredient == ""{
                 break
@@ -90,9 +115,8 @@ class Recipes {
         return ingredients
     }
     
-    private static func getIntolerances(recipe: [String: Any]) -> [Recipe.Intolerance]? {
-        guard let intolerancesResult = recipe["Inhalt"] as? String else { return nil }
-        let intolerancesObjects = intolerancesResult.split(separator: ",")
+    private static func parseIntolerances(result: String) -> [Recipe.Intolerance]? {
+        let intolerancesObjects = result.split(separator: ",")
         var intolerances: [Recipe.Intolerance] = []
         
         for intolerancesObject in intolerancesObjects {
@@ -132,8 +156,8 @@ class Recipes {
         return intolerances
     }
     
-    private static func getDifficulty(recipe: String) -> Recipe.Difficulty {
-        switch recipe {
+    private static func parseDifficulty(result: String) -> Recipe.Difficulty {
+        switch result {
         case "einfach":
             return Recipe.Difficulty.easy
         case "mittel":
