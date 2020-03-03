@@ -47,6 +47,9 @@ class Recipes {
                     image = String(image.dropLast(4))
                 }
                 
+                let preparationArray = preparation.split(separator: "\n")
+                                                  .map{String($0)}
+                
                 let recipe = Recipe(image: image,
                                     title: title,
                                     ingredients: ingredients,
@@ -55,7 +58,7 @@ class Recipes {
                                     tags: tags,
                                     time: time,
                                     difficulty: difficulty,
-                                    preparation: preparation,
+                                    preparation: preparationArray,
                                     tips: tips,
                                     source: source)
                 
@@ -75,8 +78,11 @@ class Recipes {
             guard let ingredientName = recipe["Zutat \(count)"] as? String else { break }
             guard let ingredientAmount = recipe["Menge \(count)"] as? String else { break }
             
-            let ingredient = Recipe.Ingredient(type: ingredientName, amount: ingredientAmount)
-            ingredients.append(ingredient)
+            if ingredient == ""{
+                break
+            }
+            
+            ingredients.append(Recipe.Ingredient(type: ingredient, amount: ingredientAmount))
             
             count += 1
         }

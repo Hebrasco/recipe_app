@@ -12,48 +12,50 @@ struct RecipeCard: View {
     let recipe: Recipe
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 20) {
-            Image(recipe.image)
-                .resizable()
-                .scaledToFill()
-                .frame(height: 150)
-                .clipped()
-            HStack {
-                Text(recipe.title)
-                    .font(.headline)
-                Spacer()
-                VStack {
-                    Image(systemName: "timer")
-                        .multilineTextAlignment(.trailing)
-                        .foregroundColor(.accentColor)
-                    Text("\(recipe.time) Minuten")
-                        .font(.caption)
+        NavigationLink(destination: RecipeView(recipe: recipe)) {
+            VStack(alignment: .leading, spacing: 20) {
+                Image(recipe.image)
+                    .resizable()
+                    .scaledToFill()
+                    .frame(height: 150)
+                    .clipped()
+                HStack {
+                    Text(recipe.title)
+                        .font(.headline)
+                    Spacer()
+                    VStack {
+                        Image(systemName: "timer")
+                            .multilineTextAlignment(.trailing)
+                            .foregroundColor(.accentColor)
+                        Text("\(recipe.time) Minuten")
+                            .font(.caption)
+                    }
+                    .frame(width: 90)
+                    Spacer().frame(width: 5)
+                    VStack {
+                        Image(systemName: "gauge")
+                            .frame(alignment: .trailing)
+                            .foregroundColor(.accentColor)
+                        Text(recipe.difficulty.rawValue)
+                            .font(.caption)
+                    }
                 }
-                .frame(width: 90)
-                Spacer().frame(width: 5)
-                VStack {
-                    Image(systemName: "gauge")
-                        .frame(alignment: .trailing)
-                        .foregroundColor(.accentColor)
-                    Text(recipe.difficulty.rawValue)
-                        .font(.caption)
+                .padding(.horizontal)
+                HStack {
+                    ForEach(recipe.intolerances.indices, id: \.self) { index in
+                        Intolerances(intolerance: self.recipe.intolerances[index])
+                    }
                 }
+                .padding(.horizontal)
+                Text(recipe.tags)
+                    .font(.caption)
+                    .padding([.horizontal, .bottom])
             }
-            .padding(.horizontal)
-            HStack {
-                ForEach(recipe.intolerances.indices, id: \.self) { index in
-                    Intolerances(intolerance: self.recipe.intolerances[index])
-                }
-            }
-            .padding(.horizontal)
-            Text(recipe.tags)
-                .font(.caption)
-                .padding([.horizontal, .bottom])
+            .background(Color.init(UIColor.systemBackground))
+            .cornerRadius(10)
+            .padding(.vertical)
+            .shadow(radius: 10)
         }
-        .background(Color.init(UIColor.systemBackground))
-        .cornerRadius(10)
-        .padding(.vertical)
-        .shadow(radius: 10)
     }
 }
 
@@ -85,7 +87,7 @@ struct Recipe_Previews: PreviewProvider {
                             Recipe.Intolerance(type: "Wheizen", image: .wheat)]
         let category = "Frühstück,Mittagessen"
         let tags = "Frühstück,Mittagessen,Aufstriche,Vegetarisch,Laktose,Halal"
-        let preperation = "1. Die Avocados halbieren und mit einem Löffel das Fruchtfleisch aus den Schalenhälften schälen und den Kern entfernen.\n2. Anschließend das Fruchtfleisch mit einer Gabel zerdrücken und die zerdrückte Avocado in eine Schüssel geben.\n3. Zitronensaft über das Avocadomus träufeln.\n4. Hüttenkäse dazuschütten und gut verrühren.\n5. Zum Schluss mit Salz und Pfeffer würzen."
+        let preparation = ["1. Die Avocados halbieren und mit einem Löffel das Fruchtfleisch aus den Schalenhälften schälen und den Kern entfernen.", "2. Anschließend das Fruchtfleisch mit einer Gabel zerdrücken und die zerdrückte Avocado in eine Schüssel geben.", "3. Zitronensaft über das Avocadomus träufeln.", "4. Hüttenkäse dazuschütten und gut verrühren.", "5. Zum Schluss mit Salz und Pfeffer würzen."]
         let tips = "Passt sehr gut zu warmen Pellkartoffeln oder Ofenkartoffeln. Als Dip oder Aufstrich verwendbar."
         let source = "\"Das Kita-Kinder-Kochbuch\", S.22/23"
         
@@ -97,7 +99,7 @@ struct Recipe_Previews: PreviewProvider {
                                   tags: tags,
                                   time: 10,
                                   difficulty: .easy,
-                                  preparation: preperation,
+                                  preparation: preparation,
                                   tips: tips,
                                   source: source))
     }

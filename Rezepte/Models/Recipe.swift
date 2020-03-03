@@ -18,7 +18,7 @@ struct Recipe {
     let tags: String
     let time: Int
     let difficulty: Difficulty
-    let preparation: String
+    let preparation: [String]
     let tips: String
     let source: String
     
