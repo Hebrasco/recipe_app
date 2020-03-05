@@ -55,7 +55,9 @@ struct RecipeCard: View {
                         .multilineTextAlignment(.leading)
                 }
                 .padding(.horizontal)
+                Spacer()
             }
+            .frame(height: 300)
             .background(Color.init(UIColor.systemBackground))
             .cornerRadius(10)
             .padding(.vertical)
