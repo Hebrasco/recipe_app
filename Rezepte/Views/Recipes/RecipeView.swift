@@ -43,7 +43,7 @@ struct RecipeView: View {
     }
 }
 
-private struct RecipeImage: View {
+struct RecipeImage: View {
     let recipe: Recipe
     
     var body: some View {
@@ -57,7 +57,7 @@ private struct RecipeImage: View {
     }
 }
 
-private struct RecipeTitle: View {
+struct RecipeTitle: View {
     let recipe: Recipe
     
     var body: some View {
@@ -71,7 +71,7 @@ private struct RecipeTitle: View {
     }
 }
 
-private struct Favorite: View {
+struct Favorite: View {
     var body: some View {
         Image(systemName: "heart.fill")
             .foregroundColor(.red)
@@ -79,7 +79,7 @@ private struct Favorite: View {
     }
 }
 
-private struct PreparationTime: View {
+struct PreparationTime: View {
     let recipe: Recipe
     
     var body: some View {
@@ -97,7 +97,7 @@ private struct PreparationTime: View {
     }
 }
 
-private struct Ingredients: View {
+struct Ingredients: View {
     let recipe: Recipe
     
     var body: some View {
@@ -136,7 +136,7 @@ private struct Ingredients: View {
     }
 }
 
-private struct Preparation: View {
+struct Preparation: View {
     let recipe: Recipe
     
     var body: some View {
@@ -152,7 +152,7 @@ private struct Preparation: View {
     }
 }
 
-private struct Tips: View {
+struct Tips: View {
     let recipe: Recipe
     
     var body: some View {
