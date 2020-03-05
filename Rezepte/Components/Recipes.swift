@@ -25,40 +25,44 @@ class Recipes {
             let jsonResult = try JSONSerialization.jsonObject(with: data, options: [])
             guard let jsonArray = jsonResult as? [[String: Any]] else { return }
             
-            var recipes: [Recipe] = []
-            
-            for jsonObject in jsonArray {
-                let ingredients = parseIngredients(result: jsonObject)
-                let intolerances = parseIntolerances(result: jsonObject["Inhalt"] as! String)
-                let difficulty = parseDifficulty(result: jsonObject["Schwierigkeitsgrad"] as! String)
-                let preparation = parsePreparation(result: jsonObject["Zubereitung"] as! String)
-                let image = parseImage(result: jsonObject["Bild"] as! String)
-                let tags = parseTags(result: jsonObject["tags"] as! String)
-                let category = parseCategory(result: jsonObject["Hauptkategorie"] as! String)
-                
-                guard let title = jsonObject["Rezeptname"] as? String else { break }
-                guard let time = jsonObject["Zubereitungszeit"] as? Int else { break }
-                guard let tips = jsonObject["Tipps"] as? String else { break }
-                guard let source = jsonObject["Link, Quelle"] as? String else { break }
-                
-                let recipe = Recipe(image: image,
-                                    title: title,
-                                    ingredients: ingredients,
-                                    intolerances: intolerances!,
-                                    category: category,
-                                    tags: tags,
-                                    time: time,
-                                    difficulty: difficulty,
-                                    preparation: preparation,
-                                    tips: tips,
-                                    source: source)
-                
-                recipes.append(recipe)
-            }
-            self.recipes = recipes
+            self.recipes = parseRecipes(jsonArray: jsonArray)
         } catch {
             print("Error while parsing JSON data. File: (\(name).\(type))")
         }
+    }
+    
+    private static func parseRecipes(jsonArray: [[String: Any]]) -> [Recipe] {
+        var recipes: [Recipe] = []
+        
+        for jsonObject in jsonArray {
+            let ingredients = parseIngredients(result: jsonObject)
+            let intolerances = parseIntolerances(result: jsonObject["Inhalt"] as! String)
+            let difficulty = parseDifficulty(result: jsonObject["Schwierigkeitsgrad"] as! String)
+            let preparation = parsePreparation(result: jsonObject["Zubereitung"] as! String)
+            let image = parseImage(result: jsonObject["Bild"] as! String)
+            let tags = parseTags(result: jsonObject["tags"] as! String)
+            let category = parseCategory(result: jsonObject["Hauptkategorie"] as! String)
+            
+            guard let title = jsonObject["Rezeptname"] as? String else { break }
+            guard let time = jsonObject["Zubereitungszeit"] as? Int else { break }
+            guard let tips = jsonObject["Tipps"] as? String else { break }
+            guard let source = jsonObject["Link, Quelle"] as? String else { break }
+            
+            let recipe = Recipe(image: image,
+                                title: title,
+                                ingredients: ingredients,
+                                intolerances: intolerances!,
+                                category: category,
+                                tags: tags,
+                                time: time,
+                                difficulty: difficulty,
+                                preparation: preparation,
+                                tips: tips,
+                                source: source)
+            
+            recipes.append(recipe)
+        }
+        return recipes
     }
     
     private static func parseImage(result: String) -> String {
