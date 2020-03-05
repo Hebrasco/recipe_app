@@ -43,7 +43,7 @@ struct RecipeCard: View {
                 .padding(.horizontal)
                 HStack {
                     ForEach(recipe.intolerances.indices, id: \.self) { index in
-                        Intolerances(intolerance: self.recipe.intolerances[index])
+                        Intolerance(intolerance: self.recipe.intolerances[index])
                     }
                 }
                 .padding(.horizontal)
@@ -64,21 +64,16 @@ struct RecipeCard: View {
     }
 }
 
-struct Intolerances: View {
+struct Intolerance: View {
     let intolerance: Recipe.Intolerance
     
     var body: some View {
-        VStack(spacing: 0) {
-            Image(intolerance.image.rawValue)
-                .renderingMode(.template)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 20, height: 20)
-                .foregroundColor(.accentColor)
-            Text(intolerance.type)
-                .font(.caption)
-        }
-        .padding(.trailing, 5)
+        Image(intolerance.image.rawValue)
+            .renderingMode(.template)
+            .resizable()
+            .scaledToFit()
+            .frame(width: 20, height: 20)
+            .foregroundColor(.accentColor)
     }
 }
 
