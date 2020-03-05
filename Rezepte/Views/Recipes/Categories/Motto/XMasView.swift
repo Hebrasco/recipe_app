@@ -9,13 +9,16 @@
 import SwiftUI
 
 struct XMasView: View {
-    
+    @State var searchText = ""
     let recipes = Recipes.recipes
     
     var body: some View {
-        List {
-            ForEach(recipes.indices, id: \.self) { index in
-                RecipeCard(recipe: self.recipes[index])
+        VStack {
+            SearchBar(searchText: $searchText)
+            List {
+                ForEach(recipes.indices, id: \.self) { index in
+                    RecipeCard(recipe: self.recipes[index])
+                }
             }
         }
         .navigationBarTitle("Weihnachten")
