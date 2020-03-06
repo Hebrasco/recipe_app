@@ -10,9 +10,21 @@ import SwiftUI
 
 struct FavoritesView: View {
     @ObservedObject var viewModel = FavoritesViewModel()
+    let recipes = [Recipes.recipes.randomElement(), Recipes.recipes.randomElement()]
     
     var body: some View {
-        Text("Favoriten")
+        NavigationView {
+            VStack {
+                SearchBar(searchText: $viewModel.searchText)
+                List {
+                    ForEach(recipes.indices, id: \.self) { index in
+                        RecipeCard(recipe: self.recipes[index]!)
+                    }
+                }
+            }
+            .resignKeyboardOnDragGesture()
+            .navigationBarTitle("Favoriten")
+        }
     }
 }
 

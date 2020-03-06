@@ -11,7 +11,6 @@ import SwiftUI
 struct SearchView: View {
     @ObservedObject var viewModel = SearchViewModel()
     let recipes = Recipes.recipes
-    @State var showCancelButton = false
     
     var body: some View {
         NavigationView {
@@ -24,7 +23,7 @@ struct SearchView: View {
                 }
             }
             .resignKeyboardOnDragGesture()
-            .navigationBarTitle("Search")
+            .navigationBarTitle("Suche")
         }
     }
 }
