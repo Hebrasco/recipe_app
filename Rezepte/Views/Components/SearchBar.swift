@@ -8,6 +8,30 @@
 
 import SwiftUI
 
+extension UIApplication {
+    func endEditing(_ force: Bool) {
+        self.windows
+            .filter{$0.isKeyWindow}
+            .first?
+            .endEditing(force)
+    }
+}
+
+struct ResignKeyboardOnDragGesture: ViewModifier {
+    var gesture = DragGesture().onChanged { _ in
+        UIApplication.shared.endEditing(true)
+    }
+    func body(content: Content) -> some View {
+        return content.gesture(gesture)
+    }
+}
+
+extension View {
+    func resignKeyboardOnDragGesture() -> some View {
+        return modifier(ResignKeyboardOnDragGesture())
+    }
+}
+
 struct SearchBar: View {
     @State var showCancelButton = false
     @Binding var searchText: String
@@ -16,9 +40,11 @@ struct SearchBar: View {
         HStack {
             HStack {
                 Image(systemName: "magnifyingglass")
+                    .font(.system(size: 20))
+                    .padding(.horizontal, 5)
 
-                TextField("search", text: $searchText, onEditingChanged: { isEditing in
-                    self.showCancelButton.toggle()
+                TextField("Rezepte durchsuchen", text: $searchText, onEditingChanged: { isEditing in
+                    self.showCancelButton = true
                 }, onCommit: {
                     print("onCommit")
                 })
@@ -28,7 +54,9 @@ struct SearchBar: View {
                 Button(action: {
                     self.searchText = String("")
                 }) {
-                    Image(systemName: "xmark.circle.fill").opacity(searchText == "" ? 0.0 : 1.0)
+                    Image(systemName: "xmark.circle.fill")
+                        .opacity(searchText == "" ? 0.0 : 1.0)
+                        .padding(.trailing, 5)
                 }
             }
             .padding(.horizontal, 6)
