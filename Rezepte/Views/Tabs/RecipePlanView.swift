@@ -12,24 +12,29 @@ struct RecipePlanView: View {
     @ObservedObject var viewModel = RecipePlanViewModel()
     @State private var selectedTab: Int = 0
     let recipes = Recipes.recipes
+    let mondayRecipes = [Recipes.recipes[0], Recipes.recipes[1]]
+    let thuesdayRecipes = [Recipes.recipes[2], Recipes.recipes[3]]
+    let wednesdayRecipes = [Recipes.recipes[4], Recipes.recipes[5]]
+    let thursdayRecipes = [Recipes.recipes[6], Recipes.recipes[7]]
+    let fridayRecipes = [Recipes.recipes[8], Recipes.recipes[9]]
     
     var body: some View {
         NavigationView {
             List {
                 Section(header: SectionHeader(name: "Montag")) {
-                    PlanRecipe(recipe: recipes[0])
+                    RecipesOfWeekDay(recipes: mondayRecipes)
                 }
                 Section(header: SectionHeader(name: "Dienstag")) {
-                    PlanRecipe(recipe: recipes[1])
+                    RecipesOfWeekDay(recipes: thuesdayRecipes)
                 }
                 Section(header: SectionHeader(name: "Mittwoch")) {
-                    PlanRecipe(recipe: recipes[2])
+                    RecipesOfWeekDay(recipes: wednesdayRecipes)
                 }
                 Section(header: SectionHeader(name: "Donnerstag")) {
-                    PlanRecipe(recipe: recipes[3])
+                    RecipesOfWeekDay(recipes: thursdayRecipes)
                 }
                 Section(header: SectionHeader(name: "Freitag")) {
-                    PlanRecipe(recipe: recipes[4])
+                    RecipesOfWeekDay(recipes: fridayRecipes)
                 }
             }
             .navigationBarTitle("Wochenplan")
@@ -67,20 +72,26 @@ struct SectionHeader: View {
     }
 }
 
-struct PlanRecipe: View {
-    let recipe: Recipe
+struct RecipesOfWeekDay: View {
+    let recipes: [Recipe]
     
     var body: some View {
-        HStack {
-            Image(recipe.image)
-                .resizable()
-                .frame(width: 50, height: 50)
-                .clipped()
-                .clipShape(Circle())
-                .padding(.trailing)
-            Text(recipe.title)
+        ForEach(recipes.indices, id: \.self) { index in
+            HStack {
+                Image(self.recipes[index].image)
+                    .resizable()
+                    .frame(width: 50, height: 50)
+                    .clipped()
+                    .clipShape(Circle())
+                    .padding(.trailing)
+                Text(self.recipes[index].title)
+            }
+            .frame(height: 50)
         }
-        .frame(height: 50)
+        .onDelete(perform: { indexSet in
+            print("gesture delete performed on recipe")
+        })
+        
     }
 }
 
