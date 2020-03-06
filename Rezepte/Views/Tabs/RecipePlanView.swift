@@ -44,6 +44,7 @@ struct RecipePlanView: View {
 
 struct SectionHeader: View {
     @State private var showRecipeSheet = false
+    @State private var searchText = ""
     let recipes = Recipes.recipes
     let name: String
     
@@ -60,12 +61,18 @@ struct SectionHeader: View {
                         .font(.system(size: 20))
                 })
                 .sheet(isPresented: self.$showRecipeSheet, content: {
-                    List {
-                        ForEach(self.recipes.indices, id: \.self) { index in
-                            RecipeCard(recipe: self.recipes[index])
-//                            Card are grayed out because of the navigation links privided. Should be removed in sheet.
+                    VStack {
+                        SearchBar(text: self.$searchText)
+                            .padding(.top)
+                            .padding(.bottom, 8)
+                        List {
+                            ForEach(self.recipes.indices, id: \.self) { index in
+                                RecipeCard(recipe: self.recipes[index])
+//                                Card are grayed out because of the navigation links privided. Should be removed in sheet.
+                            }
                         }
                     }
+                    .accentColor(Color.init("AccentColor"))
                 })
             }
         }
