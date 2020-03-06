@@ -8,6 +8,72 @@
 
 import SwiftUI
 
+
+struct SearchBar: View {
+    @State var showCancelButton = false
+    @Binding var text: String
+    let placeholder: String
+    
+    init(text: Binding<String>) {
+        self.placeholder = "Rezepte durchsuchen"
+        self._text = text
+    }
+    
+    init(text: Binding<String>, placeholder: String) {
+        self._text = text
+        self.placeholder = placeholder
+    }
+    
+    var body: some View {
+        HStack {
+            HStack {
+                Image(systemName: "magnifyingglass")
+                    .font(.system(size: 20))
+                    .padding(.horizontal, 5)
+
+                TextField(placeholder, text: $text, onEditingChanged: { isEditing in
+                    self.showCancelButton = true
+                }, onCommit: {
+                    print("onCommit")
+                })
+                .foregroundColor(.primary)
+                .animation(.default)
+
+                Button(action: {
+                    self.text = String("")
+                }) {
+                    Image(systemName: "xmark.circle.fill")
+                        .opacity(text == "" ? 0.0 : 1.0)
+                        .padding(.trailing, 5)
+                }
+            }
+            .padding(.horizontal, 6)
+            .padding(.vertical, 8)
+            .foregroundColor(.secondary)
+            .background(Color(.secondarySystemBackground))
+            .cornerRadius(10.0)
+
+            if showCancelButton {
+                Button("Abbrechen") {
+                        UIApplication.shared.endEditing(true)
+                        self.text = ""
+                        self.showCancelButton = false
+                }
+                .foregroundColor(.accentColor)
+            }
+        }
+        .animation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 1))
+        .padding(.horizontal)
+        //                .navigationBarHidden(showCancelButton)//.animation(.default) // animation does not work properly
+    }
+}
+
+struct SearchBar_Previews: PreviewProvider {
+    static var previews: some View {
+        SearchBar(text: .constant("Avocado"), placeholder: "durchsuchen")
+    }
+}
+
 extension UIApplication {
     func endEditing(_ force: Bool) {
         self.windows
@@ -29,59 +95,5 @@ struct ResignKeyboardOnDragGesture: ViewModifier {
 extension View {
     func resignKeyboardOnDragGesture() -> some View {
         return modifier(ResignKeyboardOnDragGesture())
-    }
-}
-
-struct SearchBar: View {
-    @State var showCancelButton = false
-    @Binding var searchText: String
-    
-    var body: some View {
-        HStack {
-            HStack {
-                Image(systemName: "magnifyingglass")
-                    .font(.system(size: 20))
-                    .padding(.horizontal, 5)
-
-                TextField("Rezepte durchsuchen", text: $searchText, onEditingChanged: { isEditing in
-                    self.showCancelButton = true
-                }, onCommit: {
-                    print("onCommit")
-                })
-                .foregroundColor(.primary)
-                .animation(.default)
-
-                Button(action: {
-                    self.searchText = String("")
-                }) {
-                    Image(systemName: "xmark.circle.fill")
-                        .opacity(searchText == "" ? 0.0 : 1.0)
-                        .padding(.trailing, 5)
-                }
-            }
-            .padding(.horizontal, 6)
-            .padding(.vertical, 8)
-            .foregroundColor(.secondary)
-            .background(Color(.secondarySystemBackground))
-            .cornerRadius(10.0)
-
-            if showCancelButton {
-                Button("Abbrechen") {
-                        UIApplication.shared.endEditing(true)
-                        self.searchText = ""
-                        self.showCancelButton = false
-                }
-                .foregroundColor(.accentColor)
-            }
-        }
-        .animation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 1))
-        .padding(.horizontal)
-        //                .navigationBarHidden(showCancelButton)//.animation(.default) // animation does not work properly
-    }
-}
-
-struct SearchBar_Previews: PreviewProvider {
-    static var previews: some View {
-        SearchBar(searchText: .constant("Avocado"))
     }
 }
