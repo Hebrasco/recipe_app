@@ -15,7 +15,7 @@ struct FavoritesView: View {
     var body: some View {
         NavigationView {
             VStack {
-                SearchBar(searchText: $viewModel.searchText)
+                SearchBar(text: $viewModel.searchText, placeholder: "Favoriten durchsuchen")
                 List {
                     ForEach(recipes.indices, id: \.self) { index in
                         RecipeCard(recipe: self.recipes[index]!)

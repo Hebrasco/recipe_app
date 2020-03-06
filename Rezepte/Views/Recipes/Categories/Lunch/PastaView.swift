@@ -14,7 +14,7 @@ struct PastaView: View {
     
     var body: some View {
         VStack {
-            SearchBar(searchText: $searchText)
+            SearchBar(text: $searchText, placeholder: "Rezepte durchsuchen")
             List {
                 ForEach(recipes.indices, id: \.self) { index in
                     RecipeCard(recipe: self.recipes[index])

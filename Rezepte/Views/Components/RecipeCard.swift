@@ -82,7 +82,7 @@ struct Intolerance: View {
 struct Recipe_Previews: PreviewProvider {
     static var previews: some View {
         let image = "placeholder"
-        let title = "Avocadoaufstrich"
+        let title = "Bunter Nudelauflauf mit Schinken"
         let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2"),
                            Recipe.Ingredient(type: "Salz", amount: "3")]
         let intolerances = [Recipe.Intolerance(type: "Gluten", image: .gluten),

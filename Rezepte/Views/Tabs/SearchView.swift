@@ -15,7 +15,7 @@ struct SearchView: View {
     var body: some View {
         NavigationView {
             VStack {
-                SearchBar(searchText: $viewModel.searchText)
+                SearchBar(text: $viewModel.searchText)
                 List {
                     ForEach(recipes.indices, id: \.self) { index in
                         RecipeCard(recipe: self.recipes[index])
