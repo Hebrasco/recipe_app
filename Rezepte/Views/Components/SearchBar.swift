@@ -16,9 +16,11 @@ struct SearchBar: View {
         HStack {
             HStack {
                 Image(systemName: "magnifyingglass")
+                    .font(.system(size: 20))
+                    .padding(.horizontal, 5)
 
-                TextField("search", text: $searchText, onEditingChanged: { isEditing in
-                    self.showCancelButton.toggle()
+                TextField("Rezepte durchsuchen", text: $searchText, onEditingChanged: { isEditing in
+                    self.showCancelButton = true
                 }, onCommit: {
                     print("onCommit")
                 })
@@ -28,7 +30,9 @@ struct SearchBar: View {
                 Button(action: {
                     self.searchText = String("")
                 }) {
-                    Image(systemName: "xmark.circle.fill").opacity(searchText == "" ? 0.0 : 1.0)
+                    Image(systemName: "xmark.circle.fill")
+                        .opacity(searchText == "" ? 0.0 : 1.0)
+                        .padding(.trailing, 5)
                 }
             }
             .padding(.horizontal, 6)
