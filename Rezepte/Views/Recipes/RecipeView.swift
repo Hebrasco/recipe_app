@@ -132,6 +132,12 @@ struct Ingredients: View {
                     Divider()
                 }
             }
+            Spacer().frame(height: 20)
+            Button(action: {
+//                Add 1 from amount
+            }, label: {
+                Text("Zur Einkaufsliste hinzufügen")
+            })
         }
     }
 }

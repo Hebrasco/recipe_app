@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct SearchBar: View {
-//    var searchText: Binding<String>
     @State var showCancelButton = false
     @Binding var searchText: String
     
