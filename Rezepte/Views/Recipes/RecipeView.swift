@@ -65,7 +65,7 @@ struct RecipeTitle: View {
             Text(recipe.title)
                 .font(.headline)
                 .padding(.bottom, 5)
-            Text(recipe.category)
+            Text(recipe.primaryCategory)
                 .font(.footnote)
         }
     }
@@ -182,7 +182,8 @@ struct RecipeView_Previews: PreviewProvider {
                            Recipe.Ingredient(type: "Hüttenkäse", amount: "200 g")]
         let intolerances = [Recipe.Intolerance(type: "Gluten", image: .gluten),
                             Recipe.Intolerance(type: "Wheizen", image: .wheat)]
-        let category = "Frühstück, Mittagessen"
+        let primaryCategory = "Frühstück, Mittagessen"
+        let secondaryCategory = "Aufstrich, Backen"
         let tags = "#Frühstück, #Mittagessen, #Aufstriche, #Vegetarisch, #Laktose, #Halal"
         let preparation = ["1. Die Avocados halbieren und mit einem Löffel das Fruchtfleisch aus den Schalenhälften schälen und den Kern entfernen.", "2. Anschließend das Fruchtfleisch mit einer Gabel zerdrücken und die zerdrückte Avocado in eine Schüssel geben.", "3. Zitronensaft über das Avocadomus träufeln.", "4. Hüttenkäse dazuschütten und gut verrühren.", "5. Zum Schluss mit Salz und Pfeffer würzen."]
         let tips = "Passt sehr gut zu warmen Pellkartoffeln oder Ofenkartoffeln. Als Dip oder Aufstrich verwendbar."
@@ -192,7 +193,8 @@ struct RecipeView_Previews: PreviewProvider {
                                   title: title,
                                   ingredients: ingredients,
                                   intolerances: intolerances,
-                                  category: category,
+                                  primaryCategory: primaryCategory,
+                                  secondaryCategory: secondaryCategory,
                                   tags: tags,
                                   time: 10,
                                   difficulty: .easy,

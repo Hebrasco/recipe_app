@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SnackFruitsView: View {
     @State var searchText = ""
-    let recipes = Recipes.recipes
+    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Obst")}
     
     var body: some View {
         VStack {
