@@ -83,8 +83,9 @@ struct Recipe_Previews: PreviewProvider {
     static var previews: some View {
         let image = "placeholder"
         let title = "Bunter Nudelauflauf mit Schinken"
-        let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2"),
-                           Recipe.Ingredient(type: "Salz", amount: "3")]
+        let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2", unit: ""),
+        Recipe.Ingredient(type: "Salz", amount: "1", unit: "TL"),
+        Recipe.Ingredient(type: "Hüttenkäse", amount: "200", unit: "g")]
         let intolerances = [Recipe.Intolerance(type: "Gluten", image: .gluten),
         Recipe.Intolerance(type: "Weizen", image: .wheat),
         Recipe.Intolerance(type: "Laktose", image: .lactose),

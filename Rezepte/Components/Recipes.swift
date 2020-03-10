@@ -107,15 +107,30 @@ class Recipes {
         
         while count != 0 {
             guard let ingredient = result["Zutat \(count)"] as? String else { break }
-            guard let ingredientAmount = result["Menge \(count)"] as? String else { break }
+            guard let ingredientAmountObj = result["Menge \(count)"] as? String else { break }
+            
+            count += 1
             
             if ingredient == ""{
                 break
             }
             
-            ingredients.append(Recipe.Ingredient(type: ingredient, amount: ingredientAmount))
+            let tempObj = ingredientAmountObj.split(separator: " ")
+            let ingredientUnit: String
+            let ingredientAmount: String
             
-            count += 1
+            if tempObj.count >= 2 {
+                ingredientAmount = String(tempObj[0])
+                ingredientUnit = String(tempObj[1])
+            } else if tempObj.count == 1 {
+                ingredientAmount = String(tempObj[0])
+                ingredientUnit = ""
+            } else {
+                ingredientAmount = ""
+                ingredientUnit = ""
+            }
+            
+            ingredients.append(Recipe.Ingredient(type: ingredient, amount: ingredientAmount, unit: ingredientUnit))
         }
         
         return ingredients

@@ -44,6 +44,7 @@ struct Recipe {
     struct Ingredient {
         let type: String
         let amount: String
+        let unit: String
     }
     
     struct Intolerance {

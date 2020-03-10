@@ -33,8 +33,10 @@ struct RecipeView: View {
                 Ingredients(recipe: recipe)
             } else {
                 Preparation(recipe: recipe)
-                Tips(recipe: recipe)
-                    .padding(.top, 25)
+                if recipe.tips != "" {
+                    Tips(recipe: recipe)
+                        .padding(.top, 25)
+                }
             }
             Spacer().frame(height: 25)
         }
@@ -123,7 +125,7 @@ struct Ingredients: View {
                     HStack {
                         Spacer()
                         Text(self.recipe.ingredients[index].amount)
-                            .frame(width: 100, alignment: .trailing)
+                        Text(self.recipe.ingredients[index].unit)
                             .padding(.trailing)
                         Text(self.recipe.ingredients[index].type)
                             .frame(width: 175, alignment: .leading)
@@ -177,9 +179,9 @@ struct RecipeView_Previews: PreviewProvider {
     static var previews: some View {
         let image = "placeholder"
         let title = "Avocadoaufstrich"
-        let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2"),
-                           Recipe.Ingredient(type: "Salz", amount: "1 TL"),
-                           Recipe.Ingredient(type: "Hüttenkäse", amount: "200 g")]
+        let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2", unit: ""),
+                           Recipe.Ingredient(type: "Salz", amount: "1", unit: "TL"),
+                           Recipe.Ingredient(type: "Hüttenkäse", amount: "", unit: "g")]
         let intolerances = [Recipe.Intolerance(type: "Gluten", image: .gluten),
                             Recipe.Intolerance(type: "Wheizen", image: .wheat)]
         let primaryCategory = "Frühstück, Mittagessen"
