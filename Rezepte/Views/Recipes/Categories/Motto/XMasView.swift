@@ -10,7 +10,7 @@ import SwiftUI
 
 struct XMasView: View {
     @State var searchText = ""
-    let recipes = Recipes.recipes
+    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Weihnachten")}
     
     var body: some View {
         VStack {

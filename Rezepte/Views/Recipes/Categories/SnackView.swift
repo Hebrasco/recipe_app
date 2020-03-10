@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct SnackView: View {
-    let recipes = Recipes.recipes
+    let recipes = Recipes.recipes.filter {$0.primaryCategory.contains("Nachtisch/Snack")}
     
     var body: some View {
         List {

@@ -41,7 +41,8 @@ class Recipes {
             let preparation = parsePreparation(result: jsonObject["Zubereitung"] as! String)
             let image = parseImage(result: jsonObject["Bild"] as! String)
             let tags = parseTags(result: jsonObject["tags"] as! String)
-            let category = parseCategory(result: jsonObject["Hauptkategorie"] as! String)
+            let primaryCategory = parseCategory(result: jsonObject["Hauptkategorie"] as! String)
+            let secondaryCategory = parseCategory(result: jsonObject["Unterkategorie 1"] as! String)
             
             guard let title = jsonObject["Rezeptname"] as? String else { break }
             guard let time = jsonObject["Zubereitungszeit"] as? Int else { break }
@@ -52,7 +53,8 @@ class Recipes {
                                 title: title,
                                 ingredients: ingredients,
                                 intolerances: intolerances!,
-                                category: category,
+                                primaryCategory: primaryCategory,
+                                secondaryCategory: secondaryCategory,
                                 tags: tags,
                                 time: time,
                                 difficulty: difficulty,

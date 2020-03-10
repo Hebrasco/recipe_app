@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MottoView: View {
-    let recipes = Recipes.recipes
+    let recipes = Recipes.recipes.filter {$0.primaryCategory.contains("Mottos/Anlässe")}
     
     var body: some View {
         List {

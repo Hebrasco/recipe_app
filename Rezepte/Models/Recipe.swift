@@ -14,7 +14,8 @@ struct Recipe {
     let title: String
     let ingredients: [Ingredient]
     let intolerances: [Intolerance]
-    let category: String
+    let primaryCategory: String
+    let secondaryCategory: String
     let tags: String
     let time: Int
     let difficulty: Difficulty
