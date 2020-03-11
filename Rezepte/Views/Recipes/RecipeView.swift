@@ -10,7 +10,13 @@ import SwiftUI
 
 struct RecipeView: View {
     @State private var selectedTab: Int = 0
-    let recipe: Recipe
+    var recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
+    
+    init(recipe: Recipe) {
+        self.recipe = recipe
+        self.viewModel = RecipeViewModel(ingredients: recipe.ingredients)
+    }
     
     var body: some View {
         ScrollView {
@@ -30,11 +36,13 @@ struct RecipeView: View {
             .labelsHidden()
 
             if selectedTab == 0 {
-                Ingredients(recipe: recipe)
+                Ingredients(viewModel: viewModel)
             } else {
                 Preparation(recipe: recipe)
-                Tips(recipe: recipe)
-                    .padding(.top, 25)
+                if recipe.tips != "" {
+                    Tips(recipe: recipe)
+                        .padding(.top, 25)
+                }
             }
             Spacer().frame(height: 25)
         }
@@ -98,34 +106,49 @@ struct PreparationTime: View {
 }
 
 struct Ingredients: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         Group {
             HStack {
                 Button(action: {
-//                  Subtract 1 to amount
                 }, label: {
-                    Image(systemName: "minus.circle").font(.largeTitle)
+                    Image(systemName: "minus.circle")
+                        .font(.largeTitle)
+                        .onTapGesture {
+                            self.viewModel.decreaseAmount(by: 1)
+                        }
+                        .onLongPressGesture {
+                            self.viewModel.decreaseAmount(by: 10)
+                        }
                 })
                 Spacer().frame(width: 50)
-                Text("1").font(.largeTitle)
+                Text(String(viewModel.amountCount))
+                    .font(.largeTitle)
+                    .frame(width: 50)
                 Spacer().frame(width: 50)
                 Button(action: {
-//                  Add 1 from amount
+                    self.viewModel.increaseAmount(by: 1)
                 }, label: {
-                    Image(systemName: "plus.circle").font(.largeTitle)
+                    Image(systemName: "plus.circle")
+                        .font(.largeTitle)
+                        .onTapGesture {
+                            self.viewModel.increaseAmount(by: 1)
+                        }
+                        .onLongPressGesture {
+                            self.viewModel.increaseAmount(by: 10)
+                        }
                 })
             }
             Divider()
-            ForEach(recipe.ingredients.indices, id: \.self) { index in
+            ForEach(viewModel.ingredients.indices, id: \.self) { index in
                 Group {
                     HStack {
                         Spacer()
-                        Text(self.recipe.ingredients[index].amount)
-                            .frame(width: 100, alignment: .trailing)
+                        Text(self.viewModel.ingredients[index].amount)
+                        Text(self.viewModel.ingredients[index].unit)
                             .padding(.trailing)
-                        Text(self.recipe.ingredients[index].type)
+                        Text(self.viewModel.ingredients[index].type)
                             .frame(width: 175, alignment: .leading)
                     }
                     .padding(.horizontal, 25)
@@ -177,9 +200,9 @@ struct RecipeView_Previews: PreviewProvider {
     static var previews: some View {
         let image = "placeholder"
         let title = "Avocadoaufstrich"
-        let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2"),
-                           Recipe.Ingredient(type: "Salz", amount: "1 TL"),
-                           Recipe.Ingredient(type: "Hüttenkäse", amount: "200 g")]
+        let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2", unit: ""),
+                           Recipe.Ingredient(type: "Salz", amount: "1", unit: "TL"),
+                           Recipe.Ingredient(type: "Hüttenkäse", amount: "", unit: "g")]
         let intolerances = [Recipe.Intolerance(type: "Gluten", image: .gluten),
                             Recipe.Intolerance(type: "Wheizen", image: .wheat)]
         let primaryCategory = "Frühstück, Mittagessen"

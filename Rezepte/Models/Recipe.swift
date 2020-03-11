@@ -12,7 +12,7 @@ import SwiftUI
 struct Recipe {
     let image: String
     let title: String
-    let ingredients: [Ingredient]
+    var ingredients: [Ingredient]
     let intolerances: [Intolerance]
     let primaryCategory: String
     let secondaryCategory: String
@@ -43,7 +43,16 @@ struct Recipe {
     
     struct Ingredient {
         let type: String
-        let amount: String
+        var amount: String
+        let baseAmount: String
+        let unit: String
+        
+        init(type: String, amount: String, unit: String) {
+            self.type = type
+            self.amount = amount
+            self.baseAmount = amount
+            self.unit = unit
+        }
     }
     
     struct Intolerance {
