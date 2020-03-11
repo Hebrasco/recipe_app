@@ -31,8 +31,8 @@ struct LunchView: View {
             Category(name: "Suppen",
                      image: "soup",
                      destination: AnyView(SoupView()))
-            ForEach(recipes.indices, id: \.self) { index in
-                RecipeCard(recipe: self.recipes[index])
+            ForEach(recipes, id: \.id) { recipe in
+                RecipeCard(recipe: recipe)
             }
         }
         .navigationBarTitle("Mittagessen")

@@ -66,8 +66,8 @@ struct SectionHeader: View {
                             .padding(.top)
                             .padding(.bottom, 8)
                         List {
-                            ForEach(self.recipes.indices, id: \.self) { index in
-                                RecipeCard(recipe: self.recipes[index])
+                            ForEach(self.recipes, id: \.id) { recipe in
+                                RecipeCard(recipe: recipe)
 //                                Card are grayed out because of the navigation links privided. Should be removed in sheet.
                             }
                         }
@@ -83,15 +83,15 @@ struct RecipesOfWeekDay: View {
     let recipes: [Recipe]
     
     var body: some View {
-        ForEach(recipes.indices, id: \.self) { index in
+        ForEach(recipes, id: \.id) { recipe in
             HStack {
-                Image(self.recipes[index].image)
+                Image(recipe.image)
                     .resizable()
                     .frame(width: 50, height: 50)
                     .clipped()
                     .clipShape(Circle())
                     .padding(.trailing)
-                Text(self.recipes[index].title)
+                Text(recipe.title)
             }
             .frame(height: 50)
         }

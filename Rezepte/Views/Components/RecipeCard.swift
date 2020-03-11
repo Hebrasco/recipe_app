@@ -42,8 +42,8 @@ struct RecipeCard: View {
                 }
                 .padding(.horizontal)
                 HStack {
-                    ForEach(recipe.intolerances.indices, id: \.self) { index in
-                        Intolerance(intolerance: self.recipe.intolerances[index])
+                    ForEach(recipe.intolerances, id: \.id) { intolerance in
+                        Intolerance(intolerance: intolerance)
                     }
                 }
                 .padding(.horizontal)
@@ -81,6 +81,7 @@ struct Intolerance: View {
 
 struct Recipe_Previews: PreviewProvider {
     static var previews: some View {
+        let id = 1
         let image = "placeholder"
         let title = "Bunter Nudelauflauf mit Schinken"
         let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2", unit: ""),
@@ -101,17 +102,18 @@ struct Recipe_Previews: PreviewProvider {
         let tips = "Passt sehr gut zu warmen Pellkartoffeln oder Ofenkartoffeln. Als Dip oder Aufstrich verwendbar."
         let source = "\"Das Kita-Kinder-Kochbuch\", S.22/23"
         
-        return RecipeCard(recipe: Recipe(image: image,
-                                  title: title,
-                                  ingredients: ingredients,
-                                  intolerances: intolerances,
-                                  primaryCategory: primaryCategory,
-                                  secondaryCategory: secondaryCategory,
-                                  tags: tags,
-                                  time: 10,
-                                  difficulty: .easy,
-                                  preparation: preparation,
-                                  tips: tips,
-                                  source: source))
+        return RecipeCard(recipe: Recipe(id: id,
+                                         image: image,
+                                         title: title,
+                                         ingredients: ingredients,
+                                         intolerances: intolerances,
+                                         primaryCategory: primaryCategory,
+                                         secondaryCategory: secondaryCategory,
+                                         tags: tags,
+                                         time: 10,
+                                         difficulty: .easy,
+                                         preparation: preparation,
+                                         tips: tips,
+                                         source: source))
     }
 }

@@ -9,15 +9,21 @@
 import SwiftUI
 
 struct SoupView: View {
-    @State var searchText = ""
+    @ObservedObject var viewModel = SearchViewModel()
     let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Suppe")}
     
     var body: some View {
         VStack {
-            SearchBar(text: $searchText, placeholder: "Rezepte durchsuchen")
+            SearchBar(text: $viewModel.searchText, placeholder: "Rezepte durchsuchen")
             List {
-                ForEach(recipes.indices, id: \.self) { index in
-                    RecipeCard(recipe: self.recipes[index])
+                ForEach(recipes.filter{
+                    if viewModel.searchText.isEmpty {
+                        return true
+                    } else {
+                        return $0.title.contains(viewModel.searchText)
+                    }
+                }, id: \.id) { recipe in
+                    RecipeCard(recipe: recipe)
                 }
             }
         }

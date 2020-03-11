@@ -10,6 +10,7 @@ import Foundation
 import SwiftUI
 
 struct Recipe {
+    let id: Int
     let image: String
     let title: String
     var ingredients: [Ingredient]
@@ -42,6 +43,7 @@ struct Recipe {
     }
     
     struct Ingredient {
+        let id = UUID()
         let type: String
         var amount: String
         let baseAmount: String
@@ -56,6 +58,7 @@ struct Recipe {
     }
     
     struct Intolerance {
+        let id = UUID()
         let type: String
         let image: IntolerancesImages
     }
