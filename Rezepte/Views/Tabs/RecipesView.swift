@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct RecipesView: View {
-    @ObservedObject var viewModel = RecipesViewModel()
     let recipes = Recipes.recipes
     
     var body: some View {
