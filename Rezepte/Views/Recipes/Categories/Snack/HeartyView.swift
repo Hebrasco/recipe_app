@@ -9,14 +9,20 @@
 import SwiftUI
 
 struct HeartyView: View {
-    @State var searchText = ""
+    @ObservedObject var viewModel = SearchViewModel()
     let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Herzhaft")}
     
     var body: some View {
         VStack {
-            SearchBar(text: $searchText, placeholder: "Rezepte durchsuchen")
+            SearchBar(text: $viewModel.searchText, placeholder: "Rezepte durchsuchen")
             List {
-                ForEach(recipes, id: \.id) { recipe in
+                ForEach(recipes.filter{
+                    if viewModel.searchText.isEmpty {
+                        return true
+                    } else {
+                        return $0.title.contains(viewModel.searchText)
+                    }
+                }, id: \.id) { recipe in
                     RecipeCard(recipe: recipe)
                 }
             }
