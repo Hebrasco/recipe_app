@@ -176,10 +176,6 @@
 		6515DC0923F5410500271AEA /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				65BB401723FE7A4600806051 /* Snack */,
-				65BB401623FE7A4100806051 /* Motto */,
-				65BB401523FE7A3C00806051 /* Lunch */,
-				65BB401423FE7A1400806051 /* Breakfast */,
 				6515DC1F23F5488100271AEA /* Tabs */,
 				6541142F2418D6E600A9A0F5 /* RecipeViewModel.swift */,
 			);
@@ -244,34 +240,6 @@
 				65BB400E23FE760400806051 /* QuarkView.swift */,
 				65BB401023FE760F00806051 /* SnackSweetsView.swift */,
 				65BB401223FE761800806051 /* HeartyView.swift */,
-			);
-			path = Snack;
-			sourceTree = "<group>";
-		};
-		65BB401423FE7A1400806051 /* Breakfast */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Breakfast;
-			sourceTree = "<group>";
-		};
-		65BB401523FE7A3C00806051 /* Lunch */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Lunch;
-			sourceTree = "<group>";
-		};
-		65BB401623FE7A4100806051 /* Motto */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Motto;
-			sourceTree = "<group>";
-		};
-		65BB401723FE7A4600806051 /* Snack */ = {
-			isa = PBXGroup;
-			children = (
 			);
 			path = Snack;
 			sourceTree = "<group>";

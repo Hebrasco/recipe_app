@@ -11,8 +11,12 @@ import SwiftUI
 struct RecipeCard: View {
     let recipe: Recipe
     
+    init(_ recipe: Recipe) {
+        self.recipe = recipe
+    }
+    
     var body: some View {
-        NavigationLink(destination: RecipeView(recipe: recipe)) {
+        NavigationLink(destination: RecipeView(recipe)) {
             VStack(alignment: .leading, spacing: 20) {
                 Image(recipe.image)
                     .resizable()
@@ -102,18 +106,18 @@ struct Recipe_Previews: PreviewProvider {
         let tips = "Passt sehr gut zu warmen Pellkartoffeln oder Ofenkartoffeln. Als Dip oder Aufstrich verwendbar."
         let source = "\"Das Kita-Kinder-Kochbuch\", S.22/23"
         
-        return RecipeCard(recipe: Recipe(id: id,
-                                         image: image,
-                                         title: title,
-                                         ingredients: ingredients,
-                                         intolerances: intolerances,
-                                         primaryCategory: primaryCategory,
-                                         secondaryCategory: secondaryCategory,
-                                         tags: tags,
-                                         time: 10,
-                                         difficulty: .easy,
-                                         preparation: preparation,
-                                         tips: tips,
-                                         source: source))
+        return RecipeCard(Recipe(id: id,
+                                 image: image,
+                                 title: title,
+                                 ingredients: ingredients,
+                                 intolerances: intolerances,
+                                 primaryCategory: primaryCategory,
+                                 secondaryCategory: secondaryCategory,
+                                 tags: tags,
+                                 time: 10,
+                                 difficulty: .easy,
+                                 preparation: preparation,
+                                 tips: tips,
+                                 source: source))
     }
 }

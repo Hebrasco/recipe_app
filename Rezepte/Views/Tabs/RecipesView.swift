@@ -27,7 +27,7 @@ struct RecipesView: View {
                          image: "motto",
                          destination: AnyView(MottoView()))
                 ForEach(recipes, id: \.id) { recipe in
-                    RecipeCard(recipe: recipe)
+                    RecipeCard(recipe)
                 }
             }
             .navigationBarTitle("Rezepte")
