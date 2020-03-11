@@ -9,6 +9,7 @@
 import Foundation
 
 struct ShoppingIngredient {
+    let id = UUID()    
     let name: String
     let amount: String
     let unit: String

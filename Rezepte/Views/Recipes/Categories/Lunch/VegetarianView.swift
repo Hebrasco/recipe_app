@@ -16,8 +16,8 @@ struct VegetarianView: View {
         VStack {
             SearchBar(text: $searchText, placeholder: "Rezepte durchsuchen")
             List {
-                ForEach(recipes.indices, id: \.self) { index in
-                    RecipeCard(recipe: self.recipes[index])
+                ForEach(recipes, id: \.id) { recipe in
+                    RecipeCard(recipe: recipe)
                 }
             }
         }

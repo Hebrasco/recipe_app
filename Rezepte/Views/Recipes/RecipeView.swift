@@ -141,14 +141,14 @@ struct Ingredients: View {
                 })
             }
             Divider()
-            ForEach(viewModel.ingredients.indices, id: \.self) { index in
+            ForEach(viewModel.ingredients, id: \.id) { ingredient in
                 Group {
                     HStack {
                         Spacer()
-                        Text(self.viewModel.ingredients[index].amount)
-                        Text(self.viewModel.ingredients[index].unit)
+                        Text(ingredient.amount)
+                        Text(ingredient.unit)
                             .padding(.trailing)
-                        Text(self.viewModel.ingredients[index].type)
+                        Text(ingredient.type)
                             .frame(width: 175, alignment: .leading)
                     }
                     .padding(.horizontal, 25)
@@ -198,6 +198,7 @@ struct Tips: View {
 
 struct RecipeView_Previews: PreviewProvider {
     static var previews: some View {
+        let id = 1
         let image = "placeholder"
         let title = "Avocadoaufstrich"
         let ingredients = [Recipe.Ingredient(type: "reife Avocados", amount: "2", unit: ""),
@@ -212,17 +213,18 @@ struct RecipeView_Previews: PreviewProvider {
         let tips = "Passt sehr gut zu warmen Pellkartoffeln oder Ofenkartoffeln. Als Dip oder Aufstrich verwendbar."
         let source = "\"Das Kita-Kinder-Kochbuch\", S.22/23"
         
-        return RecipeView(recipe: Recipe(image: image,
-                                  title: title,
-                                  ingredients: ingredients,
-                                  intolerances: intolerances,
-                                  primaryCategory: primaryCategory,
-                                  secondaryCategory: secondaryCategory,
-                                  tags: tags,
-                                  time: 10,
-                                  difficulty: .easy,
-                                  preparation: preparation,
-                                  tips: tips,
-                                  source: source))
+        return RecipeView(recipe: Recipe(id:id,
+                                         image: image,
+                                         title: title,
+                                         ingredients: ingredients,
+                                         intolerances: intolerances,
+                                         primaryCategory: primaryCategory,
+                                         secondaryCategory: secondaryCategory,
+                                         tags: tags,
+                                         time: 10,
+                                         difficulty: .easy,
+                                         preparation: preparation,
+                                         tips: tips,
+                                         source: source))
     }
 }

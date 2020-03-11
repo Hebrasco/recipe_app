@@ -25,8 +25,8 @@ struct SnackView: View {
             Category(name: "Herzhaftes",
                      image: "hearty",
                      destination: AnyView(HeartyView()))
-            ForEach(recipes.indices, id: \.self) { index in
-                RecipeCard(recipe: self.recipes[index])
+            ForEach(recipes, id: \.id) { recipe in
+                RecipeCard(recipe: recipe)
             }
         }
         .navigationBarTitle("Nachtisch/Snack")

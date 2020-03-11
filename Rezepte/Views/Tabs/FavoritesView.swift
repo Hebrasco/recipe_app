@@ -10,15 +10,15 @@ import SwiftUI
 
 struct FavoritesView: View {
     @ObservedObject var viewModel = FavoritesViewModel()
-    let recipes = [Recipes.recipes.randomElement(), Recipes.recipes.randomElement()]
+    let recipes: [Recipe] = [Recipes.recipes.randomElement()!, Recipes.recipes.randomElement()!]
     
     var body: some View {
         NavigationView {
             VStack {
                 SearchBar(text: $viewModel.searchText, placeholder: "Favoriten durchsuchen")
                 List {
-                    ForEach(recipes.indices, id: \.self) { index in
-                        RecipeCard(recipe: self.recipes[index]!)
+                    ForEach(recipes, id: \.id) { recipe in
+                        RecipeCard(recipe: recipe)
                     }
                 }
             }

@@ -44,12 +44,14 @@ class Recipes {
             let primaryCategory = parseCategory(result: jsonObject["Hauptkategorie"] as! String)
             let secondaryCategory = parseCategory(result: jsonObject["Unterkategorie 1"] as! String)
             
+            guard let id = jsonObject["Rezept-ID"] as? Int else { break }
             guard let title = jsonObject["Rezeptname"] as? String else { break }
             guard let time = jsonObject["Zubereitungszeit"] as? Int else { break }
             guard let tips = jsonObject["Tipps"] as? String else { break }
             guard let source = jsonObject["Link, Quelle"] as? String else { break }
             
-            let recipe = Recipe(image: image,
+            let recipe = Recipe(id: id,
+                                image: image,
                                 title: title,
                                 ingredients: ingredients,
                                 intolerances: intolerances!,

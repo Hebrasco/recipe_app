@@ -17,8 +17,8 @@ struct ShoppingListView: View {
     var body: some View {
         NavigationView{
             List {
-                ForEach(items.indices, id: \.self) { index in
-                    Item(item: self.items[index])
+                ForEach(items, id: \.id) { item in
+                    Item(item: item)
                 }.onDelete(perform: { indexSet in
                     print("gesture delete performed")
                 })
