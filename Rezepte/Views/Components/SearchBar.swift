@@ -15,8 +15,8 @@ struct SearchBar: View {
     let placeholder: String
     
     init(text: Binding<String>) {
-        self.placeholder = "Rezepte durchsuchen"
         self._text = text
+        self.placeholder = "Rezepte durchsuchen"
     }
     
     init(text: Binding<String>, placeholder: String) {
@@ -55,16 +55,16 @@ struct SearchBar: View {
 
             if showCancelButton {
                 Button("Abbrechen") {
-                        UIApplication.shared.endEditing(true)
-                        self.text = ""
-                        self.showCancelButton = false
+                    UIApplication.shared.endEditing(true)
+                    self.text = ""
+                    self.showCancelButton = false
                 }
                 .foregroundColor(.accentColor)
             }
         }
         .animation(.spring(response: 0.5, dampingFraction: 0.7, blendDuration: 1))
         .padding(.horizontal)
-        //                .navigationBarHidden(showCancelButton)//.animation(.default) // animation does not work properly
+//            .navigationBarHidden(showCancelButton)//.animation(.default) // animation does not work properly
     }
 }
 

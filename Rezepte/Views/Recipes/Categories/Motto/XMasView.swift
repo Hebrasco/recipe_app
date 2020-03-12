@@ -27,6 +27,7 @@ struct XMasView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Weihnachten")
     }
 }

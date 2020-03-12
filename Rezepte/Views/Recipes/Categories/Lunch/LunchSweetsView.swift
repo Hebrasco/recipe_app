@@ -27,6 +27,7 @@ struct LunchSweetsView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Süßes")
     }
 }

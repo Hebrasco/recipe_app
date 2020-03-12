@@ -27,6 +27,7 @@ struct SpreadView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Aufstriche")
     }
 }

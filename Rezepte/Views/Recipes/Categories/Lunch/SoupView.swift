@@ -27,6 +27,7 @@ struct SoupView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Suppen")
     }
 }

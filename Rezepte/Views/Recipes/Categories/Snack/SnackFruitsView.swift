@@ -27,6 +27,7 @@ struct SnackFruitsView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Obst")
     }
 }

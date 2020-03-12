@@ -27,6 +27,7 @@ struct FishView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Fisch")
     }
 }

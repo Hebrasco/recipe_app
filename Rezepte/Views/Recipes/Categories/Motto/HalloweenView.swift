@@ -27,6 +27,7 @@ struct HalloweenView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Halloween")
     }
 }

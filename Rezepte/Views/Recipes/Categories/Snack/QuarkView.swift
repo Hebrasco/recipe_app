@@ -27,6 +27,7 @@ struct QuarkView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Quark & Co")
     }
 }

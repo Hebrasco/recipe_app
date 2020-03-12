@@ -27,6 +27,7 @@ struct MeatView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Fleisch")
     }
 }

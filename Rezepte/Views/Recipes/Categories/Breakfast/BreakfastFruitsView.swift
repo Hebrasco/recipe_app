@@ -27,6 +27,7 @@ struct BreakfastFruitsView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Obst")
     }
 }

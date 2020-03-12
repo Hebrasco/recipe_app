@@ -27,6 +27,7 @@ struct VegetarianView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Vegetarisch")
     }
 }

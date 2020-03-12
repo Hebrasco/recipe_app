@@ -27,6 +27,7 @@ struct PastaView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Pasta")
     }
 }

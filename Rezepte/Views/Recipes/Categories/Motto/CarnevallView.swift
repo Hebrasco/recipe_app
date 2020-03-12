@@ -27,6 +27,7 @@ struct CarnevallView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Fasching")
     }
 }

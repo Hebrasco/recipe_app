@@ -27,6 +27,7 @@ struct HeartyView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Herzhaft")
     }
 }

@@ -27,6 +27,7 @@ struct EasterView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Ostern")
     }
 }

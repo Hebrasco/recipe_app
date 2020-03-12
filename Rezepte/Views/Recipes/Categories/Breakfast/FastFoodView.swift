@@ -27,6 +27,7 @@ struct FastFoodView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Schnelle Rezepte")
     }
 }

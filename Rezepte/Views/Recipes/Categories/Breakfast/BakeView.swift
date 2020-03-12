@@ -27,6 +27,7 @@ struct BakeView: View {
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Backen")
     }
 }
