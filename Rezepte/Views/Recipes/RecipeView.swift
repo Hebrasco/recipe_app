@@ -47,7 +47,7 @@ struct RecipeView: View {
             Spacer().frame(height: 25)
         }
         .navigationBarTitle("", displayMode: .inline)
-        .navigationBarItems(trailing: Favorite())
+        .navigationBarItems(trailing: Favorite(recipe))
     }
 }
 
@@ -80,10 +80,57 @@ struct RecipeTitle: View {
 }
 
 struct Favorite: View {
+    @Environment(\.managedObjectContext) var context
+    @FetchRequest(entity: FavoriteEntity.entity(), sortDescriptors: []) var favorites: FetchedResults<FavoriteEntity>
+    var recipe: Recipe
+    
+    init(_ recipe: Recipe) {
+        self.recipe = recipe
+    }
+    
     var body: some View {
-        Image(systemName: "heart.fill")
-            .foregroundColor(.red)
-            .font(.title)
+        if recipe.isFavorite {
+            return Button(action: {
+                self.deleteFromFavorites()
+            }, label: {
+                Image(systemName: "heart.fill")
+                    .foregroundColor(.red)
+                    .font(.title)
+                    .frame(width: 25, height: 25)
+            })
+        } else {
+            return Button(action: {
+                self.addToFavorites()
+            }, label: {
+                Image(systemName: "heart")
+                    .foregroundColor(.red)
+                    .font(.title)
+                    .frame(width: 25, height: 25)
+            })
+        }
+    }
+    
+    func addToFavorites() {
+        if !favorites.contains(where: {$0.recipe_id == recipe.id}) {
+            print("adding \(recipe.id) from Favorites")
+            
+            let favoriteEntity = FavoriteEntity(context: context)
+            favoriteEntity.recipe_id = Int32(recipe.id)
+            
+            try? context.save()
+            
+            Recipes.parse()
+            for recipe in Recipes.recipes.filter({$0.isFavorite}) {
+                print(recipe.id)
+            }
+        }
+    }
+    
+    func deleteFromFavorites() {
+        if favorites.contains(where: {$0.recipe_id == recipe.id}) {
+//            remove recipe from favorites
+            print("deleting \(recipe.id) from Favorites")
+        }
     }
 }
 
@@ -214,17 +261,18 @@ struct RecipeView_Previews: PreviewProvider {
         let source = "\"Das Kita-Kinder-Kochbuch\", S.22/23"
         
         return RecipeView(Recipe(id:id,
-                                         image: image,
-                                         title: title,
-                                         ingredients: ingredients,
-                                         intolerances: intolerances,
-                                         primaryCategory: primaryCategory,
-                                         secondaryCategory: secondaryCategory,
-                                         tags: tags,
-                                         time: 10,
-                                         difficulty: .easy,
-                                         preparation: preparation,
-                                         tips: tips,
-                                         source: source))
+                                 image: image,
+                                 title: title,
+                                 ingredients: ingredients,
+                                 intolerances: intolerances,
+                                 primaryCategory: primaryCategory,
+                                 secondaryCategory: secondaryCategory,
+                                 tags: tags,
+                                 time: 10,
+                                 difficulty: .easy,
+                                 preparation: preparation,
+                                 tips: tips,
+                                 source: source,
+                                 isFavorite: true))
     }
 }

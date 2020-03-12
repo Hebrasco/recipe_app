@@ -118,6 +118,7 @@ struct Recipe_Previews: PreviewProvider {
                                  difficulty: .easy,
                                  preparation: preparation,
                                  tips: tips,
-                                 source: source))
+                                 source: source,
+                                 isFavorite: true))
     }
 }

@@ -23,6 +23,7 @@ struct Recipe {
     let preparation: [String]
     let tips: String
     let source: String
+    var isFavorite: Bool
     
     enum Difficulty: String {
         case defaultCase = "round_placeholder"
