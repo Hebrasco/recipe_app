@@ -11,20 +11,18 @@ import SwiftUI
 struct RecipeView: View {
     @ObservedObject var viewModel: RecipeViewModel
     @State private var selectedTab: Int = 0
-    var recipe: Recipe
     
     init(_ recipe: Recipe) {
-        self.recipe = recipe
-        self.viewModel = RecipeViewModel(ingredients: recipe.ingredients)
+        self.viewModel = RecipeViewModel(recipe: recipe)
     }
     
     var body: some View {
         ScrollView {
-            RecipeImage(recipe: recipe)
+            RecipeImage(viewModel: viewModel)
             HStack {
-                RecipeTitle(recipe: recipe)
+                RecipeTitle(viewModel: viewModel)
                 Spacer()
-                PreparationTime(recipe: recipe)
+                PreparationTime(viewModel: viewModel)
             }
             .padding(.horizontal)
             Picker(selection: $selectedTab, label: Text("")) {
@@ -38,24 +36,24 @@ struct RecipeView: View {
             if selectedTab == 0 {
                 Ingredients(viewModel: viewModel)
             } else {
-                Preparation(recipe: recipe)
-                if recipe.tips != "" {
-                    Tips(recipe: recipe)
+                Preparation(viewModel: viewModel)
+                if viewModel.recipe.tips != "" {
+                    Tips(viewModel: viewModel)
                         .padding(.top, 25)
                 }
             }
             Spacer().frame(height: 25)
         }
         .navigationBarTitle("", displayMode: .inline)
-        .navigationBarItems(trailing: Favorite(recipe))
+        .navigationBarItems(trailing: Favorite(viewModel: viewModel))
     }
 }
 
 struct RecipeImage: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
-        Image(recipe.image)
+        Image(viewModel.recipe.image)
             .resizable()
             .scaledToFill()
             .frame(width: 250, height: 250)
@@ -66,32 +64,26 @@ struct RecipeImage: View {
 }
 
 struct RecipeTitle: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(recipe.title)
+            Text(viewModel.recipe.title)
                 .font(.headline)
                 .padding(.bottom, 5)
-            Text(recipe.primaryCategory)
+            Text(viewModel.recipe.primaryCategory)
                 .font(.footnote)
         }
     }
 }
 
 struct Favorite: View {
-    @Environment(\.managedObjectContext) var context
-    @FetchRequest(entity: FavoriteEntity.entity(), sortDescriptors: []) var favorites: FetchedResults<FavoriteEntity>
-    var recipe: Recipe
-    
-    init(_ recipe: Recipe) {
-        self.recipe = recipe
-    }
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
-        if recipe.isFavorite {
+        if viewModel.recipe.isFavorite {
             return Button(action: {
-                self.deleteFromFavorites()
+                self.viewModel.deleteFromFavorites()
             }, label: {
                 Image(systemName: "heart.fill")
                     .foregroundColor(.red)
@@ -100,7 +92,7 @@ struct Favorite: View {
             })
         } else {
             return Button(action: {
-                self.addToFavorites()
+                self.viewModel.addToFavorites()
             }, label: {
                 Image(systemName: "heart")
                     .foregroundColor(.red)
@@ -109,40 +101,17 @@ struct Favorite: View {
             })
         }
     }
-    
-    func addToFavorites() {
-        if !favorites.contains(where: {$0.recipe_id == recipe.id}) {
-            print("adding \(recipe.id) from Favorites")
-            
-            let favoriteEntity = FavoriteEntity(context: context)
-            favoriteEntity.recipe_id = Int32(recipe.id)
-            
-            try? context.save()
-            
-            Recipes.parse()
-            for recipe in Recipes.recipes.filter({$0.isFavorite}) {
-                print(recipe.id)
-            }
-        }
-    }
-    
-    func deleteFromFavorites() {
-        if favorites.contains(where: {$0.recipe_id == recipe.id}) {
-//            remove recipe from favorites
-            print("deleting \(recipe.id) from Favorites")
-        }
-    }
 }
 
 struct PreparationTime: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         Circle()
             .foregroundColor(.accentColor)
             .overlay(
                 VStack {
-                    Text("\(recipe.time)")
+                    Text("\(viewModel.recipe.time)")
                     Text("min")
                         .font(.footnote)
                 }
@@ -213,11 +182,11 @@ struct Ingredients: View {
 }
 
 struct Preparation: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(recipe.preparation, id: \.self) { preparation in
+            ForEach(viewModel.recipe.preparation, id: \.self) { preparation in
                 Group {
                     Text(preparation)
                     Divider()
@@ -229,14 +198,14 @@ struct Preparation: View {
 }
 
 struct Tips: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         HStack {
             Image(systemName: "info.circle")
                 .font(.title)
                 .padding(.trailing)
-            Text(recipe.tips)
+            Text(viewModel.recipe.tips)
         }
         .padding(.bottom)
         .padding(.horizontal, 25)

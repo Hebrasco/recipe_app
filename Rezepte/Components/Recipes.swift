@@ -211,7 +211,7 @@ class Recipes {
                 }
             }
         } catch {
-            print("Failed")
+            print("Error while getting favorites from CoreData")
         }
         return false
     }
