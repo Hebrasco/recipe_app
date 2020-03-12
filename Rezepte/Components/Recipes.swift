@@ -25,24 +25,24 @@ class Recipes {
             let jsonResult = try JSONSerialization.jsonObject(with: data, options: [])
             guard let jsonArray = jsonResult as? [[String: Any]] else { return }
             
-            self.recipes = parseRecipes(jsonArray: jsonArray)
+            self.recipes = parseRecipes(jsonArray)
         } catch {
             print("Error while parsing JSON data. File: (\(name).\(type))")
         }
     }
     
-    private static func parseRecipes(jsonArray: [[String: Any]]) -> [Recipe] {
+    private static func parseRecipes(_ jsonArray: [[String: Any]]) -> [Recipe] {
         var recipes: [Recipe] = []
         
         for jsonObject in jsonArray {
-            let ingredients = parseIngredients(result: jsonObject)
-            let intolerances = parseIntolerances(result: jsonObject["Inhalt"] as! String)
-            let difficulty = parseDifficulty(result: jsonObject["Schwierigkeitsgrad"] as! String)
-            let preparation = parsePreparation(result: jsonObject["Zubereitung"] as! String)
-            let image = parseImage(result: jsonObject["Bild"] as! String)
-            let tags = parseTags(result: jsonObject["tags"] as! String)
-            let primaryCategory = parseCategory(result: jsonObject["Hauptkategorie"] as! String)
-            let secondaryCategory = parseCategory(result: jsonObject["Unterkategorie 1"] as! String)
+            let ingredients = parseIngredients(jsonObject)
+            let intolerances = parseIntolerances(jsonObject["Inhalt"] as! String)
+            let difficulty = parseDifficulty(jsonObject["Schwierigkeitsgrad"] as! String)
+            let preparation = parsePreparation(jsonObject["Zubereitung"] as! String)
+            let image = parseImage(jsonObject["Bild"] as! String)
+            let tags = parseTags(jsonObject["tags"] as! String)
+            let primaryCategory = parseCategory(jsonObject["Hauptkategorie"] as! String)
+            let secondaryCategory = parseCategory(jsonObject["Unterkategorie 1"] as! String)
             
             guard let id = jsonObject["Rezept-ID"] as? Int else { break }
             guard let title = jsonObject["Rezeptname"] as? String else { break }
@@ -69,7 +69,7 @@ class Recipes {
         return recipes
     }
     
-    private static func parseImage(result: String) -> String {
+    private static func parseImage(_ result: String) -> String {
         if result == "" {
             return "placeholder"
         } else {
@@ -77,7 +77,7 @@ class Recipes {
         }
     }
     
-    private static func parseTags(result: String) -> String {
+    private static func parseTags(_ result: String) -> String {
         let tagsResult = result.split(separator: ",").map{String($0)}
         var tags = ""
         
@@ -88,7 +88,7 @@ class Recipes {
         return String(tags.dropLast(2))
     }
 
-    private static func parseCategory(result: String) -> String {
+    private static func parseCategory(_ result: String) -> String {
         let categoryResult = result.split(separator: ",").map{String($0)}
         var categories = ""
         
@@ -99,11 +99,11 @@ class Recipes {
         return String(categories.dropLast(2))
     }
     
-    private static func parsePreparation(result: String) -> [String] {
+    private static func parsePreparation(_ result: String) -> [String] {
         return result.split(separator: "\n").map{String($0)}
     }
     
-    private static func parseIngredients(result: [String: Any]) -> [Recipe.Ingredient] {
+    private static func parseIngredients(_ result: [String: Any]) -> [Recipe.Ingredient] {
         var ingredients: [Recipe.Ingredient] = []
         var count = 1
         
@@ -138,7 +138,7 @@ class Recipes {
         return ingredients
     }
     
-    private static func parseIntolerances(result: String) -> [Recipe.Intolerance]? {
+    private static func parseIntolerances(_ result: String) -> [Recipe.Intolerance]? {
         let intolerancesObjects = result.split(separator: ",")
         var intolerances: [Recipe.Intolerance] = []
         
@@ -179,7 +179,7 @@ class Recipes {
         return intolerances
     }
     
-    private static func parseDifficulty(result: String) -> Recipe.Difficulty {
+    private static func parseDifficulty(_ result: String) -> Recipe.Difficulty {
         switch result {
         case "einfach":
             return Recipe.Difficulty.easy

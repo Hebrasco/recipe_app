@@ -18,7 +18,7 @@ struct FavoritesView: View {
                 SearchBar(text: $viewModel.searchText, placeholder: "Favoriten durchsuchen")
                 List {
                     ForEach(recipes, id: \.id) { recipe in
-                        RecipeCard(recipe: recipe)
+                        RecipeCard(recipe)
                     }
                 }
             }

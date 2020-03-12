@@ -9,7 +9,6 @@
 import SwiftUI
 
 struct RecipesView: View {
-    @ObservedObject var viewModel = RecipesViewModel()
     let recipes = Recipes.recipes
     
     var body: some View {
@@ -28,7 +27,7 @@ struct RecipesView: View {
                          image: "motto",
                          destination: AnyView(MottoView()))
                 ForEach(recipes, id: \.id) { recipe in
-                    RecipeCard(recipe: recipe)
+                    RecipeCard(recipe)
                 }
             }
             .navigationBarTitle("Rezepte")

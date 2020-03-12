@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct RecipeView: View {
+    @ObservedObject var viewModel: RecipeViewModel
     @State private var selectedTab: Int = 0
     var recipe: Recipe
-    @ObservedObject var viewModel: RecipeViewModel
     
-    init(recipe: Recipe) {
+    init(_ recipe: Recipe) {
         self.recipe = recipe
         self.viewModel = RecipeViewModel(ingredients: recipe.ingredients)
     }
@@ -213,7 +213,7 @@ struct RecipeView_Previews: PreviewProvider {
         let tips = "Passt sehr gut zu warmen Pellkartoffeln oder Ofenkartoffeln. Als Dip oder Aufstrich verwendbar."
         let source = "\"Das Kita-Kinder-Kochbuch\", S.22/23"
         
-        return RecipeView(recipe: Recipe(id:id,
+        return RecipeView(Recipe(id:id,
                                          image: image,
                                          title: title,
                                          ingredients: ingredients,

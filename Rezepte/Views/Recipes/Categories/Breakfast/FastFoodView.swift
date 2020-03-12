@@ -23,10 +23,11 @@ struct FastFoodView: View {
                         return $0.title.contains(viewModel.searchText)
                     }
                 }, id: \.id) { recipe in
-                    RecipeCard(recipe: recipe)
+                    RecipeCard(recipe)
                 }
             }
         }
+        .resignKeyboardOnDragGesture()
         .navigationBarTitle("Schnelle Rezepte")
     }
 }
