@@ -12,9 +12,10 @@ import UIKit
 
 class RecipeViewModel: ObservableObject {
     @Published var amountCount = 1
-    var recipe: Recipe
+    @Published var recipe: Recipe
+    @Published var isFavorite: Bool
     var ingredients: [Recipe.Ingredient]
-    var favorites: [Int] = []
+    var favoriteObj: NSManagedObject?
 
     let context: NSManagedObjectContext
     
@@ -37,14 +38,16 @@ class RecipeViewModel: ObservableObject {
             return formattedIngredients
         }
         
-        func loadFavorites() {
+        func loadFavoriteObj() {
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteEntity")
             request.returnsObjectsAsFaults = false
             do {
                 let results = try context.fetch(request)
                 for result in results as! [NSManagedObject] {
                     let favoriteID = result.value(forKey: "recipe_id") as! Int
-                    favorites.append(favoriteID)
+                    if favoriteID == recipe.id {
+                        favoriteObj = result
+                    }
                 }
             } catch {
                 print("Error while getting favorites from CoreData")
@@ -54,11 +57,12 @@ class RecipeViewModel: ObservableObject {
         self.recipe = recipe
         self.ingredients = formatIngredients(recipe)
         
+        self.isFavorite = recipe.isFavorite
         
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         context = appDelegate.persistentContainer.viewContext
         
-        loadFavorites()
+        loadFavoriteObj()
     }
     
     func increaseAmount(by amount: Int) {
@@ -134,25 +138,26 @@ class RecipeViewModel: ObservableObject {
     }
     
     func addToFavorites() {
-            if !favorites.contains(where: {$0 == recipe.id}) {
-                print("adding \(recipe.id) from Favorites")
-                
-                let favoriteEntity = FavoriteEntity(context: context)
-                favoriteEntity.recipe_id = Int32(recipe.id)
-                
-                try? context.save()
-                
-                Recipes.parse()
-                for recipe in Recipes.recipes.filter({$0.isFavorite}) {
-                    print(recipe.id)
-                }
-            }
+        if !isFavorite {
+            print("adding \(recipe.id) from Favorites")
+            isFavorite = true
+            recipe.isFavorite = isFavorite
+            
+            let favoriteEntity = FavoriteEntity(context: context)
+            favoriteEntity.recipe_id = Int32(recipe.id)
+            
+            try? context.save()
         }
-        
-        func deleteFromFavorites() {
-            if favorites.contains(where: {$0 == recipe.id}) {
-    //            remove recipe from favorites
-                print("deleting \(recipe.id) from Favorites")
-            }
+    }
+    
+    func deleteFromFavorites() {
+        if isFavorite {
+            print("deleting \(recipe.id) from Favorites")
+            isFavorite = false
+            recipe.isFavorite = isFavorite
+            
+            context.delete(favoriteObj!)
+            try? context.save()
         }
+    }
 }

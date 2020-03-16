@@ -81,7 +81,7 @@ struct Favorite: View {
     @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
-        if viewModel.recipe.isFavorite {
+        if viewModel.isFavorite {
             return Button(action: {
                 self.viewModel.deleteFromFavorites()
             }, label: {

@@ -9,6 +9,7 @@
 import Foundation
 import CoreData
 import UIKit
+import SwiftUI
 
 class Recipes {
     static var recipes: [Recipe] = []
@@ -202,6 +203,7 @@ class Recipes {
         let context = appDelegate.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteEntity")
         request.returnsObjectsAsFaults = false
+        
         do {
             let favorites = try context.fetch(request)
             for favorite in favorites as! [NSManagedObject] {
