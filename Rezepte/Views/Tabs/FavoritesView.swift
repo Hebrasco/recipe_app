@@ -17,7 +17,12 @@ struct FavoritesView: View {
             VStack {
                 SearchBar(text: $viewModel.searchText, placeholder: "Favoriten durchsuchen")
                 List {
-                    ForEach(recipes.filter{$0.isFavorite}, id: \.id) { recipe in
+                    ForEach(recipes.filter{
+                        if viewModel.searchText.isEmpty {
+                            return $0.isFavorite
+                        } else {
+                            return $0.isFavorite && $0.title.contains(viewModel.searchText)
+                        }}, id: \.id) { recipe in
                         RecipeCard(recipe)
                     }
                 }
