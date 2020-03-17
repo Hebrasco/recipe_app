@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SpreadView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Aufstrich")}
+    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Aufstrich")}
     
     var body: some View {
         VStack {

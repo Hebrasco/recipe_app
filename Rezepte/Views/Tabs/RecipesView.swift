@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RecipesView: View {
-    let recipes = Recipes.recipes
+    let recipes = Recipes.getRecipes()
     
     var body: some View {
         NavigationView {

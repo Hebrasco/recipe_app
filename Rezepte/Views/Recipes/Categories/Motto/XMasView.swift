@@ -10,7 +10,7 @@ import SwiftUI
 
 struct XMasView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Weihnachten")}
+    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Weihnachten")}
     
     var body: some View {
         VStack {

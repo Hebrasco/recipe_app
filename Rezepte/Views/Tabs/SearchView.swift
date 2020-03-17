@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.recipes
+    let recipes = Recipes.getRecipes()
     
     var body: some View {
         NavigationView {

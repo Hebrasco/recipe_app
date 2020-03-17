@@ -12,26 +12,25 @@ import UIKit
 import SwiftUI
 
 class Recipes {
-    static var recipes: [Recipe] = []
-    
-    static func parse() {
+    static func getRecipes() -> [Recipe] {
         let name = "Recipes"
         let type = "json"
         
         guard let path = Bundle.main.path(forResource: name, ofType: type) else {
             print("File (\(name).\(type)) not found!")
-            return
+            return []
         }
             
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
             let jsonResult = try JSONSerialization.jsonObject(with: data, options: [])
-            guard let jsonArray = jsonResult as? [[String: Any]] else { return }
+            guard let jsonArray = jsonResult as? [[String: Any]] else { return [] }
             
-            self.recipes = parseRecipes(jsonArray)
+            return parseRecipes(jsonArray)
         } catch {
             print("Error while parsing JSON data. File: (\(name).\(type))")
         }
+        return []
     }
     
     private static func parseRecipes(_ jsonArray: [[String: Any]]) -> [Recipe] {

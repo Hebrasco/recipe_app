@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FavoritesView: View {
     @ObservedObject var viewModel = FavoritesViewModel()
-    var recipes = Recipes.recipes
+    @State var recipes: [Recipe] = []
     
     var body: some View {
         NavigationView {
@@ -27,6 +27,10 @@ struct FavoritesView: View {
                     }
                 }
             }
+            .onAppear(perform: {
+                print("appeared")
+                self.recipes = Recipes.getRecipes()
+            })
             .resignKeyboardOnDragGesture()
             .navigationBarTitle("Favoriten")
         }

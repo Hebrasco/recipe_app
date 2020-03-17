@@ -16,7 +16,6 @@ class RecipeViewModel: ObservableObject {
     @Published var isFavorite: Bool
     var ingredients: [Recipe.Ingredient]
     var favoriteObj: NSManagedObject?
-
     let context: NSManagedObjectContext
     
     init(recipe: Recipe) {
@@ -156,8 +155,10 @@ class RecipeViewModel: ObservableObject {
             isFavorite = false
             recipe.isFavorite = isFavorite
             
-            context.delete(favoriteObj!)
-            try? context.save()
+            if favoriteObj != nil {
+                context.delete(favoriteObj!)
+                try? context.save()
+            }
         }
     }
 }
