@@ -7,28 +7,30 @@
 //
 
 import Foundation
+import CoreData
+import UIKit
+import SwiftUI
 
 class Recipes {
-    static var recipes: [Recipe] = []
-    
-    static func parse() {
+    static func getRecipes() -> [Recipe] {
         let name = "Recipes"
         let type = "json"
         
         guard let path = Bundle.main.path(forResource: name, ofType: type) else {
             print("File (\(name).\(type)) not found!")
-            return
+            return []
         }
             
         do {
             let data = try Data(contentsOf: URL(fileURLWithPath: path), options: .mappedIfSafe)
             let jsonResult = try JSONSerialization.jsonObject(with: data, options: [])
-            guard let jsonArray = jsonResult as? [[String: Any]] else { return }
+            guard let jsonArray = jsonResult as? [[String: Any]] else { return [] }
             
-            self.recipes = parseRecipes(jsonArray)
+            return parseRecipes(jsonArray)
         } catch {
             print("Error while parsing JSON data. File: (\(name).\(type))")
         }
+        return []
     }
     
     private static func parseRecipes(_ jsonArray: [[String: Any]]) -> [Recipe] {
@@ -50,6 +52,8 @@ class Recipes {
             guard let tips = jsonObject["Tipps"] as? String else { break }
             guard let source = jsonObject["Link, Quelle"] as? String else { break }
             
+            let isFavorite = checkIsFavorite(withID: id)
+            
             let recipe = Recipe(id: id,
                                 image: image,
                                 title: title,
@@ -62,7 +66,8 @@ class Recipes {
                                 difficulty: difficulty,
                                 preparation: preparation,
                                 tips: tips,
-                                source: source)
+                                source: source,
+                                isFavorite: isFavorite)
             
             recipes.append(recipe)
         }
@@ -190,5 +195,25 @@ class Recipes {
         default:
             return Recipe.Difficulty.defaultCase
         }
+    }
+    
+    private static func checkIsFavorite(withID id: Int) -> Bool {
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        let context = appDelegate.persistentContainer.viewContext
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteEntity")
+        request.returnsObjectsAsFaults = false
+        
+        do {
+            let favorites = try context.fetch(request)
+            for favorite in favorites as! [NSManagedObject] {
+                let favoriteID = favorite.value(forKey: "recipe_id") as! Int
+                if Int(id) == favoriteID {
+                    return true
+                }
+            }
+        } catch {
+            print("Error while getting favorites from CoreData")
+        }
+        return false
     }
 }

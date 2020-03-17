@@ -11,20 +11,18 @@ import SwiftUI
 struct RecipeView: View {
     @ObservedObject var viewModel: RecipeViewModel
     @State private var selectedTab: Int = 0
-    var recipe: Recipe
     
     init(_ recipe: Recipe) {
-        self.recipe = recipe
-        self.viewModel = RecipeViewModel(ingredients: recipe.ingredients)
+        self.viewModel = RecipeViewModel(recipe: recipe)
     }
     
     var body: some View {
         ScrollView {
-            RecipeImage(recipe: recipe)
+            RecipeImage(viewModel: viewModel)
             HStack {
-                RecipeTitle(recipe: recipe)
+                RecipeTitle(viewModel: viewModel)
                 Spacer()
-                PreparationTime(recipe: recipe)
+                PreparationTime(viewModel: viewModel)
             }
             .padding(.horizontal)
             Picker(selection: $selectedTab, label: Text("")) {
@@ -38,24 +36,24 @@ struct RecipeView: View {
             if selectedTab == 0 {
                 Ingredients(viewModel: viewModel)
             } else {
-                Preparation(recipe: recipe)
-                if recipe.tips != "" {
-                    Tips(recipe: recipe)
+                Preparation(viewModel: viewModel)
+                if viewModel.recipe.tips != "" {
+                    Tips(viewModel: viewModel)
                         .padding(.top, 25)
                 }
             }
             Spacer().frame(height: 25)
         }
         .navigationBarTitle("", displayMode: .inline)
-        .navigationBarItems(trailing: Favorite())
+        .navigationBarItems(trailing: Favorite(viewModel: viewModel))
     }
 }
 
 struct RecipeImage: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
-        Image(recipe.image)
+        Image(viewModel.recipe.image)
             .resizable()
             .scaledToFill()
             .frame(width: 250, height: 250)
@@ -66,36 +64,54 @@ struct RecipeImage: View {
 }
 
 struct RecipeTitle: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(recipe.title)
+            Text(viewModel.recipe.title)
                 .font(.headline)
                 .padding(.bottom, 5)
-            Text(recipe.primaryCategory)
+            Text(viewModel.recipe.primaryCategory)
                 .font(.footnote)
         }
     }
 }
 
 struct Favorite: View {
+    @ObservedObject var viewModel: RecipeViewModel
+    
     var body: some View {
-        Image(systemName: "heart.fill")
-            .foregroundColor(.red)
-            .font(.title)
+        if viewModel.isFavorite {
+            return Button(action: {
+                self.viewModel.deleteFromFavorites()
+            }, label: {
+                Image(systemName: "heart.fill")
+                    .foregroundColor(.red)
+                    .font(.title)
+                    .frame(width: 25, height: 25)
+            })
+        } else {
+            return Button(action: {
+                self.viewModel.addToFavorites()
+            }, label: {
+                Image(systemName: "heart")
+                    .foregroundColor(.red)
+                    .font(.title)
+                    .frame(width: 25, height: 25)
+            })
+        }
     }
 }
 
 struct PreparationTime: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         Circle()
             .foregroundColor(.accentColor)
             .overlay(
                 VStack {
-                    Text("\(recipe.time)")
+                    Text("\(viewModel.recipe.time)")
                     Text("min")
                         .font(.footnote)
                 }
@@ -166,11 +182,11 @@ struct Ingredients: View {
 }
 
 struct Preparation: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         VStack(alignment: .leading) {
-            ForEach(recipe.preparation, id: \.self) { preparation in
+            ForEach(viewModel.recipe.preparation, id: \.self) { preparation in
                 Group {
                     Text(preparation)
                     Divider()
@@ -182,14 +198,14 @@ struct Preparation: View {
 }
 
 struct Tips: View {
-    let recipe: Recipe
+    @ObservedObject var viewModel: RecipeViewModel
     
     var body: some View {
         HStack {
             Image(systemName: "info.circle")
                 .font(.title)
                 .padding(.trailing)
-            Text(recipe.tips)
+            Text(viewModel.recipe.tips)
         }
         .padding(.bottom)
         .padding(.horizontal, 25)
@@ -214,17 +230,18 @@ struct RecipeView_Previews: PreviewProvider {
         let source = "\"Das Kita-Kinder-Kochbuch\", S.22/23"
         
         return RecipeView(Recipe(id:id,
-                                         image: image,
-                                         title: title,
-                                         ingredients: ingredients,
-                                         intolerances: intolerances,
-                                         primaryCategory: primaryCategory,
-                                         secondaryCategory: secondaryCategory,
-                                         tags: tags,
-                                         time: 10,
-                                         difficulty: .easy,
-                                         preparation: preparation,
-                                         tips: tips,
-                                         source: source))
+                                 image: image,
+                                 title: title,
+                                 ingredients: ingredients,
+                                 intolerances: intolerances,
+                                 primaryCategory: primaryCategory,
+                                 secondaryCategory: secondaryCategory,
+                                 tags: tags,
+                                 time: 10,
+                                 difficulty: .easy,
+                                 preparation: preparation,
+                                 tips: tips,
+                                 source: source,
+                                 isFavorite: true))
     }
 }

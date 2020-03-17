@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct LunchView: View {
-    let recipes = Recipes.recipes.filter {$0.primaryCategory.contains("Mittagessen")}
+    let recipes = Recipes.getRecipes().filter {$0.primaryCategory.contains("Mittagessen")}
     
     var body: some View {
         List {

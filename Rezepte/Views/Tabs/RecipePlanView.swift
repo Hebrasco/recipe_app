@@ -11,12 +11,12 @@ import SwiftUI
 struct RecipePlanView: View {
     @ObservedObject var viewModel = RecipePlanViewModel()
     @State private var selectedTab: Int = 0
-    let recipes = Recipes.recipes
-    let mondayRecipes = [Recipes.recipes[0], Recipes.recipes[1]]
-    let thuesdayRecipes = [Recipes.recipes[2], Recipes.recipes[3]]
-    let wednesdayRecipes = [Recipes.recipes[4], Recipes.recipes[5]]
-    let thursdayRecipes = [Recipes.recipes[6], Recipes.recipes[7]]
-    let fridayRecipes = [Recipes.recipes[8], Recipes.recipes[9]]
+    let recipes = Recipes.getRecipes()
+    let mondayRecipes = [Recipes.getRecipes()[0], Recipes.getRecipes()[1]]
+    let thuesdayRecipes = [Recipes.getRecipes()[2], Recipes.getRecipes()[3]]
+    let wednesdayRecipes = [Recipes.getRecipes()[4], Recipes.getRecipes()[5]]
+    let thursdayRecipes = [Recipes.getRecipes()[6], Recipes.getRecipes()[7]]
+    let fridayRecipes = [Recipes.getRecipes()[8], Recipes.getRecipes()[9]]
     
     var body: some View {
         NavigationView {
@@ -45,7 +45,7 @@ struct RecipePlanView: View {
 struct SectionHeader: View {
     @State private var showRecipeSheet = false
     @State private var searchText = ""
-    let recipes = Recipes.recipes
+    let recipes = Recipes.getRecipes()
     let name: String
     
     var body: some View {

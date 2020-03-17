@@ -10,7 +10,7 @@ import SwiftUI
 
 struct HeartyView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Herzhaft")}
+    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Herzhaft")}
     
     var body: some View {
         VStack {

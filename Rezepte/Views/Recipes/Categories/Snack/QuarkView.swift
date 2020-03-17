@@ -10,7 +10,7 @@ import SwiftUI
 
 struct QuarkView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Quark & Co")}
+    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Quark & Co")}
     
     var body: some View {
         VStack {

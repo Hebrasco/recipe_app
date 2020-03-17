@@ -10,7 +10,7 @@ import SwiftUI
 
 struct FastFoodView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Schnelle Rezepte")}
+    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Schnelle Rezepte")}
     
     var body: some View {
         VStack {

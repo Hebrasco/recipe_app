@@ -10,7 +10,7 @@ import SwiftUI
 
 struct PastaView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Pasta")}
+    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Pasta")}
     
     var body: some View {
         VStack {

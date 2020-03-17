@@ -7,27 +7,61 @@
 //
 
 import Foundation
+import CoreData
+import UIKit
 
 class RecipeViewModel: ObservableObject {
     @Published var amountCount = 1
+    @Published var recipe: Recipe
+    @Published var isFavorite: Bool
     var ingredients: [Recipe.Ingredient]
+    var favoriteObj: NSManagedObject?
+    let context: NSManagedObjectContext
     
-    init(ingredients: [Recipe.Ingredient]) {
-        var formattedIngredients = ingredients
-        
-        let formatter = NumberFormatter()
-        formatter.locale = Locale.current
-        formatter.numberStyle = .decimal
-        
-        var i = 0
-        for ingredient in ingredients {
-            let amount = Double(ingredient.amount) ?? 0.0
-            let formattedAmount = formatter.string(from: NSNumber(value: amount)) ?? "Error"
-            formattedIngredients[i].amount = formattedAmount
-            i += 1
+    init(recipe: Recipe) {
+        func formatIngredients(_ recipe: Recipe) -> [Recipe.Ingredient]{
+            var formattedIngredients = recipe.ingredients
+            
+            let formatter = NumberFormatter()
+            formatter.locale = Locale.current
+            formatter.numberStyle = .decimal
+            
+            var i = 0
+            for ingredient in recipe.ingredients {
+                let amount = Double(ingredient.amount) ?? 0.0
+                let formattedAmount = formatter.string(from: NSNumber(value: amount)) ?? "Error"
+                formattedIngredients[i].amount = formattedAmount
+                i += 1
+            }
+            
+            return formattedIngredients
         }
         
-        self.ingredients = formattedIngredients
+        func loadFavoriteObj() {
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FavoriteEntity")
+            request.returnsObjectsAsFaults = false
+            do {
+                let results = try context.fetch(request)
+                for result in results as! [NSManagedObject] {
+                    let favoriteID = result.value(forKey: "recipe_id") as! Int
+                    if favoriteID == recipe.id {
+                        favoriteObj = result
+                    }
+                }
+            } catch {
+                print("Error while getting favorites from CoreData")
+            }
+        }
+        
+        self.recipe = recipe
+        self.ingredients = formatIngredients(recipe)
+        
+        self.isFavorite = recipe.isFavorite
+        
+        let appDelegate = UIApplication.shared.delegate as! AppDelegate
+        context = appDelegate.persistentContainer.viewContext
+        
+        loadFavoriteObj()
     }
     
     func increaseAmount(by amount: Int) {
@@ -99,7 +133,32 @@ class RecipeViewModel: ObservableObject {
             
             ingredients[i].amount = newAmount
             i += 1
+        }
+    }
+    
+    func addToFavorites() {
+        if !isFavorite {
+            print("adding \(recipe.id) from Favorites")
+            isFavorite = true
+            recipe.isFavorite = isFavorite
             
+            let favoriteEntity = FavoriteEntity(context: context)
+            favoriteEntity.recipe_id = Int32(recipe.id)
+            
+            try? context.save()
+        }
+    }
+    
+    func deleteFromFavorites() {
+        if isFavorite {
+            print("deleting \(recipe.id) from Favorites")
+            isFavorite = false
+            recipe.isFavorite = isFavorite
+            
+            if favoriteObj != nil {
+                context.delete(favoriteObj!)
+                try? context.save()
+            }
         }
     }
 }

@@ -10,18 +10,27 @@ import SwiftUI
 
 struct FavoritesView: View {
     @ObservedObject var viewModel = FavoritesViewModel()
-    let recipes: [Recipe] = [Recipes.recipes.randomElement()!, Recipes.recipes.randomElement()!]
+    @State var recipes: [Recipe] = []
     
     var body: some View {
         NavigationView {
             VStack {
                 SearchBar(text: $viewModel.searchText, placeholder: "Favoriten durchsuchen")
                 List {
-                    ForEach(recipes, id: \.id) { recipe in
+                    ForEach(recipes.filter{
+                        if viewModel.searchText.isEmpty {
+                            return $0.isFavorite
+                        } else {
+                            return $0.isFavorite && $0.title.contains(viewModel.searchText)
+                        }}, id: \.id) { recipe in
                         RecipeCard(recipe)
                     }
                 }
             }
+            .onAppear(perform: {
+                print("appeared")
+                self.recipes = Recipes.getRecipes()
+            })
             .resignKeyboardOnDragGesture()
             .navigationBarTitle("Favoriten")
         }

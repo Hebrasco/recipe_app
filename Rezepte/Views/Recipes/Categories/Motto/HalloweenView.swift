@@ -10,7 +10,7 @@ import SwiftUI
 
 struct HalloweenView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.recipes.filter {$0.secondaryCategory.contains("Halloween")}
+    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Halloween")}
     
     var body: some View {
         VStack {
