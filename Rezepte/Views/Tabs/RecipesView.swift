@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct RecipesView: View {
-    let recipes = Recipes.getRecipes()
+    @State var recipes: [Recipe] = []
     
     var body: some View {
         NavigationView {
@@ -30,6 +30,9 @@ struct RecipesView: View {
                     RecipeCard(recipe)
                 }
             }
+            .onAppear(perform: {
+                self.recipes = Recipes.getRecipes()
+            })
             .navigationBarTitle("Rezepte")
         }
     }

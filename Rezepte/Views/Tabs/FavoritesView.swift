@@ -19,17 +19,16 @@ struct FavoritesView: View {
                 List {
                     ForEach(recipes.filter{
                         if viewModel.searchText.isEmpty {
-                            return $0.isFavorite
+                            return true
                         } else {
-                            return $0.isFavorite && $0.title.contains(viewModel.searchText)
+                            return $0.title.contains(viewModel.searchText)
                         }}, id: \.id) { recipe in
                         RecipeCard(recipe)
                     }
                 }
             }
             .onAppear(perform: {
-                print("appeared")
-                self.recipes = Recipes.getRecipes()
+                self.recipes = Recipes.getRecipes().filter{$0.isFavorite}
             })
             .resignKeyboardOnDragGesture()
             .navigationBarTitle("Favoriten")

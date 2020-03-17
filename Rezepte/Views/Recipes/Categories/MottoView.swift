@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct MottoView: View {
-    let recipes = Recipes.getRecipes().filter {$0.primaryCategory.contains("Mottos/Anlässe")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.primaryCategory.contains("Mottos/Anlässe")}
     
     var body: some View {
         List {
@@ -29,6 +29,9 @@ struct MottoView: View {
                 RecipeCard(recipe)
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.primaryCategory.contains("Mottos/Anlässe")}
+        })
         .navigationBarTitle("Motto/Anlässe")
     }
 }

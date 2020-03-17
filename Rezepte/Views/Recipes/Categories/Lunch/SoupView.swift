@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SoupView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Suppe")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Suppe")}
     
     var body: some View {
         VStack {
@@ -27,6 +27,9 @@ struct SoupView: View {
                 }
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Suppe")}
+        })
         .resignKeyboardOnDragGesture()
         .navigationBarTitle("Suppen")
     }

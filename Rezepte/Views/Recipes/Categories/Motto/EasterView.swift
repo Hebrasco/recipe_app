@@ -10,7 +10,7 @@ import SwiftUI
 
 struct EasterView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Ostern")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Ostern")}
     
     var body: some View {
         VStack {
@@ -27,6 +27,9 @@ struct EasterView: View {
                 }
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Ostern")}
+        })
         .resignKeyboardOnDragGesture()
         .navigationBarTitle("Ostern")
     }

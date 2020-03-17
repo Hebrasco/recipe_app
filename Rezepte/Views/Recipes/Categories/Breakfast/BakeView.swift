@@ -10,7 +10,7 @@ import SwiftUI
 
 struct BakeView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Backen")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Backen")}
     
     var body: some View {
         VStack {
@@ -27,6 +27,9 @@ struct BakeView: View {
                 }
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Backen")}
+        })
         .resignKeyboardOnDragGesture()
         .navigationBarTitle("Backen")
     }
