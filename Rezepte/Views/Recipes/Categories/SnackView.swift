@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct SnackView: View {
-    let recipes = Recipes.getRecipes().filter {$0.primaryCategory.contains("Nachtisch/Snack")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.primaryCategory.contains("Nachtisch/Snack")}
     
     var body: some View {
         List {
@@ -29,6 +29,9 @@ struct SnackView: View {
                 RecipeCard(recipe)
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.primaryCategory.contains("Nachtisch/Snack")}
+        })
         .navigationBarTitle("Nachtisch/Snack")
     }
 }

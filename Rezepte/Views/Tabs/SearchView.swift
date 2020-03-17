@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.getRecipes()
+    @State var recipes: [Recipe] = []
     
     var body: some View {
         NavigationView {
@@ -28,6 +28,9 @@ struct SearchView: View {
                     }
                 }
             }
+            .onAppear(perform: {
+                self.recipes = Recipes.getRecipes()
+            })
             .resignKeyboardOnDragGesture()
             .navigationBarTitle("Suche")
         }

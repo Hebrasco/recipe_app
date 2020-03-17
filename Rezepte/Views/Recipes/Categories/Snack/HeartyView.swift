@@ -10,7 +10,7 @@ import SwiftUI
 
 struct HeartyView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Herzhaft")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Herzhaft")}
     
     var body: some View {
         VStack {
@@ -27,6 +27,9 @@ struct HeartyView: View {
                 }
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Herzhaft")}
+        })
         .resignKeyboardOnDragGesture()
         .navigationBarTitle("Herzhaft")
     }

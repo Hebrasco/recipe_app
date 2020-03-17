@@ -10,7 +10,7 @@ import SwiftUI
 
 struct CarnevallView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Fasching")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Fasching")}
     
     var body: some View {
         VStack {
@@ -27,6 +27,9 @@ struct CarnevallView: View {
                 }
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Fasching")}
+        })
         .resignKeyboardOnDragGesture()
         .navigationBarTitle("Fasching")
     }

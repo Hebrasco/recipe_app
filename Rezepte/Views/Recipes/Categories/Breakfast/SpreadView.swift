@@ -10,7 +10,7 @@ import SwiftUI
 
 struct SpreadView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Aufstrich")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Aufstrich")}
     
     var body: some View {
         VStack {
@@ -27,6 +27,9 @@ struct SpreadView: View {
                 }
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Aufstrich")}
+        })
         .resignKeyboardOnDragGesture()
         .navigationBarTitle("Aufstriche")
     }

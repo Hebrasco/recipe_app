@@ -10,7 +10,7 @@ import SwiftUI
 
 struct XMasView: View {
     @ObservedObject var viewModel = SearchViewModel()
-    let recipes = Recipes.getRecipes().filter {$0.secondaryCategory.contains("Weihnachten")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Weihnachten")}
     
     var body: some View {
         VStack {
@@ -27,6 +27,9 @@ struct XMasView: View {
                 }
             }
         }
+        .onAppear(perform: {
+            self.recipes = Recipes.getRecipes().filter{$0.secondaryCategory.contains("Weihnachten")}
+        })
         .resignKeyboardOnDragGesture()
         .navigationBarTitle("Weihnachten")
     }

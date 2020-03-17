@@ -138,7 +138,6 @@ class RecipeViewModel: ObservableObject {
     
     func addToFavorites() {
         if !isFavorite {
-            print("adding \(recipe.id) from Favorites")
             isFavorite = true
             recipe.isFavorite = isFavorite
             
@@ -151,7 +150,6 @@ class RecipeViewModel: ObservableObject {
     
     func deleteFromFavorites() {
         if isFavorite {
-            print("deleting \(recipe.id) from Favorites")
             isFavorite = false
             recipe.isFavorite = isFavorite
             

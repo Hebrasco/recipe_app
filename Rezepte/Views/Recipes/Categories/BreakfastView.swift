@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct BreakfastView: View {
-    let recipes = Recipes.getRecipes().filter {$0.primaryCategory.contains("Frühstück")}
+    @State var recipes: [Recipe] = Recipes.getRecipes().filter{$0.primaryCategory.contains("Frühstück")}
 
     var body: some View {
         List {
