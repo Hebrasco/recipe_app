@@ -10,14 +10,11 @@ import SwiftUI
 
 struct ShoppingListView: View {
     @ObservedObject var viewModel = ShoppingListViewModel()
-    var items = [ShoppingIngredient(name: "Zucker", amount: "100", unit: "g"),
-    ShoppingIngredient(name: "Salz", amount: "10", unit: "g"),
-    ShoppingIngredient(name: "Salat", amount: "2", unit: "", isChecked: true)]
     
     var body: some View {
         NavigationView{
             List {
-                ForEach(items, id: \.id) { item in
+                ForEach(viewModel.getItems(), id: \.id) { item in
                     Item(item: item)
                 }.onDelete(perform: { indexSet in
                     print("gesture delete performed")

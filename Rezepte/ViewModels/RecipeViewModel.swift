@@ -159,4 +159,17 @@ class RecipeViewModel: ObservableObject {
             }
         }
     }
+    
+    func addToShoppingList() {
+        for ingredient in ingredients {
+            let shoppingListEntity = ShoppingListEntity(context: context)
+            shoppingListEntity.id = UUID()
+            shoppingListEntity.type = ingredient.type
+            shoppingListEntity.amount = ingredient.amount
+            shoppingListEntity.unit = ingredient.unit
+            shoppingListEntity.isChecked = false
+            
+            try? context.save()
+        }
+    }
 }
