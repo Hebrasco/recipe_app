@@ -14,7 +14,7 @@ struct ShoppingListView: View {
     var body: some View {
         NavigationView{
             List {
-                ForEach(viewModel.getItems(), id: \.id) { item in
+                ForEach(viewModel.items, id: \.id) { item in
                     Item(item: item)
                 }.onDelete(perform: { indexSet in
                     print("gesture delete performed")
@@ -28,6 +28,9 @@ struct ShoppingListView: View {
                     Image(systemName: "trash")
                 }))
         }
+        .onAppear(perform: {
+            self.viewModel.loadItems()
+        })
     }
 }
 

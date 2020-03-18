@@ -11,8 +11,9 @@ import UIKit
 import CoreData
 
 class ShoppingListViewModel: ObservableObject {
-    func getItems() -> [ShoppingIngredient]{
-        var shoppingList: [ShoppingIngredient] = []
+    @Published var items: [ShoppingIngredient] = []
+    
+    func loadItems() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         let context = appDelegate.persistentContainer.viewContext
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ShoppingListEntity")
@@ -27,11 +28,14 @@ class ShoppingListViewModel: ObservableObject {
                 let unit = item.value(forKey: "unit") as! String
                 let isChecked = item.value(forKey: "isChecked") as! Bool
                 
-                shoppingList.append(ShoppingIngredient(id: id, name: type, amount: amount, unit: unit, isChecked: isChecked))
+                self.items.append(ShoppingIngredient(id: id,
+                                                       name: type,
+                                                       amount: amount,
+                                                       unit: unit,
+                                                       isChecked: isChecked))
             }
         } catch {
             print("Error while getting shoppingList from CoreData")
         }
-        return shoppingList
     }
 }
