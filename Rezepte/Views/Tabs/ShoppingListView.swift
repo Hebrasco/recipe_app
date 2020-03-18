@@ -23,7 +23,7 @@ struct ShoppingListView: View {
             .navigationBarTitle("Einkaufsliste")
             .navigationBarItems(trailing:
                 Button(action: {
-                    print("Delete item list pressed")
+                    self.viewModel.deleteAllItems()
                 }, label: {
                     Image(systemName: "trash")
                 }))
