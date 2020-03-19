@@ -16,6 +16,9 @@ struct ShoppingListView: View {
             List {
                 ForEach(viewModel.items, id: \.id) { item in
                     Item(item: item)
+                        .onTapGesture {
+                            self.viewModel.checkItem(item)
+                        }
                 }.onDelete(perform: { indexSet in
                     print("gesture delete performed")
                 })
