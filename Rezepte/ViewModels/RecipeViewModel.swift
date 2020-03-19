@@ -162,14 +162,43 @@ class RecipeViewModel: ObservableObject {
     
     func addToShoppingList() {
         for ingredient in ingredients {
-            let shoppingListEntity = ShoppingListEntity(context: context)
-            shoppingListEntity.id = UUID()
-            shoppingListEntity.type = ingredient.type
-            shoppingListEntity.amount = ingredient.amount
-            shoppingListEntity.unit = ingredient.unit
-            shoppingListEntity.isChecked = false
+            
+            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ShoppingListEntity")
+            request.returnsObjectsAsFaults = false
+            
+            do {
+                var hasUpdatedFlag = false
+                let items = try context.fetch(request)
+                
+                for item in items as! [NSManagedObject] {
+                    let type = item.value(forKey: "type") as! String
+                    let unit = item.value(forKey: "unit") as! String
+                    
+                    if type == ingredient.type && unit == ingredient.unit {
+                        let amount = item.value(forKey: "amount") as! String
+                        let newAmount = (Int(amount) ?? 0) + (Int(ingredient.amount) ?? 0)
+
+                        item.setValue(String(newAmount), forKey: "amount")
+                        hasUpdatedFlag = true
+                    }
+                }
+                if !hasUpdatedFlag {
+                    addItemToCoreData(ingredient)
+                }
+            } catch {
+                print("Error while getting shoppingList from CoreData")
+            }
             
             try? context.save()
         }
+    }
+    
+    private func addItemToCoreData(_ ingredient: Recipe.Ingredient) {
+        let shoppingListEntity = ShoppingListEntity(context: context)
+        shoppingListEntity.id = UUID()
+        shoppingListEntity.type = ingredient.type
+        shoppingListEntity.amount = ingredient.amount
+        shoppingListEntity.unit = ingredient.unit
+        shoppingListEntity.isChecked = false
     }
 }

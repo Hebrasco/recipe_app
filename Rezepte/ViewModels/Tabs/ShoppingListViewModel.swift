@@ -24,13 +24,13 @@ class ShoppingListViewModel: ObservableObject {
     func loadItems() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ShoppingListEntity")
         request.returnsObjectsAsFaults = false
+
+        self.items = []
         
         do {
             let items = try context.fetch(request)
             
-            if items.count == 0 {
-                self.items = []
-            } else {
+            if items.count > 0 {
                 for item in items as! [NSManagedObject] {
                     let id = item.value(forKey: "id") as! UUID
                     let type = item.value(forKey: "type") as! String
@@ -64,6 +64,6 @@ class ShoppingListViewModel: ObservableObject {
         } catch {
             print("Error while getting shoppingList from CoreData")
         }
-        loadItems()
+        self.items = []
     }
 }
