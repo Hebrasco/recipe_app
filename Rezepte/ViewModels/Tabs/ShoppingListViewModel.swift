@@ -67,6 +67,34 @@ class ShoppingListViewModel: ObservableObject {
         self.items = []
     }
     
+    func deleteItem(_ itemIndexSet: IndexSet) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ShoppingListEntity")
+        request.returnsObjectsAsFaults = false
+        
+        do {
+            let items = try context.fetch(request)
+            var index: Int = 0
+            
+            for i in itemIndexSet {
+                index = i
+            }
+            
+            for item in items as! [NSManagedObject] {
+                let type = item.value(forKey: "id") as! UUID
+                
+                if type == self.items[index].id {
+                    context.delete(item)
+                }
+            }
+        } catch {
+            print("Error while getting shoppingList from CoreData")
+        }
+        
+        try? context.save()
+        
+        loadItems()
+    }
+    
     func checkItem(_ ingredient: ShoppingIngredient) {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "ShoppingListEntity")
         request.returnsObjectsAsFaults = false

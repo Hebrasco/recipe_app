@@ -19,8 +19,9 @@ struct ShoppingListView: View {
                         .onTapGesture {
                             self.viewModel.checkItem(item)
                         }
-                }.onDelete(perform: { indexSet in
-                    print("gesture delete performed")
+                }
+                .onDelete(perform: { index in
+                    self.viewModel.deleteItem(index)
                 })
             }
             .navigationBarTitle("Einkaufsliste")
