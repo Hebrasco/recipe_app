@@ -10,27 +10,31 @@ import SwiftUI
 
 struct ShoppingListView: View {
     @ObservedObject var viewModel = ShoppingListViewModel()
-    var items = [ShoppingIngredient(name: "Zucker", amount: "100", unit: "g"),
-    ShoppingIngredient(name: "Salz", amount: "10", unit: "g"),
-    ShoppingIngredient(name: "Salat", amount: "2", unit: "", isChecked: true)]
     
     var body: some View {
         NavigationView{
             List {
-                ForEach(items, id: \.id) { item in
+                ForEach(viewModel.items, id: \.id) { item in
                     Item(item: item)
-                }.onDelete(perform: { indexSet in
-                    print("gesture delete performed")
+                        .onTapGesture {
+                            self.viewModel.checkItem(item)
+                        }
+                }
+                .onDelete(perform: { index in
+                    self.viewModel.deleteItem(index)
                 })
             }
             .navigationBarTitle("Einkaufsliste")
             .navigationBarItems(trailing:
                 Button(action: {
-                    print("Delete item list pressed")
+                    self.viewModel.deleteAllItems()
                 }, label: {
                     Image(systemName: "trash")
                 }))
         }
+        .onAppear(perform: {
+            self.viewModel.loadItems()
+        })
     }
 }
 

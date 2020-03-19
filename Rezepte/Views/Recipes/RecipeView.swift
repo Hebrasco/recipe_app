@@ -173,7 +173,7 @@ struct Ingredients: View {
             }
             Spacer().frame(height: 20)
             Button(action: {
-//                Add 1 from amount
+                self.viewModel.addToShoppingList()
             }, label: {
                 Text("Zur Einkaufsliste hinzufügen")
             })
