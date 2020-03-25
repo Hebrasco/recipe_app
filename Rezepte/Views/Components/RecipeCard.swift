@@ -10,19 +10,51 @@ import SwiftUI
 
 struct RecipeCard: View {
     let recipe: Recipe
+    let type: PressAction
+    
+    init(_ recipe: Recipe, with type: PressAction) {
+        self.recipe = recipe
+        self.type = type
+    }
+    
+    var body: some View {
+        VStack {
+            if type == .Navigation {
+                NavigationLink(destination: RecipeView(recipe)) {
+                    Card(recipe)
+                }
+            } else {
+                Button(action: {
+                    print("Add to weekly plan")
+                }, label: {
+                    Card(recipe)
+                })
+            }
+        }
+    }
+    
+    enum PressAction {
+        case Navigation
+        case Button
+    }
+}
+
+struct Card: View {
+    let recipe: Recipe
     
     init(_ recipe: Recipe) {
         self.recipe = recipe
     }
     
     var body: some View {
-        NavigationLink(destination: RecipeView(recipe)) {
-            VStack(alignment: .leading, spacing: 20) {
-                Image(recipe.image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 150)
-                    .clipped()
+        VStack(alignment: .leading, spacing: 20) {
+            Image(recipe.image)
+                .renderingMode(.original)
+                .resizable()
+                .scaledToFill()
+                .frame(height: 150)
+                .clipped()
+            VStack(alignment: .leading) {
                 HStack {
                     Text(recipe.title)
                         .font(.headline)
@@ -61,12 +93,13 @@ struct RecipeCard: View {
                 .padding(.horizontal)
                 Spacer()
             }
-            .frame(height: 300)
-            .background(Color.init(UIColor.systemBackground))
-            .cornerRadius(10)
-            .padding(.vertical)
-            .shadow(radius: 10)
+            .frame(height: 150)
         }
+        .frame(height: 300)
+        .background(Color.init(UIColor.systemBackground))
+        .cornerRadius(10)
+        .padding(.vertical)
+        .shadow(radius: 10)
     }
 }
 
@@ -119,6 +152,6 @@ struct Recipe_Previews: PreviewProvider {
                                  preparation: preparation,
                                  tips: tips,
                                  source: source,
-                                 isFavorite: true))
+                                 isFavorite: true), with: .Navigation)
     }
 }

@@ -67,7 +67,7 @@ struct SectionHeader: View {
                             .padding(.bottom, 8)
                         List {
                             ForEach(self.recipes, id: \.id) { recipe in
-                                RecipeCard(recipe)
+                                RecipeCard(recipe, with: .Button)
 //                                Card are grayed out because of the navigation links privided. Should be removed in sheet.
                             }
                         }
