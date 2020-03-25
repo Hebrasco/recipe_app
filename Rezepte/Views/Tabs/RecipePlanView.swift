@@ -18,30 +18,35 @@ struct RecipePlanView: View {
                 Section(header: SectionHeader(name: "Montag",
                                               weekday: .monday,
                                               viewModel: viewModel)) {
-                    RecipesOfWeekDay(recipes: viewModel.mondayRecipes)
+                    RecipesOfWeekDay(.monday, viewModel: viewModel)
                 }
                 Section(header: SectionHeader(name: "Dienstag",
                                               weekday:  .thuesday,
                                               viewModel: viewModel)) {
-                    RecipesOfWeekDay(recipes: viewModel.thuesdayRecipes)
+                    RecipesOfWeekDay(.thuesday, viewModel: viewModel)
                 }
                 Section(header: SectionHeader(name: "Mittwoch",
                                               weekday:  .wednesday,
                                               viewModel: viewModel)) {
-                    RecipesOfWeekDay(recipes: viewModel.wednesdayRecipes)
+                    RecipesOfWeekDay(.wednesday, viewModel: viewModel)
                 }
                 Section(header: SectionHeader(name: "Donnerstag",
                                               weekday:  .thursday,
                                               viewModel: viewModel)) {
-                    RecipesOfWeekDay(recipes: viewModel.thursdayRecipes)
+                    RecipesOfWeekDay(.thursday, viewModel: viewModel)
                 }
                 Section(header: SectionHeader(name: "Freitag",
                                               weekday:  .friday,
                                               viewModel: viewModel)) {
-                    RecipesOfWeekDay(recipes: viewModel.fridayRecipes)
+                    RecipesOfWeekDay(.friday, viewModel: viewModel)
                 }
             }
             .navigationBarTitle("Wochenplan")
+            .navigationBarItems(trailing: Button(action: {
+                self.viewModel.removeAllRecipes()
+            }, label: {
+                Image(systemName: "trash")
+            }))
         }
     }
 }
@@ -88,7 +93,35 @@ struct SectionHeader: View {
 }
 
 struct RecipesOfWeekDay: View {
+    let weekday: RecipeCardViewModel.WeekDays
+    let viewModel: RecipePlanViewModel
     let recipes: [Recipe]
+    
+    init(_ weekday: RecipeCardViewModel.WeekDays, viewModel: RecipePlanViewModel) {
+        self.weekday = weekday
+        self.viewModel = viewModel
+        
+        switch weekday {
+        case .monday:
+            recipes = viewModel.mondayRecipes
+            break
+        case .thuesday:
+            recipes = viewModel.thuesdayRecipes
+            break
+        case .wednesday:
+            recipes = viewModel.wednesdayRecipes
+            break
+        case .thursday:
+            recipes = viewModel.thursdayRecipes
+            break
+        case .friday:
+            recipes = viewModel.fridayRecipes
+            break
+        default:
+            recipes = []
+            break
+        }
+    }
     
     var body: some View {
         ForEach(recipes, id: \.id) { recipe in
@@ -104,7 +137,7 @@ struct RecipesOfWeekDay: View {
             .frame(height: 50)
         }
         .onDelete(perform: { indexSet in
-            print("gesture delete performed on recipe")
+            self.viewModel.removeRecipe(with: indexSet, from: self.weekday)
         })
         
     }

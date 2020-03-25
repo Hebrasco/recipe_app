@@ -16,6 +16,11 @@ class RecipePlanViewModel: ObservableObject {
     @Published var wednesdayRecipes: [Recipe] = []
     @Published var thursdayRecipes: [Recipe] = []
     @Published var fridayRecipes: [Recipe] = []
+    var mondayRecipesManagedObj: [NSManagedObject] = []
+    var thuesdayRecipesManagedObj: [NSManagedObject] = []
+    var wednesdayRecipesManagedObj: [NSManagedObject] = []
+    var thursdayRecipesManagedObj: [NSManagedObject] = []
+    var fridayRecipesManagedObj: [NSManagedObject] = []
     let context: NSManagedObjectContext
     
     init() {
@@ -37,6 +42,12 @@ class RecipePlanViewModel: ObservableObject {
         self.thursdayRecipes = []
         self.fridayRecipes = []
         
+        self.mondayRecipesManagedObj = []
+        self.thuesdayRecipesManagedObj = []
+        self.wednesdayRecipesManagedObj = []
+        self.thursdayRecipesManagedObj = []
+        self.fridayRecipesManagedObj = []
+        
         do {
             let items = try context.fetch(request)
             
@@ -46,21 +57,109 @@ class RecipePlanViewModel: ObservableObject {
                     let weekday = item.value(forKey: "weekday") as! Int
                     let recipe = recipes.filter{$0.id == id}
                     
-                    if weekday == 0 {
+                    switch weekday {
+                    case 0:
                         mondayRecipes.append(recipe[0])
-                    } else if weekday == 1 {
+                        mondayRecipesManagedObj.append(item)
+                        break
+                    case 1:
                         thuesdayRecipes.append(recipe[0])
-                    } else if weekday == 2 {
+                        thuesdayRecipesManagedObj.append(item)
+                        break
+                    case 2:
                         wednesdayRecipes.append(recipe[0])
-                    } else if weekday == 3 {
+                        wednesdayRecipesManagedObj.append(item)
+                        break
+                    case 3:
                         thursdayRecipes.append(recipe[0])
-                    } else if weekday == 4 {
+                        thursdayRecipesManagedObj.append(item)
+                        break
+                    case 4:
                         fridayRecipes.append(recipe[0])
+                        fridayRecipesManagedObj.append(item)
+                        break
+                    default:
+                        break
                     }
                 }
             }
         } catch {
-            print("Error while getting shoppingList from CoreData")
+            print("Error while getting reciple plan from CoreData")
         }
+    }
+    
+    func removeRecipe(with indexSet: IndexSet, from weekday: RecipeCardViewModel.WeekDays) {
+        switch weekday {
+        case .monday:
+            for index in indexSet {
+                mondayRecipes.remove(at: index)
+                context.delete(mondayRecipesManagedObj[index])
+            }
+            break
+        case .thuesday:
+            for index in indexSet {
+                thuesdayRecipes.remove(at: index)
+                context.delete(thuesdayRecipesManagedObj[index])
+            }
+            break
+        case .wednesday:
+            for index in indexSet {
+                wednesdayRecipes.remove(at: index)
+                context.delete(wednesdayRecipesManagedObj[index])
+            }
+            break
+        case .thursday:
+            for index in indexSet {
+                thursdayRecipes.remove(at: index)
+                context.delete(thursdayRecipesManagedObj[index])
+            }
+            break
+        case .friday:
+            for index in indexSet {
+                fridayRecipes.remove(at: index)
+                context.delete(fridayRecipesManagedObj[index])
+            }
+            break
+        default:
+            break
+        }
+
+        try? context.save()
+    }
+    
+    func removeAllRecipes() {
+        for managedObj in mondayRecipesManagedObj {
+            context.delete(managedObj)
+        }
+        
+        for managedObj in thuesdayRecipesManagedObj {
+            context.delete(managedObj)
+        }
+        
+        for managedObj in wednesdayRecipesManagedObj {
+            context.delete(managedObj)
+        }
+        
+        for managedObj in thursdayRecipesManagedObj {
+            context.delete(managedObj)
+        }
+        
+        for managedObj in fridayRecipesManagedObj {
+            context.delete(managedObj)
+        }
+        
+        try? context.save()
+        
+        self.mondayRecipes = []
+        self.thuesdayRecipes = []
+        self.wednesdayRecipes = []
+        self.thursdayRecipes = []
+        self.fridayRecipes = []
+        
+        self.mondayRecipesManagedObj = []
+        self.thuesdayRecipesManagedObj = []
+        self.wednesdayRecipesManagedObj = []
+        self.thursdayRecipesManagedObj = []
+        self.fridayRecipesManagedObj = []
     }
 }
