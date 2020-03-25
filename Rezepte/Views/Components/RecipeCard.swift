@@ -9,12 +9,21 @@
 import SwiftUI
 
 struct RecipeCard: View {
+    let viewModel = RecipeCardViewModel()
     let recipe: Recipe
-    let type: PressAction
+    let type: RecipeCardViewModel.PressAction
+    let weekday: RecipeCardViewModel.WeekDays
     
-    init(_ recipe: Recipe, with type: PressAction) {
+    init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction) {
         self.recipe = recipe
         self.type = type
+        self.weekday = .monday
+    }
+    
+    init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction, onWeekDay weekday: RecipeCardViewModel.WeekDays) {
+        self.recipe = recipe
+        self.type = type
+        self.weekday = weekday
     }
     
     var body: some View {
@@ -25,17 +34,12 @@ struct RecipeCard: View {
                 }
             } else {
                 Button(action: {
-                    print("Add to weekly plan")
+                    self.viewModel.addRecipeToWeeklyPlan(self.recipe, weekday: self.weekday)
                 }, label: {
                     Card(recipe)
                 })
             }
         }
-    }
-    
-    enum PressAction {
-        case Navigation
-        case Button
     }
 }
 

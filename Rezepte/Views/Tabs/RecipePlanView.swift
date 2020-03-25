@@ -9,35 +9,51 @@
 import SwiftUI
 
 struct RecipePlanView: View {
-    @ObservedObject var viewModel = RecipePlanViewModel()
+    @ObservedObject var viewModel: RecipePlanViewModel
     @State private var selectedTab: Int = 0
-    let recipes = Recipes.getRecipes()
-    let mondayRecipes = [Recipes.getRecipes()[0], Recipes.getRecipes()[1]]
-    let thuesdayRecipes = [Recipes.getRecipes()[2], Recipes.getRecipes()[3]]
-    let wednesdayRecipes = [Recipes.getRecipes()[4], Recipes.getRecipes()[5]]
-    let thursdayRecipes = [Recipes.getRecipes()[6], Recipes.getRecipes()[7]]
-    let fridayRecipes = [Recipes.getRecipes()[8], Recipes.getRecipes()[9]]
+    @State var mondayRecipes: [Recipe] = []
+    @State var thuesdayRecipes: [Recipe] = []
+    @State var wednesdayRecipes: [Recipe] = []
+    @State var thursdayRecipes: [Recipe] = []
+    @State var fridayRecipes: [Recipe] = []
+    
+    init() {
+        self.viewModel = RecipePlanViewModel()
+        self.mondayRecipes = viewModel.mondayRecipes
+        self.thuesdayRecipes = viewModel.thuesdayRecipes
+        self.wednesdayRecipes = viewModel.wednesdayRecipes
+        self.thursdayRecipes = viewModel.thuesdayRecipes
+        self.fridayRecipes = viewModel.fridayRecipes
+    }
     
     var body: some View {
         NavigationView {
             List {
-                Section(header: SectionHeader(name: "Montag")) {
+                Section(header: SectionHeader(name: "Montag", weekday: .monday)) {
                     RecipesOfWeekDay(recipes: mondayRecipes)
                 }
-                Section(header: SectionHeader(name: "Dienstag")) {
+                Section(header: SectionHeader(name: "Dienstag", weekday:  .thuesday)) {
                     RecipesOfWeekDay(recipes: thuesdayRecipes)
                 }
-                Section(header: SectionHeader(name: "Mittwoch")) {
+                Section(header: SectionHeader(name: "Mittwoch", weekday:  .wednesday)) {
                     RecipesOfWeekDay(recipes: wednesdayRecipes)
                 }
-                Section(header: SectionHeader(name: "Donnerstag")) {
+                Section(header: SectionHeader(name: "Donnerstag", weekday:  .thursday)) {
                     RecipesOfWeekDay(recipes: thursdayRecipes)
                 }
-                Section(header: SectionHeader(name: "Freitag")) {
+                Section(header: SectionHeader(name: "Freitag", weekday:  .friday)) {
                     RecipesOfWeekDay(recipes: fridayRecipes)
                 }
             }
             .navigationBarTitle("Wochenplan")
+            .onAppear(perform: {
+                self.viewModel.leadRecipes()
+                self.mondayRecipes = self.viewModel.mondayRecipes
+                self.thuesdayRecipes = self.viewModel.thuesdayRecipes
+                self.wednesdayRecipes = self.viewModel.wednesdayRecipes
+                self.thursdayRecipes = self.viewModel.thursdayRecipes
+                self.fridayRecipes = self.viewModel.fridayRecipes
+            })
         }
     }
 }
@@ -47,6 +63,7 @@ struct SectionHeader: View {
     @State private var searchText = ""
     let recipes = Recipes.getRecipes()
     let name: String
+    let weekday: RecipeCardViewModel.WeekDays
     
     var body: some View {
         GeometryReader { geometry in
@@ -67,8 +84,7 @@ struct SectionHeader: View {
                             .padding(.bottom, 8)
                         List {
                             ForEach(self.recipes, id: \.id) { recipe in
-                                RecipeCard(recipe, with: .Button)
-//                                Card are grayed out because of the navigation links privided. Should be removed in sheet.
+                                RecipeCard(recipe, with: .Button, onWeekDay: self.weekday)
                             }
                         }
                     }
