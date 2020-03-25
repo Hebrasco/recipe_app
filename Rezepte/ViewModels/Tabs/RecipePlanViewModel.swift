@@ -22,13 +22,12 @@ class RecipePlanViewModel: ObservableObject {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
         
-        leadRecipes()
+        loadRecipes()
     }
     
-    func leadRecipes() {
+    func loadRecipes() {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlanEntity")
         request.returnsObjectsAsFaults = false
-        
 
         let recipes = Recipes.getRecipes()
         

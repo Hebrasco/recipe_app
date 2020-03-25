@@ -9,51 +9,39 @@
 import SwiftUI
 
 struct RecipePlanView: View {
-    @ObservedObject var viewModel: RecipePlanViewModel
+    @ObservedObject var viewModel = RecipePlanViewModel()
     @State private var selectedTab: Int = 0
-    @State var mondayRecipes: [Recipe] = []
-    @State var thuesdayRecipes: [Recipe] = []
-    @State var wednesdayRecipes: [Recipe] = []
-    @State var thursdayRecipes: [Recipe] = []
-    @State var fridayRecipes: [Recipe] = []
-    
-    init() {
-        self.viewModel = RecipePlanViewModel()
-        self.mondayRecipes = viewModel.mondayRecipes
-        self.thuesdayRecipes = viewModel.thuesdayRecipes
-        self.wednesdayRecipes = viewModel.wednesdayRecipes
-        self.thursdayRecipes = viewModel.thuesdayRecipes
-        self.fridayRecipes = viewModel.fridayRecipes
-    }
     
     var body: some View {
         NavigationView {
             List {
-                Section(header: SectionHeader(name: "Montag", weekday: .monday)) {
-                    RecipesOfWeekDay(recipes: mondayRecipes)
+                Section(header: SectionHeader(name: "Montag",
+                                              weekday: .monday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(recipes: viewModel.mondayRecipes)
                 }
-                Section(header: SectionHeader(name: "Dienstag", weekday:  .thuesday)) {
-                    RecipesOfWeekDay(recipes: thuesdayRecipes)
+                Section(header: SectionHeader(name: "Dienstag",
+                                              weekday:  .thuesday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(recipes: viewModel.thuesdayRecipes)
                 }
-                Section(header: SectionHeader(name: "Mittwoch", weekday:  .wednesday)) {
-                    RecipesOfWeekDay(recipes: wednesdayRecipes)
+                Section(header: SectionHeader(name: "Mittwoch",
+                                              weekday:  .wednesday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(recipes: viewModel.wednesdayRecipes)
                 }
-                Section(header: SectionHeader(name: "Donnerstag", weekday:  .thursday)) {
-                    RecipesOfWeekDay(recipes: thursdayRecipes)
+                Section(header: SectionHeader(name: "Donnerstag",
+                                              weekday:  .thursday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(recipes: viewModel.thursdayRecipes)
                 }
-                Section(header: SectionHeader(name: "Freitag", weekday:  .friday)) {
-                    RecipesOfWeekDay(recipes: fridayRecipes)
+                Section(header: SectionHeader(name: "Freitag",
+                                              weekday:  .friday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(recipes: viewModel.fridayRecipes)
                 }
             }
             .navigationBarTitle("Wochenplan")
-            .onAppear(perform: {
-                self.viewModel.leadRecipes()
-                self.mondayRecipes = self.viewModel.mondayRecipes
-                self.thuesdayRecipes = self.viewModel.thuesdayRecipes
-                self.wednesdayRecipes = self.viewModel.wednesdayRecipes
-                self.thursdayRecipes = self.viewModel.thursdayRecipes
-                self.fridayRecipes = self.viewModel.fridayRecipes
-            })
         }
     }
 }
@@ -64,6 +52,7 @@ struct SectionHeader: View {
     let recipes = Recipes.getRecipes()
     let name: String
     let weekday: RecipeCardViewModel.WeekDays
+    let viewModel: RecipePlanViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -89,6 +78,9 @@ struct SectionHeader: View {
                         }
                     }
                     .accentColor(Color.init("AccentColor"))
+                    .onDisappear(perform: {
+                        self.viewModel.loadRecipes()
+                    })
                 })
             }
         }
