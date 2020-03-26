@@ -26,7 +26,7 @@ struct BreakfastView: View {
                      image: "spread",
                      destination: AnyView(SpreadView()))
             ForEach(recipes, id: \.id) { recipe in
-                RecipeCard(recipe)
+                RecipeCard(recipe, with: .Navigation)
             }
         }
         .navigationBarTitle("Frühstück")

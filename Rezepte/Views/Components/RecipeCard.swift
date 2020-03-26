@@ -9,6 +9,56 @@
 import SwiftUI
 
 struct RecipeCard: View {
+    @State var showActionSheet = false
+    let viewModel = RecipeCardViewModel()
+    let recipe: Recipe
+    let type: RecipeCardViewModel.PressAction
+    let weekday: RecipePlanViewModel.WeekDays
+    
+    init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction) {
+        self.recipe = recipe
+        self.type = type
+        self.weekday = .monday
+    }
+    
+    init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction, onWeekDay weekday: RecipePlanViewModel.WeekDays) {
+        self.recipe = recipe
+        self.type = type
+        self.weekday = weekday
+    }
+    
+    var body: some View {
+        VStack {
+            if type == .Navigation {
+                NavigationLink(destination: RecipeView(recipe)) {
+                    Card(recipe)
+                }
+            } else {
+                Button(action: {
+                    self.showActionSheet = true
+                }, label: {
+                    Card(recipe)
+                })
+                .actionSheet(isPresented: self.$showActionSheet) {
+                    ActionSheet(title: Text("Zu welcher Mahlzeit hinzufügen?"),
+                                message: Text("Bestimmte zu welcher Mahlzeit das Rezept zugeordnet werden soll."),
+                                buttons: [.default(Text("Frühstück"), action: {
+                                                self.viewModel.addRecipeToWeeklyPlan(self.recipe, weekday: self.weekday, mealType: .breakfast)
+                                            }),
+                                          .default(Text("Mittagessen"), action: {
+                                                self.viewModel.addRecipeToWeeklyPlan(self.recipe, weekday: self.weekday, mealType: .lunch)
+                                            }),
+                                          .default(Text("Nachtisch/Snack"), action: {
+                                                self.viewModel.addRecipeToWeeklyPlan(self.recipe, weekday: self.weekday, mealType: .snack)
+                                            }),
+                                          .cancel()])
+                }
+            }
+        }
+    }
+}
+
+struct Card: View {
     let recipe: Recipe
     
     init(_ recipe: Recipe) {
@@ -16,13 +66,14 @@ struct RecipeCard: View {
     }
     
     var body: some View {
-        NavigationLink(destination: RecipeView(recipe)) {
-            VStack(alignment: .leading, spacing: 20) {
-                Image(recipe.image)
-                    .resizable()
-                    .scaledToFill()
-                    .frame(height: 150)
-                    .clipped()
+        VStack(alignment: .leading, spacing: 20) {
+            Image(recipe.image)
+                .renderingMode(.original)
+                .resizable()
+                .scaledToFill()
+                .frame(height: 150)
+                .clipped()
+            VStack(alignment: .leading) {
                 HStack {
                     Text(recipe.title)
                         .font(.headline)
@@ -61,12 +112,13 @@ struct RecipeCard: View {
                 .padding(.horizontal)
                 Spacer()
             }
-            .frame(height: 300)
-            .background(Color.init(UIColor.systemBackground))
-            .cornerRadius(10)
-            .padding(.vertical)
-            .shadow(radius: 10)
+            .frame(height: 150)
         }
+        .frame(height: 300)
+        .background(Color.init(UIColor.systemBackground))
+        .cornerRadius(10)
+        .padding(.vertical)
+        .shadow(radius: 10)
     }
 }
 
@@ -119,6 +171,6 @@ struct Recipe_Previews: PreviewProvider {
                                  preparation: preparation,
                                  tips: tips,
                                  source: source,
-                                 isFavorite: true))
+                                 isFavorite: true), with: .Navigation)
     }
 }

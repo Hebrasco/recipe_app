@@ -26,7 +26,7 @@ struct MottoView: View {
                      image: "xmas",
                      destination: AnyView(XMasView()))
             ForEach(recipes, id: \.id) { recipe in
-                RecipeCard(recipe)
+                RecipeCard(recipe, with: .Navigation)
             }
         }
         .onAppear(perform: {

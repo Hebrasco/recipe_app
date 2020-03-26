@@ -11,33 +11,42 @@ import SwiftUI
 struct RecipePlanView: View {
     @ObservedObject var viewModel = RecipePlanViewModel()
     @State private var selectedTab: Int = 0
-    let recipes = Recipes.getRecipes()
-    let mondayRecipes = [Recipes.getRecipes()[0], Recipes.getRecipes()[1]]
-    let thuesdayRecipes = [Recipes.getRecipes()[2], Recipes.getRecipes()[3]]
-    let wednesdayRecipes = [Recipes.getRecipes()[4], Recipes.getRecipes()[5]]
-    let thursdayRecipes = [Recipes.getRecipes()[6], Recipes.getRecipes()[7]]
-    let fridayRecipes = [Recipes.getRecipes()[8], Recipes.getRecipes()[9]]
     
     var body: some View {
         NavigationView {
             List {
-                Section(header: SectionHeader(name: "Montag")) {
-                    RecipesOfWeekDay(recipes: mondayRecipes)
+                Section(header: SectionHeader(name: "Montag",
+                                              weekday: .monday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(.monday, viewModel: viewModel)
                 }
-                Section(header: SectionHeader(name: "Dienstag")) {
-                    RecipesOfWeekDay(recipes: thuesdayRecipes)
+                Section(header: SectionHeader(name: "Dienstag",
+                                              weekday:  .thuesday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(.thuesday, viewModel: viewModel)
                 }
-                Section(header: SectionHeader(name: "Mittwoch")) {
-                    RecipesOfWeekDay(recipes: wednesdayRecipes)
+                Section(header: SectionHeader(name: "Mittwoch",
+                                              weekday:  .wednesday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(.wednesday, viewModel: viewModel)
                 }
-                Section(header: SectionHeader(name: "Donnerstag")) {
-                    RecipesOfWeekDay(recipes: thursdayRecipes)
+                Section(header: SectionHeader(name: "Donnerstag",
+                                              weekday:  .thursday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(.thursday, viewModel: viewModel)
                 }
-                Section(header: SectionHeader(name: "Freitag")) {
-                    RecipesOfWeekDay(recipes: fridayRecipes)
+                Section(header: SectionHeader(name: "Freitag",
+                                              weekday:  .friday,
+                                              viewModel: viewModel)) {
+                    RecipesOfWeekDay(.friday, viewModel: viewModel)
                 }
             }
             .navigationBarTitle("Wochenplan")
+            .navigationBarItems(trailing: Button(action: {
+                self.viewModel.removeAllRecipes()
+            }, label: {
+                Image(systemName: "trash")
+            }))
         }
     }
 }
@@ -47,6 +56,8 @@ struct SectionHeader: View {
     @State private var searchText = ""
     let recipes = Recipes.getRecipes()
     let name: String
+    let weekday: RecipePlanViewModel.WeekDays
+    let viewModel: RecipePlanViewModel
     
     var body: some View {
         GeometryReader { geometry in
@@ -67,12 +78,14 @@ struct SectionHeader: View {
                             .padding(.bottom, 8)
                         List {
                             ForEach(self.recipes, id: \.id) { recipe in
-                                RecipeCard(recipe)
-//                                Card are grayed out because of the navigation links privided. Should be removed in sheet.
+                                RecipeCard(recipe, with: .Button, onWeekDay: self.weekday)
                             }
                         }
                     }
                     .accentColor(Color.init("AccentColor"))
+                    .onDisappear(perform: {
+                        self.viewModel.loadRecipes()
+                    })
                 })
             }
         }
@@ -80,23 +93,57 @@ struct SectionHeader: View {
 }
 
 struct RecipesOfWeekDay: View {
-    let recipes: [Recipe]
+    let weekday: RecipePlanViewModel.WeekDays
+    let viewModel: RecipePlanViewModel
+    let recipes: [RecipePlanViewModel.PlanRecipe]
+        
+    init(_ weekday: RecipePlanViewModel.WeekDays, viewModel: RecipePlanViewModel) {
+        self.weekday = weekday
+        self.viewModel = viewModel
+        
+        switch weekday {
+        case .monday:
+            recipes = viewModel.mondayRecipes
+            break
+        case .thuesday:
+            recipes = viewModel.thuesdayRecipes
+            break
+        case .wednesday:
+            recipes = viewModel.wednesdayRecipes
+            break
+        case .thursday:
+            recipes = viewModel.thursdayRecipes
+            break
+        case .friday:
+            recipes = viewModel.fridayRecipes
+            break
+        }
+    }
     
     var body: some View {
-        ForEach(recipes, id: \.id) { recipe in
-            HStack {
-                Image(recipe.image)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .clipped()
-                    .clipShape(Circle())
-                    .padding(.trailing)
-                Text(recipe.title)
-            }
-            .frame(height: 50)
+        ForEach(recipes.sorted{$0.mealType < $1.mealType}, id: \.id) { planRecipe in
+            NavigationLink(destination: RecipeView(planRecipe.recipe), label: {
+                HStack {
+                    Image(planRecipe.recipe.image)
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .clipped()
+                        .clipShape(Circle())
+                        .padding(.trailing)
+                    Text(planRecipe.recipe.title)
+                    Spacer()
+                    Image(planRecipe.mealType)
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.accentColor)
+                }
+                .frame(height: 50)
+            })
+        
         }
         .onDelete(perform: { indexSet in
-            print("gesture delete performed on recipe")
+            self.viewModel.removeRecipe(with: indexSet, from: self.weekday)
         })
         
     }
