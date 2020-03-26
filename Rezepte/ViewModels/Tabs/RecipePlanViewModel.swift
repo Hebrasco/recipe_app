@@ -11,11 +11,11 @@ import UIKit
 import CoreData
 
 class RecipePlanViewModel: ObservableObject {
-    @Published var mondayRecipes: [Recipe] = []
-    @Published var thuesdayRecipes: [Recipe] = []
-    @Published var wednesdayRecipes: [Recipe] = []
-    @Published var thursdayRecipes: [Recipe] = []
-    @Published var fridayRecipes: [Recipe] = []
+    @Published var mondayRecipes: [PlanRecipe] = []
+    @Published var thuesdayRecipes: [PlanRecipe] = []
+    @Published var wednesdayRecipes: [PlanRecipe] = []
+    @Published var thursdayRecipes: [PlanRecipe] = []
+    @Published var fridayRecipes: [PlanRecipe] = []
     var mondayRecipesManagedObj: [NSManagedObject] = []
     var thuesdayRecipesManagedObj: [NSManagedObject] = []
     var wednesdayRecipesManagedObj: [NSManagedObject] = []
@@ -55,27 +55,30 @@ class RecipePlanViewModel: ObservableObject {
                 for item in items as! [NSManagedObject] {
                     let id = item.value(forKey: "recipe_id") as! Int
                     let weekday = item.value(forKey: "weekday") as! Int
+                    let mealType = item.value(forKey: "mealType") as! String
                     let recipe = recipes.filter{$0.id == id}
+                    
+                    let planRecipe = PlanRecipe(recipe[0], withMealType: mealType)
                     
                     switch weekday {
                     case 0:
-                        mondayRecipes.append(recipe[0])
+                        mondayRecipes.append(planRecipe)
                         mondayRecipesManagedObj.append(item)
                         break
                     case 1:
-                        thuesdayRecipes.append(recipe[0])
+                        thuesdayRecipes.append(planRecipe)
                         thuesdayRecipesManagedObj.append(item)
                         break
                     case 2:
-                        wednesdayRecipes.append(recipe[0])
+                        wednesdayRecipes.append(planRecipe)
                         wednesdayRecipesManagedObj.append(item)
                         break
                     case 3:
-                        thursdayRecipes.append(recipe[0])
+                        thursdayRecipes.append(planRecipe)
                         thursdayRecipesManagedObj.append(item)
                         break
                     case 4:
-                        fridayRecipes.append(recipe[0])
+                        fridayRecipes.append(planRecipe)
                         fridayRecipesManagedObj.append(item)
                         break
                     default:
@@ -88,7 +91,7 @@ class RecipePlanViewModel: ObservableObject {
         }
     }
     
-    func removeRecipe(with indexSet: IndexSet, from weekday: RecipeCardViewModel.WeekDays) {
+    func removeRecipe(with indexSet: IndexSet, from weekday: WeekDays) {
         switch weekday {
         case .monday:
             for index in indexSet {
@@ -119,8 +122,6 @@ class RecipePlanViewModel: ObservableObject {
                 fridayRecipes.remove(at: index)
                 context.delete(fridayRecipesManagedObj[index])
             }
-            break
-        default:
             break
         }
 
@@ -161,5 +162,32 @@ class RecipePlanViewModel: ObservableObject {
         self.wednesdayRecipesManagedObj = []
         self.thursdayRecipesManagedObj = []
         self.fridayRecipesManagedObj = []
+    }
+    
+    enum WeekDays: Int16 {
+        case monday = 0
+        case thuesday = 1
+        case wednesday = 2
+        case thursday = 3
+        case friday = 4
+    }
+    
+    enum MealType: String {
+        case breakfast = "breakfast"
+        case lunch = "lunch"
+        case snack = "snack"
+    }
+    
+    
+    struct PlanRecipe {
+        let id: UUID
+        let recipe: Recipe
+        let mealType: String
+        
+        init(_ recipe: Recipe, withMealType mealType: String) {
+            self.id = UUID()
+            self.recipe = recipe
+            self.mealType = mealType
+        }
     }
 }

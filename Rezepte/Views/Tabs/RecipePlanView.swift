@@ -56,7 +56,7 @@ struct SectionHeader: View {
     @State private var searchText = ""
     let recipes = Recipes.getRecipes()
     let name: String
-    let weekday: RecipeCardViewModel.WeekDays
+    let weekday: RecipePlanViewModel.WeekDays
     let viewModel: RecipePlanViewModel
     
     var body: some View {
@@ -93,11 +93,11 @@ struct SectionHeader: View {
 }
 
 struct RecipesOfWeekDay: View {
-    let weekday: RecipeCardViewModel.WeekDays
+    let weekday: RecipePlanViewModel.WeekDays
     let viewModel: RecipePlanViewModel
-    let recipes: [Recipe]
-    
-    init(_ weekday: RecipeCardViewModel.WeekDays, viewModel: RecipePlanViewModel) {
+    let recipes: [RecipePlanViewModel.PlanRecipe]
+        
+    init(_ weekday: RecipePlanViewModel.WeekDays, viewModel: RecipePlanViewModel) {
         self.weekday = weekday
         self.viewModel = viewModel
         
@@ -117,22 +117,25 @@ struct RecipesOfWeekDay: View {
         case .friday:
             recipes = viewModel.fridayRecipes
             break
-        default:
-            recipes = []
-            break
         }
     }
     
     var body: some View {
-        ForEach(recipes, id: \.id) { recipe in
+        ForEach(recipes, id: \.id) { planRecipe in
             HStack {
-                Image(recipe.image)
+                Image(planRecipe.recipe.image)
                     .resizable()
                     .frame(width: 50, height: 50)
                     .clipped()
                     .clipShape(Circle())
                     .padding(.trailing)
-                Text(recipe.title)
+                Text(planRecipe.recipe.title)
+                Spacer()
+                Image(planRecipe.mealType)
+                    .renderingMode(.template)
+                    .resizable()
+                    .frame(width: 30, height: 30)
+                    .foregroundColor(.accentColor)
             }
             .frame(height: 50)
         }

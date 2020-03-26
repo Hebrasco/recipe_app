@@ -18,10 +18,11 @@ class RecipeCardViewModel: ObservableObject {
         self.context = appDelegate.persistentContainer.viewContext
     }
     
-    func addRecipeToWeeklyPlan(_ recipe: Recipe, weekday: WeekDays) {
+    func addRecipeToWeeklyPlan(_ recipe: Recipe, weekday: RecipePlanViewModel.WeekDays, mealType: RecipePlanViewModel.MealType) {
         let weeklyPlanEntity = WeeklyPlanEntity(context: context)
         weeklyPlanEntity.recipe_id = Int32(recipe.id)
         weeklyPlanEntity.weekday = weekday.rawValue
+        weeklyPlanEntity.mealType = mealType.rawValue
         
         try? context.save()
     }
@@ -29,13 +30,5 @@ class RecipeCardViewModel: ObservableObject {
     enum PressAction {
         case Navigation
         case Button
-    }
-    
-    enum WeekDays: Int16 {
-        case monday = 0
-        case thuesday = 1
-        case wednesday = 2
-        case thursday = 3
-        case friday = 4
     }
 }

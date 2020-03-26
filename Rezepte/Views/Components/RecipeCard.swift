@@ -9,10 +9,11 @@
 import SwiftUI
 
 struct RecipeCard: View {
+    @State var showActionSheet = false
     let viewModel = RecipeCardViewModel()
     let recipe: Recipe
     let type: RecipeCardViewModel.PressAction
-    let weekday: RecipeCardViewModel.WeekDays
+    let weekday: RecipePlanViewModel.WeekDays
     
     init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction) {
         self.recipe = recipe
@@ -20,7 +21,7 @@ struct RecipeCard: View {
         self.weekday = .monday
     }
     
-    init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction, onWeekDay weekday: RecipeCardViewModel.WeekDays) {
+    init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction, onWeekDay weekday: RecipePlanViewModel.WeekDays) {
         self.recipe = recipe
         self.type = type
         self.weekday = weekday
@@ -34,10 +35,24 @@ struct RecipeCard: View {
                 }
             } else {
                 Button(action: {
-                    self.viewModel.addRecipeToWeeklyPlan(self.recipe, weekday: self.weekday)
+                    self.showActionSheet = true
                 }, label: {
                     Card(recipe)
                 })
+                .actionSheet(isPresented: self.$showActionSheet) {
+                    ActionSheet(title: Text("Zu welcher Mahlzeit hinzufügen?"),
+                                message: Text("Bestimmte zu welcher Mahlzeit das Rezept zugeordnet werden soll."),
+                                buttons: [.default(Text("Frühstück"), action: {
+                                                self.viewModel.addRecipeToWeeklyPlan(self.recipe, weekday: self.weekday, mealType: .breakfast)
+                                            }),
+                                          .default(Text("Mittagessen"), action: {
+                                                self.viewModel.addRecipeToWeeklyPlan(self.recipe, weekday: self.weekday, mealType: .lunch)
+                                            }),
+                                          .default(Text("Nachtisch/Snack"), action: {
+                                                self.viewModel.addRecipeToWeeklyPlan(self.recipe, weekday: self.weekday, mealType: .snack)
+                                            }),
+                                          .cancel()])
+                }
             }
         }
     }
