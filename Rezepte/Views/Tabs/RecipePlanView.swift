@@ -122,22 +122,25 @@ struct RecipesOfWeekDay: View {
     
     var body: some View {
         ForEach(recipes, id: \.id) { planRecipe in
-            HStack {
-                Image(planRecipe.recipe.image)
-                    .resizable()
-                    .frame(width: 50, height: 50)
-                    .clipped()
-                    .clipShape(Circle())
-                    .padding(.trailing)
-                Text(planRecipe.recipe.title)
-                Spacer()
-                Image(planRecipe.mealType)
-                    .renderingMode(.template)
-                    .resizable()
-                    .frame(width: 30, height: 30)
-                    .foregroundColor(.accentColor)
-            }
-            .frame(height: 50)
+            NavigationLink(destination: RecipeView(planRecipe.recipe), label: {
+                HStack {
+                    Image(planRecipe.recipe.image)
+                        .resizable()
+                        .frame(width: 50, height: 50)
+                        .clipped()
+                        .clipShape(Circle())
+                        .padding(.trailing)
+                    Text(planRecipe.recipe.title)
+                    Spacer()
+                    Image(planRecipe.mealType)
+                        .renderingMode(.template)
+                        .resizable()
+                        .frame(width: 30, height: 30)
+                        .foregroundColor(.accentColor)
+                }
+                .frame(height: 50)
+            })
+        
         }
         .onDelete(perform: { indexSet in
             self.viewModel.removeRecipe(with: indexSet, from: self.weekday)
