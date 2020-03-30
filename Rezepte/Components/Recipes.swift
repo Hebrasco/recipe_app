@@ -174,6 +174,7 @@ class Recipes {
                 image = .wheat
                 break
             default:
+                print(intoleranceName)
                 image = .defaultCase
                 break
             }
