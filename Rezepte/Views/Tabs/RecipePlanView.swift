@@ -121,7 +121,7 @@ struct RecipesOfWeekDay: View {
     }
     
     var body: some View {
-        ForEach(recipes.sorted{$0.mealType < $1.mealType}, id: \.id) { planRecipe in
+        ForEach(recipes.sorted{ $0.mealType < $1.mealType}, id: \.id) { planRecipe in
             NavigationLink(destination: RecipeView(planRecipe.recipe), label: {
                 HStack {
                     Image(planRecipe.recipe.image)
