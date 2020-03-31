@@ -38,7 +38,8 @@ struct RecipesView: View {
                    onDismiss: {
                         print("test")},
                    content: {
-                    Filter().accentColor(.init("AccentColor"))
+                    Filter(showSheet: self.$showFilterSheet)
+                        .accentColor(.init("AccentColor"))
             })
             .navigationBarTitle("Rezepte")
             .navigationBarItems(trailing: Button(action: {

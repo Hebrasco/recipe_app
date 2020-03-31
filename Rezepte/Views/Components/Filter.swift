@@ -10,16 +10,17 @@ import SwiftUI
 
 struct Filter: View {
     let viewModel = FilterViewModel()
+    @Binding var showSheet: Bool
     
     var body: some View {
         VStack {
             Form {
-                Section(header: FilterHeader(),
+                Section(header: FilterHeader(showSheet: $showSheet),
                         footer: FilterFooter(),
                         content: {
-                    ForEach(viewModel.intolerances, id: \.id) { intolerance in
-                       IntoleranceItem(intolerance)
-                   }
+                            ForEach(viewModel.intolerances, id: \.id) { intolerance in
+                               IntoleranceItem(intolerance)
+                        }
                 })
             }
         }
@@ -27,12 +28,14 @@ struct Filter: View {
 }
 
 struct FilterHeader: View {
+    @Binding var showSheet: Bool
+    
     var body: some View {
         HStack {
             Text("Filter").font(.largeTitle).bold()
             Spacer()
             Button(action: {
-                
+                self.showSheet.toggle()
             }, label: {
                 Text("Fertig").font(.callout)
             })
@@ -76,6 +79,6 @@ struct IntoleranceItem: View {
 
 struct Filter_Previews: PreviewProvider {
     static var previews: some View {
-        Filter()
+        Filter(showSheet: .constant(true))
     }
 }
