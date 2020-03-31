@@ -10,7 +10,6 @@ import SwiftUI
 
 struct RecipesView: View {
     @State var recipes: [Recipe] = []
-    @State var showFilterSheet = false
     
     var body: some View {
         NavigationView {
@@ -34,19 +33,7 @@ struct RecipesView: View {
             .onAppear(perform: {
                 self.recipes = Recipes.getRecipes()
             })
-            .sheet(isPresented: $showFilterSheet,
-                   onDismiss: {
-                        print("test")},
-                   content: {
-                    Filter(showSheet: self.$showFilterSheet)
-                        .accentColor(.init("AccentColor"))
-            })
             .navigationBarTitle("Rezepte")
-            .navigationBarItems(trailing: Button(action: {
-                self.showFilterSheet.toggle()
-            }, label: {
-                Image(systemName: "line.horizontal.3.decrease.circle")
-            }))
         }
     }
 }

@@ -11,6 +11,8 @@ import SwiftUI
 struct SearchView: View {
     @ObservedObject var viewModel = SearchViewModel()
     @State var recipes: [Recipe] = []
+    @State var showFilterSheet = false
+    @State var filterViewModel = FilterViewModel()
     
     var body: some View {
         NavigationView {
@@ -32,7 +34,20 @@ struct SearchView: View {
                 self.recipes = Recipes.getRecipes()
             })
             .resignKeyboardOnDragGesture()
+            .sheet(isPresented: $showFilterSheet,
+                   onDismiss: {
+                        print("test")},
+                   content: {
+                    Filter(viewModel: self.$filterViewModel,
+                           showSheet: self.$showFilterSheet)
+                        .accentColor(.init("AccentColor"))
+            })
             .navigationBarTitle("Suche")
+            .navigationBarItems(trailing: Button(action: {
+                self.showFilterSheet.toggle()
+            }, label: {
+                Image(systemName: "line.horizontal.3.decrease.circle")
+            }))
         }
     }
 }

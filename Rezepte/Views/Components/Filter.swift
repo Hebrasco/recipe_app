@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Filter: View {
-    let viewModel = FilterViewModel()
+    @Binding var viewModel: FilterViewModel
     @Binding var showSheet: Bool
     
     var body: some View {
@@ -79,6 +79,7 @@ struct IntoleranceItem: View {
 
 struct Filter_Previews: PreviewProvider {
     static var previews: some View {
-        Filter(showSheet: .constant(true))
+        Filter(viewModel: .constant(FilterViewModel()),
+               showSheet: .constant(true))
     }
 }
