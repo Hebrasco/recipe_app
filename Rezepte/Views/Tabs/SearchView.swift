@@ -12,7 +12,6 @@ struct SearchView: View {
     @ObservedObject var viewModel = SearchViewModel()
     @State var recipes: [Recipe] = []
     @State var showFilterSheet = false
-    @State var filterViewModel = FilterViewModel()
     
     var body: some View {
         NavigationView {
@@ -36,9 +35,9 @@ struct SearchView: View {
             .resignKeyboardOnDragGesture()
             .sheet(isPresented: $showFilterSheet,
                    onDismiss: {
-                        print("test")},
+                    self.viewModel.filterViewModel.saveFilters()},
                    content: {
-                    Filter(viewModel: self.$filterViewModel,
+                    Filter(viewModel: self.$viewModel.filterViewModel,
                            showSheet: self.$showFilterSheet)
                         .accentColor(.init("AccentColor"))
             })

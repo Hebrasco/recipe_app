@@ -18,8 +18,8 @@ struct Filter: View {
                 Section(header: FilterHeader(showSheet: $showSheet),
                         footer: FilterFooter(),
                         content: {
-                            ForEach(viewModel.intolerances, id: \.id) { intolerance in
-                               IntoleranceItem(intolerance)
+                            ForEach(viewModel.filters.indices, id: \.self) { index in
+                                IntoleranceItem(self.$viewModel.filters[index])
                         }
                 })
             }
@@ -54,23 +54,22 @@ struct FilterFooter: View {
 }
 
 struct IntoleranceItem: View {
-    @State var isToggleOn = false
-    let intolerance: Recipe.Intolerance
+    @Binding var filter: FilterViewModel.Filter
     
-    init(_ intolerance: Recipe.Intolerance) {
-        self.intolerance = intolerance
+    init(_ filter: Binding<FilterViewModel.Filter>) {
+        self._filter = filter
     }
     
     var body: some View {
         HStack {
-            Toggle(isOn: $isToggleOn, label: {
-                Image(intolerance.image.rawValue)
+            Toggle(isOn: filter.isActive, label: {
+                Image(filter.intolerance.image.rawValue)
                     .renderingMode(.template)
                     .resizable()
                     .scaledToFit()
                     .frame(height: 50)
                     .foregroundColor(.accentColor)
-                Text(intolerance.type)
+                Text(filter.intolerance.type)
                     .foregroundColor(.primary)
             })
         }

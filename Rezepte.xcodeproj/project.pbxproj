@@ -42,7 +42,6 @@
 		65BB400F23FE760400806051 /* QuarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BB400E23FE760400806051 /* QuarkView.swift */; };
 		65BB401123FE760F00806051 /* SnackSweetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BB401023FE760F00806051 /* SnackSweetsView.swift */; };
 		65BB401323FE761800806051 /* HeartyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65BB401223FE761800806051 /* HeartyView.swift */; };
-		65E086CF24335AFE002FAFB8 /* RecipesViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65E086CE24335AFE002FAFB8 /* RecipesViewModel.swift */; };
 		65FA409D23FBE4FE00A5ABDA /* BreakfastView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FA409C23FBE4FE00A5ABDA /* BreakfastView.swift */; };
 		65FA40A023FBE51E00A5ABDA /* LunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FA409F23FBE51E00A5ABDA /* LunchView.swift */; };
 		65FA40A223FBE52700A5ABDA /* MottoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65FA40A123FBE52700A5ABDA /* MottoView.swift */; };
@@ -98,7 +97,6 @@
 		65BB400E23FE760400806051 /* QuarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuarkView.swift; sourceTree = "<group>"; };
 		65BB401023FE760F00806051 /* SnackSweetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnackSweetsView.swift; sourceTree = "<group>"; };
 		65BB401223FE761800806051 /* HeartyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartyView.swift; sourceTree = "<group>"; };
-		65E086CE24335AFE002FAFB8 /* RecipesViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecipesViewModel.swift; sourceTree = "<group>"; };
 		65FA409C23FBE4FE00A5ABDA /* BreakfastView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BreakfastView.swift; sourceTree = "<group>"; };
 		65FA409F23FBE51E00A5ABDA /* LunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LunchView.swift; sourceTree = "<group>"; };
 		65FA40A123FBE52700A5ABDA /* MottoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MottoView.swift; sourceTree = "<group>"; };
@@ -211,7 +209,6 @@
 				6515DC1423F5469000271AEA /* SearchViewModel.swift */,
 				6515DC1623F5476300271AEA /* ShoppingListViewModel.swift */,
 				6515DC1C23F5482500271AEA /* FavoritesViewModel.swift */,
-				65E086CE24335AFE002FAFB8 /* RecipesViewModel.swift */,
 			);
 			path = Tabs;
 			sourceTree = "<group>";
@@ -421,7 +418,6 @@
 				6515DC0B23F5414B00271AEA /* RecipesView.swift in Sources */,
 				65FA40BB23FBFC3E00A5ABDA /* LunchSweetsView.swift in Sources */,
 				6515DBF923F536F700271AEA /* ContentView.swift in Sources */,
-				65E086CF24335AFE002FAFB8 /* RecipesViewModel.swift in Sources */,
 				65FA40AC23FBF38D00A5ABDA /* BakeView.swift in Sources */,
 				65BB400F23FE760400806051 /* QuarkView.swift in Sources */,
 				65FA40B023FBF39F00A5ABDA /* SpreadView.swift in Sources */,

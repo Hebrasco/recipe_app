@@ -3,6 +3,10 @@
     <entity name="FavoriteEntity" representedClassName="FavoriteEntity" syncable="YES" codeGenerationType="class">
         <attribute name="recipe_id" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
+    <entity name="FilterEntity" representedClassName="FilterEntity" syncable="YES" codeGenerationType="class">
+        <attribute name="isActive" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+    </entity>
     <entity name="ShoppingListEntity" representedClassName="ShoppingListEntity" syncable="YES" codeGenerationType="class">
         <attribute name="amount" optional="YES" attributeType="String"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
@@ -19,5 +23,6 @@
         <element name="FavoriteEntity" positionX="-63" positionY="-18" width="128" height="58"/>
         <element name="ShoppingListEntity" positionX="119.98046875" positionY="-11.09375" width="127.61328125" height="118"/>
         <element name="WeeklyPlanEntity" positionX="27" positionY="27" width="128" height="88"/>
+        <element name="FilterEntity" positionX="27" positionY="27" width="128" height="73"/>
     </elements>
 </model>
