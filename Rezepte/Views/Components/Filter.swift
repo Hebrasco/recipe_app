@@ -14,22 +14,41 @@ struct Filter: View {
     var body: some View {
         VStack {
             Form {
-                Section(header:
-                Text("Filter").font(.largeTitle).bold(), content: {
+                Section(header: FilterHeader(),
+                        footer: FilterFooter(),
+                        content: {
                     ForEach(viewModel.intolerances, id: \.id) { intolerance in
-                       Button(action: {
-                           
-                       }, label: {
-                           IntoleranceItem(intolerance)
-                       })
+                       IntoleranceItem(intolerance)
                    }
                 })
-               
             }
         }
     }
 }
 
+struct FilterHeader: View {
+    var body: some View {
+        HStack {
+            Text("Filter").font(.largeTitle).bold()
+            Spacer()
+            Button(action: {
+                
+            }, label: {
+                Text("Fertig").font(.callout)
+            })
+        }
+    }
+}
+
+struct FilterFooter: View {
+    var body: some View {
+        Button(action: {
+            
+        }, label: {
+            Text("Alle Filter zurücksetzen")
+        })
+    }
+}
 
 struct IntoleranceItem: View {
     @State var isToggleOn = false

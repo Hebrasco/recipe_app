@@ -63,12 +63,11 @@ struct SectionHeader: View {
         GeometryReader { geometry in
             HStack {
                 Text(self.name)
-                    .frame(width: geometry.size.width / 2, alignment: .leading)
+                Spacer()
                 Button(action: {
                     self.showRecipeSheet.toggle()
                 }, label: {
                     Image(systemName: "plus.circle")
-                        .frame(width: geometry.size.width / 2, alignment: .trailing)
                         .font(.system(size: 20))
                 })
                 .sheet(isPresented: self.$showRecipeSheet, content: {
