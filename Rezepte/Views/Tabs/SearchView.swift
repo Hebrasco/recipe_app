@@ -38,8 +38,7 @@ struct SearchView: View {
             .sheet(isPresented: $showFilterSheet,
                    onDismiss: {
                     self.viewModel.filterViewModel.saveFilters(self.filters)
-                    self.filters = self.viewModel.filterViewModel.loadFilters()
-                    self.recipes = Recipes.getRecipes()},
+                    self.filters = self.viewModel.filterViewModel.loadFilters()},
                    content: {
                     Filter(filters: self.$filters,
                            showSheet: self.$showFilterSheet)
