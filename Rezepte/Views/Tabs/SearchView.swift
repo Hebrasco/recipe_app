@@ -18,13 +18,15 @@ struct SearchView: View {
             VStack {
                 SearchBar(text: $viewModel.searchText)
                 List {
-                    ForEach(recipes.filter{
+                    ForEach(recipes.filter {
                         if viewModel.searchText.isEmpty {
                             return true
                         } else {
                             return $0.title.contains(viewModel.searchText) || $0.tags.contains(viewModel.searchText)
                         }
-                    }, id: \.id) { recipe in
+                    }.filter({ recipe in
+                        viewModel.filterViewModel.recipeContainsActiveFilterIntolerance(recipe)
+                    }), id: \.id) { recipe in
                         RecipeCard(recipe, with: .Navigation)
                     }
                 }
