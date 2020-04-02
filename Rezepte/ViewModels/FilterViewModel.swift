@@ -12,17 +12,17 @@ import CoreData
 import SwiftUI
 
 class FilterViewModel: ObservableObject {
-    @Published var filters: [Filter]
+//    @Published var filters: [Filter]
     let context: NSManagedObjectContext
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
         
-        self.filters = []
+//        self.filters = []
     }
     
-    func loadFilters() {
+    func loadFilters() -> [Filter] {
         var filters: [Filter] = []
         let recipes = Recipes.getRecipes()
         
@@ -40,7 +40,7 @@ class FilterViewModel: ObservableObject {
             }
         }
         
-        self.filters = filters.sorted(by: {$0.intolerance.type < $1.intolerance.type})
+        return filters.sorted(by: {$0.intolerance.type < $1.intolerance.type})
     }
     
     func isFilterSavedAndActive(_ filterName: String) -> Bool {
@@ -75,7 +75,7 @@ class FilterViewModel: ObservableObject {
         })
     }
     
-    func saveFilters() {
+    func saveFilters(_ filters: [Filter]) {
         for filter in filters {
             
             let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FilterEntity")
@@ -113,7 +113,7 @@ class FilterViewModel: ObservableObject {
         filterEntity.isActive = filter.isActive.wrappedValue
     }
     
-    func recipeContainsActiveFilterIntolerance(_ recipe: Recipe) -> Bool {
+    func recipeContainsActiveFilterIntolerance(_ recipe: Recipe, filters: [Filter]) -> Bool {
 //        print("checking if, recipe contains active filter")
         let activeFilters = filters.filter{$0.isActive.wrappedValue}
         

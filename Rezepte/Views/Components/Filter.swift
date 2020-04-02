@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct Filter: View {
-    @Binding var viewModel: FilterViewModel
+    @Binding var filters: [FilterViewModel.Filter]
     @Binding var showSheet: Bool
     
     var body: some View {
@@ -18,8 +18,8 @@ struct Filter: View {
                 Section(header: FilterHeader(showSheet: $showSheet),
                         footer: FilterFooter(),
                         content: {
-                            ForEach(viewModel.filters.indices, id: \.self) { index in
-                                IntoleranceItem(self.$viewModel.filters[index])
+                            ForEach(filters.indices, id: \.self) { index in
+                                IntoleranceItem(self.$filters[index])
                         }
                 })
             }
@@ -78,7 +78,7 @@ struct IntoleranceItem: View {
 
 struct Filter_Previews: PreviewProvider {
     static var previews: some View {
-        Filter(viewModel: .constant(FilterViewModel()),
+        Filter(filters: .constant([FilterViewModel.Filter(intolerance: Recipe.Intolerance(type: "Gluten", image: .gluten), isActive: .constant(false))]),
                showSheet: .constant(true))
     }
 }

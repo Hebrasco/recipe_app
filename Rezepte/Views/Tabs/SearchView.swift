@@ -10,6 +10,7 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var viewModel = SearchViewModel()
+    @State var filters: [FilterViewModel.Filter] = []
     @State var recipes: [Recipe] = []
     @State var showFilterSheet = false
     
@@ -20,9 +21,9 @@ struct SearchView: View {
                 List {
                     ForEach(recipes.filter {
                         if viewModel.searchText.isEmpty {
-                            return true && viewModel.filterViewModel.recipeContainsActiveFilterIntolerance($0)
+                            return true && viewModel.filterViewModel.recipeContainsActiveFilterIntolerance($0, filters: filters)
                         } else {
-                            return ($0.title.contains(viewModel.searchText) || $0.tags.contains(viewModel.searchText)) && viewModel.filterViewModel.recipeContainsActiveFilterIntolerance($0)
+                            return ($0.title.contains(viewModel.searchText) || $0.tags.contains(viewModel.searchText)) && viewModel.filterViewModel.recipeContainsActiveFilterIntolerance($0, filters: filters)
                         }
                     }, id: \.id) { recipe in
                         RecipeCard(recipe, with: .Navigation)
@@ -31,15 +32,16 @@ struct SearchView: View {
             }
             .onAppear(perform: {
                 self.recipes = Recipes.getRecipes()
-                self.viewModel.filterViewModel.loadFilters()
+                self.filters = self.viewModel.filterViewModel.loadFilters()
             })
             .resignKeyboardOnDragGesture()
             .sheet(isPresented: $showFilterSheet,
                    onDismiss: {
-                    self.viewModel.filterViewModel.saveFilters()
-                    self.viewModel.filterViewModel.loadFilters()},
+                    self.viewModel.filterViewModel.saveFilters(self.filters)
+                    self.filters = self.viewModel.filterViewModel.loadFilters()
+                    self.recipes = Recipes.getRecipes()},
                    content: {
-                    Filter(viewModel: self.$viewModel.filterViewModel,
+                    Filter(filters: self.$filters,
                            showSheet: self.$showFilterSheet)
                         .accentColor(.init("AccentColor"))
             })
