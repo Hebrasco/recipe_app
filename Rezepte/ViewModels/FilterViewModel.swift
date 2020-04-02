@@ -16,55 +16,63 @@ class FilterViewModel: ObservableObject {
     let context: NSManagedObjectContext
     
     init() {
-        func getFilters() -> [Filter] {
-            var filters: [Filter] = []
-            let recipes = Recipes.getRecipes()
-            
-            for recipe in recipes {
-                for intolerance in recipe.intolerances {
-                    if !filters.contains(where: {$0.intolerance.type == intolerance.type}) {
-                        var isFilterActive = false
-                        let isActive: Binding<Bool> = .init(get: {
-                            isFilterActive
-                        }, set: {
-                            isFilterActive = $0
-                        })
-                        filters.append(Filter(intolerance: intolerance,
-                                              isActive: isActive))
-                    }
-                }
-            }
-            
-            return filters.sorted(by: {$0.intolerance.type < $1.intolerance.type})
-        }
-        
-        func loadSavedFilters() {
-            let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FilterEntity")
-            request.returnsObjectsAsFaults = false
-            
-            do {
-                let items = try context.fetch(request)
-                
-                if items.count > 0 {
-                    for item in items as! [NSManagedObject] {
-                        let name = item.value(forKey: "name") as! String
-                        let isActive = item.value(forKey: "isActive") as! Bool
-                                                
-                        for filter in filters.filter({$0.intolerance.type == name}) {
-                            filter.isActive.wrappedValue = isActive
-                        }
-                    }
-                }
-            } catch {
-                print("Error while getting active filters from CoreData")
-            }
-        }
-        
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
         
-        self.filters = getFilters()
-        loadSavedFilters()
+        self.filters = []
+    }
+    
+    func loadFilters() {
+        var filters: [Filter] = []
+        let recipes = Recipes.getRecipes()
+        
+        
+        print("loading filters...")
+        
+        for recipe in recipes {
+            for intolerance in recipe.intolerances {
+                if !filters.contains(where: {$0.intolerance.type == intolerance.type}) {
+                    let isActive: Binding<Bool> = getIsActiveBinding(bool: isFilterSavedAndActive(intolerance.type))
+                    
+                    filters.append(Filter(intolerance: intolerance,
+                                          isActive: isActive))
+                }
+            }
+        }
+        
+        self.filters = filters.sorted(by: {$0.intolerance.type < $1.intolerance.type})
+    }
+    
+    func isFilterSavedAndActive(_ filterName: String) -> Bool {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FilterEntity")
+        request.returnsObjectsAsFaults = false
+        
+        do {
+            let items = try context.fetch(request)
+            
+            if items.count > 0 {
+                for item in items as! [NSManagedObject] {
+                    let name = item.value(forKey: "name") as! String
+                    let isActive = item.value(forKey: "isActive") as! Bool
+                      
+                    if filterName == name {
+                        return isActive
+                    }
+                }
+            }
+        } catch {
+            print("Error while getting active filters from CoreData")
+        }
+        return false
+    }
+    
+    private func getIsActiveBinding(bool: Bool) -> Binding<Bool> {
+        var isActive = bool
+        return .init(get: {
+            isActive
+        }, set: {
+            isActive = $0
+        })
     }
     
     func saveFilters() {
@@ -79,9 +87,8 @@ class FilterViewModel: ObservableObject {
                 
                 for item in items as! [NSManagedObject] {
                     let name = item.value(forKey: "name") as! String
-                    let isActive = item.value(forKey: "isActive") as! Bool
                     
-                    if name == filter.intolerance.type && isActive != filter.isActive.wrappedValue {
+                    if name == filter.intolerance.type {
                         print("updating...", filter.intolerance.type, "to", filter.isActive.wrappedValue)
                         item.setValue(filter.isActive.wrappedValue, forKey: "isActive")
                         hasUpdatedFlag = true
@@ -107,28 +114,8 @@ class FilterViewModel: ObservableObject {
     }
     
     func recipeContainsActiveFilterIntolerance(_ recipe: Recipe) -> Bool {
-        var activeFilters: [Filter] = []
-        let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FilterEntity")
-        request.returnsObjectsAsFaults = false
-        
-        do {
-            let items = try context.fetch(request)
-            
-            if items.count > 0 {
-                for item in items as! [NSManagedObject] {
-                    let name = item.value(forKey: "name") as! String
-                    let isActive = item.value(forKey: "isActive") as! Bool
-                    
-                    if isActive {
-                        for filter in filters.filter({$0.intolerance.type == name}) {
-                            activeFilters.append(filter)
-                        }
-                    }
-                }
-            }
-        } catch {
-            print("Error while getting active filters from CoreData")
-        }
+//        print("checking if, recipe contains active filter")
+        let activeFilters = filters.filter{$0.isActive.wrappedValue}
         
         for activeFilter in activeFilters {
             for intolerance in recipe.intolerances {

@@ -20,24 +20,24 @@ struct SearchView: View {
                 List {
                     ForEach(recipes.filter {
                         if viewModel.searchText.isEmpty {
-                            return true
+                            return true && viewModel.filterViewModel.recipeContainsActiveFilterIntolerance($0)
                         } else {
-                            return $0.title.contains(viewModel.searchText) || $0.tags.contains(viewModel.searchText)
+                            return ($0.title.contains(viewModel.searchText) || $0.tags.contains(viewModel.searchText)) && viewModel.filterViewModel.recipeContainsActiveFilterIntolerance($0)
                         }
-                    }.filter({ recipe in
-                        viewModel.filterViewModel.recipeContainsActiveFilterIntolerance(recipe)
-                    }), id: \.id) { recipe in
+                    }, id: \.id) { recipe in
                         RecipeCard(recipe, with: .Navigation)
                     }
                 }
             }
             .onAppear(perform: {
                 self.recipes = Recipes.getRecipes()
+                self.viewModel.filterViewModel.loadFilters()
             })
             .resignKeyboardOnDragGesture()
             .sheet(isPresented: $showFilterSheet,
                    onDismiss: {
-                    self.viewModel.filterViewModel.saveFilters()},
+                    self.viewModel.filterViewModel.saveFilters()
+                    self.viewModel.filterViewModel.loadFilters()},
                    content: {
                     Filter(viewModel: self.$viewModel.filterViewModel,
                            showSheet: self.$showFilterSheet)
