@@ -73,9 +73,17 @@ struct SectionHeader: View {
                 })
                 .sheet(isPresented: self.$showRecipeSheet, content: {
                     VStack {
-                        SearchBar(text: self.$searchText)
-                            .padding(.top)
-                            .padding(.bottom, 8)
+                        HStack {
+                            SearchBar(text: self.$searchText)
+                                .padding(.top)
+                                .padding(.bottom, 8)
+                            Button(action: {
+                                self.showRecipeSheet.toggle()
+                            }, label: {
+                                Text("Fertig")
+                            })
+                            .padding(.trailing)
+                        }
                         List {
                             ForEach(self.recipes, id: \.id) { recipe in
                                 RecipeCard(recipe, with: .Button, onWeekDay: self.weekday)
