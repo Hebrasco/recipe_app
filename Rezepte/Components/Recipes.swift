@@ -174,11 +174,13 @@ class Recipes {
                 image = .wheat
                 break
             default:
+                print(intoleranceName)
                 image = .defaultCase
                 break
             }
             
-            let intolerance = Recipe.Intolerance(type: intoleranceName, image: image)
+            let intolerance = Recipe.Intolerance(type: intoleranceName,
+                                                 image: image)
             intolerances.append(intolerance)
         }
         return intolerances

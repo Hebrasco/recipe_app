@@ -63,12 +63,11 @@ struct SectionHeader: View {
         GeometryReader { geometry in
             HStack {
                 Text(self.name)
-                    .frame(width: geometry.size.width / 2, alignment: .leading)
+                Spacer()
                 Button(action: {
                     self.showRecipeSheet.toggle()
                 }, label: {
                     Image(systemName: "plus.circle")
-                        .frame(width: geometry.size.width / 2, alignment: .trailing)
                         .font(.system(size: 20))
                 })
                 .sheet(isPresented: self.$showRecipeSheet, content: {
@@ -129,7 +128,7 @@ struct RecipesOfWeekDay: View {
     }
     
     var body: some View {
-        ForEach(recipes.sorted{$0.mealType < $1.mealType}, id: \.id) { planRecipe in
+        ForEach(recipes.sorted{ $0.mealType < $1.mealType}, id: \.id) { planRecipe in
             NavigationLink(destination: RecipeView(planRecipe.recipe), label: {
                 HStack {
                     Image(planRecipe.recipe.image)

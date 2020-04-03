@@ -10,18 +10,20 @@ import SwiftUI
 
 struct SearchView: View {
     @ObservedObject var viewModel = SearchViewModel()
+    @State var filters: [FilterViewModel.Filter] = []
     @State var recipes: [Recipe] = []
+    @State var showFilterSheet = false
     
     var body: some View {
         NavigationView {
             VStack {
                 SearchBar(text: $viewModel.searchText)
                 List {
-                    ForEach(recipes.filter{
+                    ForEach(recipes.filter {
                         if viewModel.searchText.isEmpty {
-                            return true
+                            return true && viewModel.filterViewModel.recipeContainsActiveFilterIntolerance($0, filters: filters)
                         } else {
-                            return $0.title.contains(viewModel.searchText)
+                            return ($0.title.contains(viewModel.searchText) || $0.tags.contains(viewModel.searchText)) && viewModel.filterViewModel.recipeContainsActiveFilterIntolerance($0, filters: filters)
                         }
                     }, id: \.id) { recipe in
                         RecipeCard(recipe, with: .Navigation)
@@ -30,9 +32,24 @@ struct SearchView: View {
             }
             .onAppear(perform: {
                 self.recipes = Recipes.getRecipes()
+                self.filters = self.viewModel.filterViewModel.loadFilters()
             })
             .resignKeyboardOnDragGesture()
+            .sheet(isPresented: $showFilterSheet,
+                   onDismiss: {
+                    self.viewModel.filterViewModel.saveFilters(self.filters)
+                    self.filters = self.viewModel.filterViewModel.loadFilters()},
+                   content: {
+                    Filter(viewModel: self.viewModel.filterViewModel, filters: self.$filters,
+                           showSheet: self.$showFilterSheet)
+                        .accentColor(.init("AccentColor"))
+            })
             .navigationBarTitle("Suche")
+            .navigationBarItems(trailing: Button(action: {
+                self.showFilterSheet.toggle()
+            }, label: {
+                Image(systemName: "line.horizontal.3.decrease.circle")
+            }))
         }
     }
 }

@@ -10,4 +10,5 @@ import Foundation
 
 class SearchViewModel: ObservableObject {
     @Published var searchText = ""
+    @Published var filterViewModel = FilterViewModel()    
 }
