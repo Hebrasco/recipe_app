@@ -114,18 +114,18 @@ class FilterViewModel: ObservableObject {
     }
     
     func recipeContainsActiveFilterIntolerance(_ recipe: Recipe, filters: [Filter]) -> Bool {
-//        print("checking if, recipe contains active filter")
         let activeFilters = filters.filter{$0.isActive.wrappedValue}
+        var equalIntolances = 0
         
         for activeFilter in activeFilters {
             for intolerance in recipe.intolerances {
                 if intolerance.type == activeFilter.intolerance.type {
-                    return true
+                    equalIntolances += 1
                 }
             }
-            return recipe.intolerances.contains(where: {$0.type == activeFilter.intolerance.type})
         }
-        return true
+
+        return activeFilters.count == equalIntolances
     }
     
     struct Filter {
