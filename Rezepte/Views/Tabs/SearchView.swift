@@ -40,7 +40,7 @@ struct SearchView: View {
                     self.viewModel.filterViewModel.saveFilters(self.filters)
                     self.filters = self.viewModel.filterViewModel.loadFilters()},
                    content: {
-                    Filter(filters: self.$filters,
+                    Filter(viewModel: self.viewModel.filterViewModel, filters: self.$filters,
                            showSheet: self.$showFilterSheet)
                         .accentColor(.init("AccentColor"))
             })

@@ -12,14 +12,11 @@ import CoreData
 import SwiftUI
 
 class FilterViewModel: ObservableObject {
-//    @Published var filters: [Filter]
     let context: NSManagedObjectContext
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
-        
-//        self.filters = []
     }
     
     func loadFilters() -> [Filter] {
@@ -43,7 +40,7 @@ class FilterViewModel: ObservableObject {
         return filters.sorted(by: {$0.intolerance.type < $1.intolerance.type})
     }
     
-    func isFilterSavedAndActive(_ filterName: String) -> Bool {
+    private func isFilterSavedAndActive(_ filterName: String) -> Bool {
         let request = NSFetchRequest<NSFetchRequestResult>(entityName: "FilterEntity")
         request.returnsObjectsAsFaults = false
         

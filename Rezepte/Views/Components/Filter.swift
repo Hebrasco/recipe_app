@@ -9,17 +9,24 @@
 import SwiftUI
 
 struct Filter: View {
+    @ObservedObject var viewModel: FilterViewModel
     @Binding var filters: [FilterViewModel.Filter]
     @Binding var showSheet: Bool
+    
+    init(viewModel: FilterViewModel, filters: Binding<[FilterViewModel.Filter]>, showSheet: Binding<Bool>) {
+        self.viewModel = viewModel
+        self._filters = filters
+        self._showSheet = showSheet
+    }
     
     var body: some View {
         VStack {
             Form {
                 Section(header: FilterHeader(showSheet: $showSheet),
-                        footer: FilterFooter(),
+                        footer: FilterFooter(viewModel: viewModel, filters: $filters, showSheet: $showSheet),
                         content: {
                             ForEach(filters.indices, id: \.self) { index in
-                                IntoleranceItem(self.$filters[index])
+                                return IntoleranceItem(self.$filters[index])
                         }
                 })
             }
@@ -44,9 +51,16 @@ struct FilterHeader: View {
 }
 
 struct FilterFooter: View {
+    @ObservedObject var viewModel: FilterViewModel
+    @Binding var filters: [FilterViewModel.Filter]
+    @Binding var showSheet: Bool
+    
     var body: some View {
         Button(action: {
-            
+            for filter in self.filters {
+                filter.isActive.wrappedValue = false
+            }
+            self.showSheet.toggle()
         }, label: {
             Text("Alle Filter zurücksetzen")
         })
@@ -78,7 +92,9 @@ struct IntoleranceItem: View {
 
 struct Filter_Previews: PreviewProvider {
     static var previews: some View {
-        Filter(filters: .constant([FilterViewModel.Filter(intolerance: Recipe.Intolerance(type: "Gluten", image: .gluten), isActive: .constant(false))]),
+        Filter(viewModel: FilterViewModel(),
+               filters: .constant([FilterViewModel.Filter(intolerance: Recipe.Intolerance(type: "Gluten", image: .gluten),
+               isActive: .constant(false))]),
                showSheet: .constant(true))
     }
 }
