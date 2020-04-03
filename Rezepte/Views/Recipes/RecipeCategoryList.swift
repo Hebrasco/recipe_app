@@ -12,6 +12,7 @@ struct RecipeCategoryList: View {
     @State var recipes: [Recipe] = []
     let categoryTitle: String
     let secondaryCategories: [RecipeCategory]
+    let isRecipeView: Bool
     
     init(category: RecipeCategory.Category) {
         self.categoryTitle = category.title
@@ -53,7 +54,17 @@ struct RecipeCategoryList: View {
             self.secondaryCategories = []
         }
         
-        self.recipes = Recipes.getRecipes().filter{$0.primaryCategory.contains(category.title)}
+        if category.type == .recipes {
+            isRecipeView = true
+        } else {
+            isRecipeView = false
+        }
+        
+        if isRecipeView {
+            self.recipes = Recipes.getRecipes()
+        } else {
+            self.recipes = Recipes.getRecipes().filter{$0.primaryCategory.contains(category.title)}
+        }
     }
     
     var body: some View {
@@ -64,7 +75,11 @@ struct RecipeCategoryList: View {
             }
         }
         .onAppear(perform: {
-            self.recipes = Recipes.getRecipes().filter{$0.primaryCategory.contains(self.categoryTitle)}
+            if self.isRecipeView {
+                self.recipes = Recipes.getRecipes()
+            } else {
+                self.recipes = Recipes.getRecipes().filter{$0.primaryCategory.contains(self.categoryTitle)}
+            }
         })
         .navigationBarTitle(categoryTitle)
     }

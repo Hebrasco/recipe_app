@@ -130,9 +130,9 @@
 		6515DC0823F5410000271AEA /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				654BD68D2436398A001B4BBA /* Tabs */,
 				65FA40A523FBF19B00A5ABDA /* Components */,
 				65FA409E23FBE50F00A5ABDA /* Recipes */,
+				654BD68D2436398A001B4BBA /* Tabs */,
 			);
 			path = Views;
 			sourceTree = "<group>";

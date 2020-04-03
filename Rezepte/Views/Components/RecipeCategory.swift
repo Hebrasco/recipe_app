@@ -12,21 +12,21 @@ struct RecipeCategory: View {
     let id = UUID()
     let category: Category
     let hasSubcategories: Bool
+    let destination: AnyView
     
     init(_ category: Category.Categories, hasSubcategories: Bool = false) {
         self.category = Category(category)
         self.hasSubcategories = hasSubcategories
+        
+        if hasSubcategories {
+            self.destination = AnyView(RecipeCategoryList(category: self.category))
+        } else {
+            self.destination = AnyView(RecipeSearchBarList(categoryTitle: self.category.title))
+        }
     }
     
     var body: some View {
-        let destination: AnyView
-        if hasSubcategories {
-            destination = AnyView(RecipeCategoryList(category: category))
-        } else {
-            destination = AnyView(RecipeSearchBarList(categoryTitle: category.title))
-        }
-        
-        return NavigationLink(
+        NavigationLink(
             destination: destination,
             label: {
                 HStack {
@@ -91,7 +91,7 @@ struct RecipeCategory: View {
                 title = "Suppen"
                 image = "soup"
             case .motto:
-                title = "Motto/Anlässe"
+                title = "Mottos/Anlässe"
                 image = "motto"
             case .carnevall:
                 title = "Fasching"
@@ -118,7 +118,7 @@ struct RecipeCategory: View {
                 title = "Süßes"
                 image = "sweets"
             case .hearty:
-                title = "Herzhaftes"
+                title = "Herzhaft"
                 image = "hearty"
             }
         }

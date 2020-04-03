@@ -13,7 +13,9 @@ struct ContentView: View {
     
     var body: some View {
         TabView(selection: $selection){
-            RecipeCategoryList(category: .init(.recipes))
+                NavigationView {
+                    RecipeCategoryList(category: .init(.recipes))
+                }
                 .tabItem {
                     VStack {
                         Image(systemName: "book")
