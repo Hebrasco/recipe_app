@@ -159,7 +159,47 @@ class RecipePlanViewModel: ObservableObject {
     }
     
     func deleteReciePlan(_ plan: SavedPlan) {
+        let requestPlanEntities = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlanEntity")
+        requestPlanEntities.returnsObjectsAsFaults = false
         
+        do {
+            let items = try context.fetch(requestPlanEntities)
+            
+            if items.count > 0 {
+                for item in items as! [NSManagedObject] {
+                    let savedName = item.value(forKey: "savedName") as? String
+                    
+                    if savedName == plan.name {
+                        context.delete(item)
+                    }
+                }
+            }
+        } catch {
+            print("Error while getting recipe plan dates from CoreData")
+        }
+        
+        let requestPlans = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlans")
+        requestPlans.returnsObjectsAsFaults = false
+        
+        do {
+            let items = try context.fetch(requestPlans)
+            
+            if items.count > 0 {
+                for item in items as! [NSManagedObject] {
+                    let savedName = item.value(forKey: "name") as? String
+                    
+                    if savedName == plan.name {
+                        context.delete(item)
+                    }
+                }
+            }
+        } catch {
+            print("Error while getting recipe plan dates from CoreData")
+        }
+        
+        try? context.save()
+        
+        loadPlans()
     }
     
     func removeRecipe(with indexSet: IndexSet, from weekday: WeekDays) {
