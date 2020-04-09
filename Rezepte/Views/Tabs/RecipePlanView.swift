@@ -258,19 +258,29 @@ struct SheetContentLoadPlan: View {
 struct SheetContentDeletePlan: View {
     @ObservedObject var viewModel: RecipePlanViewModel
     @Binding var showSheet: Bool
+    @State var showDeleteAlert = false
     
     var body: some View {
-        ForEach(viewModel.savedPlans, id: \.id) { plan in
-            Button(action: {
-                self.viewModel.deleteReciePlan(plan)
-                self.showSheet.toggle()
-            }, label: {
-                VStack(alignment: .leading) {
-                    Text(plan.name)
-                    Text("\(plan.createdAt)")
-                        .font(.footnote)
-                }
-            })
+        List {
+            ForEach(viewModel.savedPlans, id: \.id) { plan in
+                Button(action: {
+                    self.showDeleteAlert.toggle()
+                }, label: {
+                    VStack(alignment: .leading) {
+                        Text(plan.name)
+                        Text("\(plan.createdAt)")
+                            .font(.footnote)
+                    }
+                })
+                .alert(isPresented: self.$showDeleteAlert, content: {
+                    Alert(title: Text("Wochenplan löschen"),
+                          message: Text("Sind Sie sicher, dass die den Wochenplan löschen wollen?"),
+                          primaryButton: .cancel(Text("Abbrechen")),
+                          secondaryButton: .destructive(Text("Löschen"), action: {
+                            self.viewModel.deleteReciePlan(plan)
+                          }))
+                })
+            }
         }
     }
 }
