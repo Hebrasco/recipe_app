@@ -32,8 +32,6 @@ class RecipePlanViewModel: ObservableObject {
         
         loadPlans()
         loadRecipes(isInit: true)
-        
-        print(savedPlans)
     }
     
     func loadPlans() {
@@ -79,7 +77,11 @@ class RecipePlanViewModel: ObservableObject {
                     let recipe = recipes.filter{$0.id == id}
 
                     if isInit {
-                        if savedName != nil {
+                        continue
+                    }
+                    
+                    if savedName != nil {
+                        if savedName != selectedPlan.name {
                             continue
                         }
                     }
@@ -121,28 +123,10 @@ class RecipePlanViewModel: ObservableObject {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd.MM.yyyy hh:mm"
         
-//        let requestPlanDates = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlans")
-//        requestPlanDates.returnsObjectsAsFaults = false
-//
-//        do {
-//            let items = try context.fetch(requestPlanDates)
-//
-//            if items.count > 0 {
-//                for item in items as! [NSManagedObject] {
-//                    let weeklyPlans = WeeklyPlans(context: context)
-//                    weeklyPlans.id = UUID()
-//                    weeklyPlans.createdAt = dateFormatter.string(from: Date())
-//                    weeklyPlans.name = name
-//                }
-//            } else {
-                let weeklyPlans = WeeklyPlans(context: context)
-                weeklyPlans.id = UUID()
-                weeklyPlans.createdAt = dateFormatter.string(from: Date())
-                weeklyPlans.name = name
-//            }
-//        } catch {
-//            print("Error while getting recipe plan dates from CoreData")
-//        }
+        let weeklyPlans = WeeklyPlans(context: context)
+        weeklyPlans.id = UUID()
+        weeklyPlans.createdAt = dateFormatter.string(from: Date())
+        weeklyPlans.name = name
         
         let requestPlanEntities = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlanEntity")
         requestPlanEntities.returnsObjectsAsFaults = false
