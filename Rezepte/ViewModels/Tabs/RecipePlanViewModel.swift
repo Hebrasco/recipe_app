@@ -21,33 +21,38 @@ class RecipePlanViewModel: ObservableObject {
     var wednesdayRecipesManagedObj: [NSManagedObject] = []
     var thursdayRecipesManagedObj: [NSManagedObject] = []
     var fridayRecipesManagedObj: [NSManagedObject] = []
-    var savedPlanDates: [Date] = []
-    var selectedPlanDate: Date
+    var savedPlans: [SavedPlan] = []
+    var selectedPlan: SavedPlan
     let context: NSManagedObjectContext
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
-        selectedPlanDate = Calendar.current.startOfDay(for: Date())
+        selectedPlan = SavedPlan(name: "", createdAt: "")
         
-        loadDates()
+        loadPlans()
         loadRecipes(isInit: true)
+        
+        print(savedPlans)
     }
     
-    func loadDates() {
-        let requestPlanDates = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlanDates")
+    func loadPlans() {
+        let requestPlanDates = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlans")
         requestPlanDates.returnsObjectsAsFaults = false
+        
+        savedPlans = []
         
         do {
             let items = try context.fetch(requestPlanDates)
             
             if items.count > 0 {
                 for item in items as! [NSManagedObject] {
-                    let date = item.value(forKey: "date") as! Date
+                    let createdAt = item.value(forKey: "createdAt") as! String
+                    let name = item.value(forKey: "name") as! String
                     
-                    savedPlanDates.append(date)
+                    savedPlans.append(SavedPlan(name: name, createdAt: createdAt))
                 }
-                selectedPlanDate = Calendar.current.startOfDay(for: savedPlanDates[0])
+                selectedPlan = savedPlans[0]
             }
         } catch {
             print("Error while getting recipe plan dates from CoreData")
@@ -60,33 +65,21 @@ class RecipePlanViewModel: ObservableObject {
 
         let recipes = Recipes.getRecipes()
         
-        self.mondayRecipes = []
-        self.thuesdayRecipes = []
-        self.wednesdayRecipes = []
-        self.thursdayRecipes = []
-        self.fridayRecipes = []
-        
-        self.mondayRecipesManagedObj = []
-        self.thuesdayRecipesManagedObj = []
-        self.wednesdayRecipesManagedObj = []
-        self.thursdayRecipesManagedObj = []
-        self.fridayRecipesManagedObj = []
+        removeLoadedRecipes()
         
         do {
             let items = try context.fetch(requestPlanEntites)
-            
-            print(items.count)
             
             if items.count > 0 {
                 for item in items as! [NSManagedObject] {
                     let id = item.value(forKey: "recipeID") as! Int
                     let weekday = item.value(forKey: "weekday") as! Int
                     let mealType = item.value(forKey: "mealType") as! String
-                    let savedDate = item.value(forKey: "savedDate") as? Date
+                    let savedName = item.value(forKey: "savedName") as? String
                     let recipe = recipes.filter{$0.id == id}
 
                     if isInit {
-                        if savedDate != nil {
+                        if savedName != nil {
                             continue
                         }
                     }
@@ -124,35 +117,32 @@ class RecipePlanViewModel: ObservableObject {
         }
     }
     
-    func saveRecipePlan() {
-        let calendar = Calendar.current
+    func saveRecipePlan(name: String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd.MM.yyyy hh:mm"
         
-        let requestPlanDates = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlanDates")
-        requestPlanDates.returnsObjectsAsFaults = false
-        
-        do {
-            let items = try context.fetch(requestPlanDates)
-            
-            if items.count > 0 {
-                for item in items as! [NSManagedObject] {
-                    let date = item.value(forKey: "date") as! Date
-                    
-                    print(item)
-                    
-                    if !Calendar.current.isDateInToday(date) {
-                        let weeklyPlanDates = WeeklyPlanDates(context: context)
-                        weeklyPlanDates.id = UUID()
-                        weeklyPlanDates.date = calendar.startOfDay(for: Date())
-                    }
-                }
-            } else {
-                let weeklyPlanDates = WeeklyPlanDates(context: context)
-                weeklyPlanDates.id = UUID()
-                weeklyPlanDates.date = calendar.startOfDay(for: Date())
-            }
-        } catch {
-            print("Error while getting recipe plan dates from CoreData")
-        }
+//        let requestPlanDates = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlans")
+//        requestPlanDates.returnsObjectsAsFaults = false
+//
+//        do {
+//            let items = try context.fetch(requestPlanDates)
+//
+//            if items.count > 0 {
+//                for item in items as! [NSManagedObject] {
+//                    let weeklyPlans = WeeklyPlans(context: context)
+//                    weeklyPlans.id = UUID()
+//                    weeklyPlans.createdAt = dateFormatter.string(from: Date())
+//                    weeklyPlans.name = name
+//                }
+//            } else {
+                let weeklyPlans = WeeklyPlans(context: context)
+                weeklyPlans.id = UUID()
+                weeklyPlans.createdAt = dateFormatter.string(from: Date())
+                weeklyPlans.name = name
+//            }
+//        } catch {
+//            print("Error while getting recipe plan dates from CoreData")
+//        }
         
         let requestPlanEntities = NSFetchRequest<NSFetchRequestResult>(entityName: "WeeklyPlanEntity")
         requestPlanEntities.returnsObjectsAsFaults = false
@@ -160,34 +150,31 @@ class RecipePlanViewModel: ObservableObject {
         do {
             let items = try context.fetch(requestPlanEntities)
             
-            
-            
             if items.count > 0 {
                 for item in items as! [NSManagedObject] {
-                    let date = item.value(forKey: "savedDate") as? Date
+                    let savedName = item.value(forKey: "savedName") as? String
                     
-                    print(item)
-                    
-                    if date == nil {
-                        item.setValue(calendar.startOfDay(for: Date()), forKey: "savedDate")
+                    if savedName == nil {
+                        item.setValue(name, forKey: "savedName")
                     }
                 }
             }
-            print("items:", items)
         } catch {
             print("Error while getting recipe plan dates from CoreData")
         }
         
         try? context.save()
+        
+        loadPlans()
     }
     
-    func loadRecipePlan(withDate date: Date) {
-        selectedPlanDate = Calendar.current.startOfDay(for: date)
+    func loadRecipePlan(_ plan: SavedPlan) {
+        selectedPlan = plan
         
         loadRecipes()
     }
     
-    func deleteReciePlan() {
+    func deleteReciePlan(_ plan: SavedPlan) {
         
     }
     
@@ -228,28 +215,21 @@ class RecipePlanViewModel: ObservableObject {
         try? context.save()
     }
     
-    func removeAllRecipes() {
-//        for managedObj in mondayRecipesManagedObj {
-//            context.delete(managedObj)
-//        }
-//
-//        for managedObj in thuesdayRecipesManagedObj {
-//            context.delete(managedObj)
-//        }
-//
-//        for managedObj in wednesdayRecipesManagedObj {
-//            context.delete(managedObj)
-//        }
-//
-//        for managedObj in thursdayRecipesManagedObj {
-//            context.delete(managedObj)
-//        }
-//
-//        for managedObj in fridayRecipesManagedObj {
-//            context.delete(managedObj)
-//        }
-//
-//        try? context.save()
+    func removeLoadedRecipes() {
+        func deleteManagedObj(in array: [NSManagedObject]) {
+            for managedObj in array {
+                let name = managedObj.value(forKey: "savedName") as? String
+                if name == nil {
+                    context.delete(managedObj)
+                }
+            }
+        }
+        
+        deleteManagedObj(in: mondayRecipesManagedObj)
+        deleteManagedObj(in: thuesdayRecipesManagedObj)
+        deleteManagedObj(in: wednesdayRecipesManagedObj)
+        deleteManagedObj(in: thursdayRecipesManagedObj)
+        deleteManagedObj(in: fridayRecipesManagedObj)
         
         self.mondayRecipes = []
         self.thuesdayRecipes = []
@@ -278,6 +258,17 @@ class RecipePlanViewModel: ObservableObject {
         case snack = "snack"
     }
     
+    enum SheetContent {
+        case save
+        case load
+        case delete
+    }
+    
+    struct SavedPlan {
+        let id = UUID()
+        let name: String
+        let createdAt: String
+    }
     
     struct PlanRecipe {
         let id: UUID

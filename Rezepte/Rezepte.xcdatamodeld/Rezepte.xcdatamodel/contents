@@ -14,21 +14,22 @@
         <attribute name="type" optional="YES" attributeType="String"/>
         <attribute name="unit" optional="YES" attributeType="String"/>
     </entity>
-    <entity name="WeeklyPlanDates" representedClassName="WeeklyPlanDates" syncable="YES" codeGenerationType="class">
-        <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
-        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-    </entity>
     <entity name="WeeklyPlanEntity" representedClassName="WeeklyPlanEntity" syncable="YES" codeGenerationType="class">
         <attribute name="mealType" optional="YES" attributeType="String"/>
         <attribute name="recipeID" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
-        <attribute name="savedDate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="savedName" optional="YES" attributeType="String"/>
         <attribute name="weekday" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+    </entity>
+    <entity name="WeeklyPlans" representedClassName="WeeklyPlans" syncable="YES" codeGenerationType="class">
+        <attribute name="createdAt" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
     </entity>
     <elements>
         <element name="FavoriteEntity" positionX="-63" positionY="-18" width="128" height="58"/>
         <element name="FilterEntity" positionX="32.796875" positionY="125.71875" width="128" height="73"/>
         <element name="ShoppingListEntity" positionX="119.98046875" positionY="-11.09375" width="127.61328125" height="118"/>
         <element name="WeeklyPlanEntity" positionX="-179.98828125" positionY="57.61328125" width="128" height="103"/>
-        <element name="WeeklyPlanDates" positionX="-356.21484375" positionY="75.15234375" width="128" height="73"/>
+        <element name="WeeklyPlans" positionX="-356.21484375" positionY="75.15234375" width="128" height="88"/>
     </elements>
 </model>

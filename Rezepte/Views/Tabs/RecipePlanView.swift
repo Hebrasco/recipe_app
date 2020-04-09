@@ -13,7 +13,8 @@ struct RecipePlanView: View {
     @State private var selectedTab: Int = 0
     @State var showActionSheet = false
     @State var showDismissAlert = false
-    @State var selectedDate = Date()
+    @State var showSheet = false
+    @State var sheetContent: RecipePlanViewModel.SheetContent = .load
     
     var body: some View {
         NavigationView {
@@ -44,16 +45,26 @@ struct RecipePlanView: View {
                     RecipesOfWeekDay(.friday, viewModel: viewModel)
                 }
             }
+            .sheet(isPresented: $showSheet, onDismiss: {
+            }, content: {
+                SheetContent(viewModel: self.viewModel,
+                             showSheet: self.$showSheet,
+                             sheetContent: self.$sheetContent)
+            })
             .actionSheet(isPresented: $showActionSheet, content: {
                 ActionSheet(title: Text("Wochenplan bearbeiten"),
                             buttons: [.default(Text("Speichern"), action: {
-                                        self.viewModel.saveRecipePlan()
+                                        self.sheetContent = .save
+                                        self.showSheet.toggle()
                                       }),
                                       .default(Text("Laden"), action: {
-                                        self.viewModel.loadRecipePlan(withDate: self.selectedDate)
+                                          self.sheetContent = .load
+                                        self.showSheet.toggle()
                                       }),
                                       .destructive(Text("Löschen"), action: {
-                                        self.viewModel.removeAllRecipes()
+                                          self.sheetContent = .delete
+                                          self.showSheet.toggle()
+//                                        self.viewModel.removeLoadedRecipes()
                                       }),
                                       .cancel(Text("Abbrechen"))])
             })
@@ -61,7 +72,7 @@ struct RecipePlanView: View {
                 Alert(title: Text("Wochenplan verwerfen"),
                      message: Text("Sind Sie sicher, dass Sie den Aktuellen Wochenplan verwerfen möchten?"),
                      primaryButton: .destructive(Text("Verwerfen"), action: {
-                        self.viewModel.removeAllRecipes()
+                        self.viewModel.removeLoadedRecipes()
                      }),
                      secondaryButton: .cancel(Text("Abbrechen")))
             })
@@ -81,6 +92,20 @@ struct RecipePlanView: View {
                         .imageScale(.large)
                 })
             })
+        }
+    }
+}
+
+struct SheetContent: View {
+    @ObservedObject var viewModel: RecipePlanViewModel
+    @Binding var showSheet: Bool
+    @Binding var sheetContent: RecipePlanViewModel.SheetContent
+    
+    var body: some View {
+        switch sheetContent {
+        case .save: return AnyView(SheetContentSavePlan(viewModel: viewModel, showSheet: $showSheet))
+            case .load: return AnyView(SheetContentLoadPlan(viewModel: viewModel, showSheet: $showSheet))
+            case .delete: return AnyView(SheetContentDeletePlan(viewModel: viewModel, showSheet: $showSheet))
         }
     }
 }
@@ -187,6 +212,66 @@ struct RecipesOfWeekDay: View {
             self.viewModel.removeRecipe(with: indexSet, from: self.weekday)
         })
         
+    }
+}
+
+struct SheetContentSavePlan: View {
+    @ObservedObject var viewModel: RecipePlanViewModel
+    @Binding var showSheet: Bool
+    @State var recentlySavedName = ""
+    
+    var body: some View {
+        Form {
+            TextField("Name", text: $recentlySavedName)
+            Button(action: {
+                self.viewModel.saveRecipePlan(name: self.recentlySavedName)
+                self.showSheet.toggle()
+            }, label: {
+                Text("Speichern")
+            })
+        }
+    }
+}
+
+struct SheetContentLoadPlan: View {
+    @ObservedObject var viewModel: RecipePlanViewModel
+    @Binding var showSheet: Bool
+    
+    var body: some View {
+        List {
+            ForEach(viewModel.savedPlans, id: \.id) { plan in
+                Button(action: {
+                    self.viewModel.loadRecipePlan(plan)
+                    self.showSheet.toggle()
+                }, label: {
+                    VStack(alignment: .leading) {
+                        Text(plan.name)
+                        Text("\(plan.createdAt)")
+                            .font(.footnote)
+                    }
+                })
+            }
+        }
+    }
+}
+
+struct SheetContentDeletePlan: View {
+    @ObservedObject var viewModel: RecipePlanViewModel
+    @Binding var showSheet: Bool
+    
+    var body: some View {
+        ForEach(viewModel.savedPlans, id: \.id) { plan in
+            Button(action: {
+                self.viewModel.deleteReciePlan(plan)
+                self.showSheet.toggle()
+            }, label: {
+                VStack(alignment: .leading) {
+                    Text(plan.name)
+                    Text("\(plan.createdAt)")
+                        .font(.footnote)
+                }
+            })
+        }
     }
 }
 
