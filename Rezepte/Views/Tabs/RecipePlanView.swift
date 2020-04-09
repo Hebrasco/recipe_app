@@ -11,6 +11,9 @@ import SwiftUI
 struct RecipePlanView: View {
     @ObservedObject var viewModel = RecipePlanViewModel()
     @State private var selectedTab: Int = 0
+    @State var showActionSheet = false
+    @State var showDismissAlert = false
+    @State var selectedDate = Date()
     
     var body: some View {
         NavigationView {
@@ -41,12 +44,43 @@ struct RecipePlanView: View {
                     RecipesOfWeekDay(.friday, viewModel: viewModel)
                 }
             }
+            .actionSheet(isPresented: $showActionSheet, content: {
+                ActionSheet(title: Text("Wochenplan bearbeiten"),
+                            buttons: [.default(Text("Speichern"), action: {
+                                        self.viewModel.saveRecipePlan()
+                                      }),
+                                      .default(Text("Laden"), action: {
+                                        self.viewModel.loadRecipePlan(withDate: self.selectedDate)
+                                      }),
+                                      .destructive(Text("Löschen"), action: {
+                                        self.viewModel.removeAllRecipes()
+                                      }),
+                                      .cancel(Text("Abbrechen"))])
+            })
+            .alert(isPresented: $showDismissAlert, content: {
+                Alert(title: Text("Wochenplan verwerfen"),
+                     message: Text("Sind Sie sicher, dass Sie den Aktuellen Wochenplan verwerfen möchten?"),
+                     primaryButton: .destructive(Text("Verwerfen"), action: {
+                        self.viewModel.removeAllRecipes()
+                     }),
+                     secondaryButton: .cancel(Text("Abbrechen")))
+            })
             .navigationBarTitle("Wochenplan")
-            .navigationBarItems(trailing: Button(action: {
-                self.viewModel.removeAllRecipes()
-            }, label: {
-                Image(systemName: "trash")
-            }))
+            .navigationBarItems(trailing: HStack{
+                Button(action: {
+                    self.showActionSheet.toggle()
+                }, label: {
+                    Image(systemName: "ellipsis.circle")
+                        .imageScale(.large)
+                })
+                .padding(.trailing)
+                Button(action: {
+                    self.showDismissAlert.toggle()
+                }, label: {
+                    Image(systemName: "trash")
+                        .imageScale(.large)
+                })
+            })
         }
     }
 }

@@ -20,7 +20,7 @@ class RecipeCardViewModel: ObservableObject {
     
     func addRecipeToWeeklyPlan(_ recipe: Recipe, weekday: RecipePlanViewModel.WeekDays, mealType: RecipePlanViewModel.MealType) {
         let weeklyPlanEntity = WeeklyPlanEntity(context: context)
-        weeklyPlanEntity.recipe_id = Int32(recipe.id)
+        weeklyPlanEntity.recipeID = Int32(recipe.id)
         weeklyPlanEntity.weekday = weekday.rawValue
         weeklyPlanEntity.mealType = mealType.rawValue
         

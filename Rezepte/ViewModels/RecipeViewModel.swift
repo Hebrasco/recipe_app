@@ -43,7 +43,7 @@ class RecipeViewModel: ObservableObject {
             do {
                 let results = try context.fetch(request)
                 for result in results as! [NSManagedObject] {
-                    let favoriteID = result.value(forKey: "recipe_id") as! Int
+                    let favoriteID = result.value(forKey: "recipeID") as! Int
                     if favoriteID == recipe.id {
                         favoriteObj = result
                     }
@@ -142,7 +142,7 @@ class RecipeViewModel: ObservableObject {
             recipe.isFavorite = isFavorite
             
             let favoriteEntity = FavoriteEntity(context: context)
-            favoriteEntity.recipe_id = Int32(recipe.id)
+            favoriteEntity.recipeID = Int32(recipe.id)
             
             try? context.save()
         }

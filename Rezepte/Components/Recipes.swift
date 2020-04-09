@@ -208,7 +208,7 @@ class Recipes {
         do {
             let favorites = try context.fetch(request)
             for favorite in favorites as! [NSManagedObject] {
-                let favoriteID = favorite.value(forKey: "recipe_id") as! Int
+                let favoriteID = favorite.value(forKey: "recipeID") as! Int
                 if Int(id) == favoriteID {
                     return true
                 }
