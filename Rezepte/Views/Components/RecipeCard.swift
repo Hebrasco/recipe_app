@@ -9,24 +9,25 @@
 import SwiftUI
 
 struct RecipeCard: View {
-    @State var showActionSheet = false
-    let viewModel = RecipeCardViewModel()
-    let recipe: Recipe
-    let type: RecipeCardViewModel.PressAction
-    let weekday: RecipePlanViewModel.WeekDays
+    @State private var showActionSheet = false
+    private let viewModel = RecipeCardController()
+    private let recipe: Recipe
+    private let type: RecipeCardController.PressAction
+    private let weekday: RecipePlanViewController.WeekDays
     
-    init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction) {
+    init(_ recipe: Recipe, with type: RecipeCardController.PressAction) {
         self.recipe = recipe
         self.type = type
         self.weekday = .monday
     }
     
-    init(_ recipe: Recipe, with type: RecipeCardViewModel.PressAction, onWeekDay weekday: RecipePlanViewModel.WeekDays) {
+    init(_ recipe: Recipe, with type: RecipeCardController.PressAction, onWeekDay weekday: RecipePlanViewController.WeekDays) {
         self.recipe = recipe
         self.type = type
         self.weekday = weekday
     }
     
+    #warning("Remove Pressaction. It's not needed here!")
     var body: some View {
         VStack {
             if type == .Navigation {
@@ -59,7 +60,7 @@ struct RecipeCard: View {
 }
 
 struct Card: View {
-    let recipe: Recipe
+    private let recipe: Recipe
     
     init(_ recipe: Recipe) {
         self.recipe = recipe
@@ -98,7 +99,7 @@ struct Card: View {
                 .padding(.horizontal)
                 HStack {
                     ForEach(recipe.intolerances, id: \.id) { intolerance in
-                        Intolerance(intolerance: intolerance)
+                        Intolerance(intolerance)
                     }
                 }
                 .padding(.horizontal)
@@ -123,7 +124,11 @@ struct Card: View {
 }
 
 struct Intolerance: View {
-    let intolerance: Recipe.Intolerance
+    private let intolerance: Recipe.Intolerance
+    
+    init(_ intolerance: Recipe.Intolerance) {
+        self.intolerance = intolerance
+    }
     
     var body: some View {
         Image(intolerance.image.rawValue)
@@ -135,7 +140,7 @@ struct Intolerance: View {
     }
 }
 
-struct Recipe_Previews: PreviewProvider {
+struct RecipeCard_Previews: PreviewProvider {
     static var previews: some View {
         let id = 1
         let image = "placeholder"

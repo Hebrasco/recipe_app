@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct SearchView: View {
-    @ObservedObject var viewModel = SearchViewModel()
-    @State var filters: [FilterViewModel.Filter] = []
-    @State var recipes: [Recipe] = []
-    @State var showFilterSheet = false
+    @ObservedObject private var viewModel = SearchViewController()
+    @State private var filters: [FilterController.Filter] = []
+    @State private var recipes: [Recipe] = []
+    @State private var showFilterSheet = false
     
     var body: some View {
         NavigationView {
@@ -49,6 +49,7 @@ struct SearchView: View {
                 self.showFilterSheet.toggle()
             }, label: {
                 Image(systemName: "line.horizontal.3.decrease.circle")
+                    .imageScale(.large)
             }))
         }
     }

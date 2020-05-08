@@ -10,9 +10,9 @@ import SwiftUI
 
 
 struct SearchBar: View {
-    @State var showCancelButton = false
-    @Binding var text: String
-    let placeholder: String
+    @State private var showCancelButton = false
+    @Binding private var text: String
+    private let placeholder: String
     
     init(text: Binding<String>) {
         self._text = text

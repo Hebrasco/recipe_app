@@ -1,5 +1,5 @@
 //
-//  FilterViewModel.swift
+//  FilterController.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 30.03.20.
@@ -11,8 +11,8 @@ import UIKit
 import CoreData
 import SwiftUI
 
-class FilterViewModel: ObservableObject {
-    let context: NSManagedObjectContext
+final class FilterController: ObservableObject {
+    private let context: NSManagedObjectContext
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -102,7 +102,7 @@ class FilterViewModel: ObservableObject {
         }
     }
     
-    func saveFilterToCoreData(_ filter: Filter) {
+    private func saveFilterToCoreData(_ filter: Filter) {
         print("saving...", filter.intolerance.type, "with", filter.isActive.wrappedValue)
         
         let filterEntity = FilterEntity(context: context)

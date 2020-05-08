@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct Filter: View {
-    @ObservedObject var viewModel: FilterViewModel
-    @Binding var filters: [FilterViewModel.Filter]
-    @Binding var showSheet: Bool
+    @ObservedObject private var viewModel: FilterController
+    @Binding private var filters: [FilterController.Filter]
+    @Binding private var showSheet: Bool
     
-    init(viewModel: FilterViewModel, filters: Binding<[FilterViewModel.Filter]>, showSheet: Binding<Bool>) {
+    init(viewModel: FilterController, filters: Binding<[FilterController.Filter]>, showSheet: Binding<Bool>) {
         self.viewModel = viewModel
         self._filters = filters
         self._showSheet = showSheet
@@ -35,7 +35,11 @@ struct Filter: View {
 }
 
 struct FilterHeader: View {
-    @Binding var showSheet: Bool
+    @Binding private var showSheet: Bool
+    
+    init(showSheet: Binding<Bool>) {
+        self._showSheet = showSheet
+    }
     
     var body: some View {
         HStack {
@@ -51,8 +55,8 @@ struct FilterHeader: View {
 }
 
 struct FilterFooter: View {
-    @ObservedObject var viewModel: FilterViewModel
-    @Binding var filters: [FilterViewModel.Filter]
+    @ObservedObject var viewModel: FilterController
+    @Binding var filters: [FilterController.Filter]
     @Binding var showSheet: Bool
     
     var body: some View {
@@ -68,9 +72,9 @@ struct FilterFooter: View {
 }
 
 struct IntoleranceItem: View {
-    @Binding var filter: FilterViewModel.Filter
+    @Binding private var filter: FilterController.Filter
     
-    init(_ filter: Binding<FilterViewModel.Filter>) {
+    init(_ filter: Binding<FilterController.Filter>) {
         self._filter = filter
     }
     
@@ -92,8 +96,8 @@ struct IntoleranceItem: View {
 
 struct Filter_Previews: PreviewProvider {
     static var previews: some View {
-        Filter(viewModel: FilterViewModel(),
-               filters: .constant([FilterViewModel.Filter(intolerance: Recipe.Intolerance(type: "Gluten", image: .gluten),
+        Filter(viewModel: FilterController(),
+               filters: .constant([FilterController.Filter(intolerance: Recipe.Intolerance(type: "Gluten", image: .gluten),
                isActive: .constant(false))]),
                showSheet: .constant(true))
     }

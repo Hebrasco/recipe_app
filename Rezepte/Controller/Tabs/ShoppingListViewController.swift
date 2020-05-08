@@ -1,5 +1,5 @@
 //
-//  ShoppingListViewModel.swift
+//  ShoppingListViewController.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 13.02.20.
@@ -10,9 +10,9 @@ import Foundation
 import UIKit
 import CoreData
 
-class ShoppingListViewModel: ObservableObject {
+final class ShoppingListViewController: ObservableObject {
     @Published var items: [ShoppingIngredient] = []
-    let context: NSManagedObjectContext
+    private let context: NSManagedObjectContext
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

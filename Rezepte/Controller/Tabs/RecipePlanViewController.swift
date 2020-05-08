@@ -1,5 +1,5 @@
 //
-//  RecipePlanViewModel.swift
+//  RecipePlanViewController.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 13.02.20.
@@ -10,20 +10,20 @@ import Foundation
 import UIKit
 import CoreData
 
-class RecipePlanViewModel: ObservableObject {
+final class RecipePlanViewController: ObservableObject {
     @Published var mondayRecipes: [PlanRecipe] = []
     @Published var thuesdayRecipes: [PlanRecipe] = []
     @Published var wednesdayRecipes: [PlanRecipe] = []
     @Published var thursdayRecipes: [PlanRecipe] = []
     @Published var fridayRecipes: [PlanRecipe] = []
-    var mondayRecipesManagedObj: [NSManagedObject] = []
-    var thuesdayRecipesManagedObj: [NSManagedObject] = []
-    var wednesdayRecipesManagedObj: [NSManagedObject] = []
-    var thursdayRecipesManagedObj: [NSManagedObject] = []
-    var fridayRecipesManagedObj: [NSManagedObject] = []
     var savedPlans: [SavedPlan] = []
-    var selectedPlan: SavedPlan
-    let context: NSManagedObjectContext
+    private var mondayRecipesManagedObj: [NSManagedObject] = []
+    private var thuesdayRecipesManagedObj: [NSManagedObject] = []
+    private var wednesdayRecipesManagedObj: [NSManagedObject] = []
+    private var thursdayRecipesManagedObj: [NSManagedObject] = []
+    private var fridayRecipesManagedObj: [NSManagedObject] = []
+    private var selectedPlan: SavedPlan
+    private let context: NSManagedObjectContext
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate

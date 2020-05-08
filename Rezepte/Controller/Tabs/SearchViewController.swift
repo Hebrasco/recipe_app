@@ -1,5 +1,5 @@
 //
-//  FavoritesViewModel.swift
+//  SearchViewController.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 13.02.20.
@@ -8,6 +8,7 @@
 
 import Foundation
 
-class FavoritesViewModel: ObservableObject {
+final class SearchViewController: ObservableObject {
     @Published var searchText = ""
+    @Published var filterViewModel = FilterController()    
 }

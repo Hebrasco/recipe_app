@@ -10,9 +10,9 @@ import SwiftUI
 
 struct RecipeCategory: View {
     let id = UUID()
-    let category: Category
-    let hasSubcategories: Bool
-    let destination: AnyView
+    private let category: Category
+    private let hasSubcategories: Bool
+    private let destination: AnyView
     
     init(_ category: Category.Categories, hasSubcategories: Bool = false) {
         self.category = Category(category)

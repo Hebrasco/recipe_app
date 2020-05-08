@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct ShoppingListView: View {
-    @ObservedObject var viewModel = ShoppingListViewModel()
+    @ObservedObject var viewModel = ShoppingListViewController()
     
     var body: some View {
         NavigationView{
@@ -30,6 +30,7 @@ struct ShoppingListView: View {
                     self.viewModel.deleteAllItems()
                 }, label: {
                     Image(systemName: "trash")
+                        .imageScale(.large)
                 }))
         }
         .onAppear(perform: {
@@ -39,8 +40,8 @@ struct ShoppingListView: View {
 }
 
 struct Item: View {
-    var item: ShoppingIngredient
-    var name: String
+    private var item: ShoppingIngredient
+    private var name: String
 
     init(item: ShoppingIngredient) {
         if item.isChecked {

@@ -9,11 +9,11 @@
 import SwiftUI
 
 struct RecipeView: View {
-    @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject private var viewModel: RecipeController
     @State private var selectedTab: Int = 0
     
     init(_ recipe: Recipe) {
-        self.viewModel = RecipeViewModel(recipe: recipe)
+        self.viewModel = RecipeController(recipe: recipe)
     }
     
     var body: some View {
@@ -50,7 +50,7 @@ struct RecipeView: View {
 }
 
 struct RecipeImage: View {
-    @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject var viewModel: RecipeController
     
     var body: some View {
         Image(viewModel.recipe.image)
@@ -64,7 +64,7 @@ struct RecipeImage: View {
 }
 
 struct RecipeTitle: View {
-    @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject var viewModel: RecipeController
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -78,7 +78,7 @@ struct RecipeTitle: View {
 }
 
 struct Favorite: View {
-    @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject var viewModel: RecipeController
     
     var body: some View {
         if viewModel.isFavorite {
@@ -104,7 +104,7 @@ struct Favorite: View {
 }
 
 struct PreparationTime: View {
-    @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject var viewModel: RecipeController
     
     var body: some View {
         Circle()
@@ -122,7 +122,7 @@ struct PreparationTime: View {
 }
 
 struct Ingredients: View {
-    @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject var viewModel: RecipeController
     
     var body: some View {
         Group {
@@ -182,7 +182,7 @@ struct Ingredients: View {
 }
 
 struct Preparation: View {
-    @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject var viewModel: RecipeController
     
     var body: some View {
         VStack(alignment: .leading) {
@@ -198,7 +198,7 @@ struct Preparation: View {
 }
 
 struct Tips: View {
-    @ObservedObject var viewModel: RecipeViewModel
+    @ObservedObject var viewModel: RecipeController
     
     var body: some View {
         HStack {

@@ -1,5 +1,5 @@
 //
-//  RecipeCardViewModel.swift
+//  RecipeCardController.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 25.03.20.
@@ -10,15 +10,15 @@ import Foundation
 import UIKit
 import CoreData
 
-class RecipeCardViewModel: ObservableObject {
-    let context: NSManagedObjectContext
+final class RecipeCardController: ObservableObject {
+    private let context: NSManagedObjectContext
     
     init() {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         self.context = appDelegate.persistentContainer.viewContext
     }
     
-    func addRecipeToWeeklyPlan(_ recipe: Recipe, weekday: RecipePlanViewModel.WeekDays, mealType: RecipePlanViewModel.MealType) {
+    func addRecipeToWeeklyPlan(_ recipe: Recipe, weekday: RecipePlanViewController.WeekDays, mealType: RecipePlanViewController.MealType) {
         let weeklyPlanEntity = WeeklyPlanEntity(context: context)
         weeklyPlanEntity.recipeID = Int32(recipe.id)
         weeklyPlanEntity.weekday = weekday.rawValue

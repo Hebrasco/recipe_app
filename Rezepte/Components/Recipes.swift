@@ -11,7 +11,7 @@ import CoreData
 import UIKit
 import SwiftUI
 
-class Recipes {
+final class Recipes {
     static func getRecipes() -> [Recipe] {
         let name = "Recipes"
         let type = "json"

@@ -9,12 +9,12 @@
 import SwiftUI
 
 struct RecipePlanView: View {
-    @ObservedObject var viewModel = RecipePlanViewModel()
+    @ObservedObject private var viewModel = RecipePlanViewController()
     @State private var selectedTab: Int = 0
-    @State var showActionSheet = false
-    @State var showDismissAlert = false
-    @State var showSheet = false
-    @State var sheetContent: RecipePlanViewModel.SheetContent = .load
+    @State private var showActionSheet = false
+    @State private var showDismissAlert = false
+    @State private var showSheet = false
+    @State private var sheetContent: RecipePlanViewController.SheetContent = .load
     
     var body: some View {
         NavigationView {
@@ -97,9 +97,9 @@ struct RecipePlanView: View {
 }
 
 struct SheetContent: View {
-    @ObservedObject var viewModel: RecipePlanViewModel
+    @ObservedObject var viewModel: RecipePlanViewController
     @Binding var showSheet: Bool
-    @Binding var sheetContent: RecipePlanViewModel.SheetContent
+    @Binding var sheetContent: RecipePlanViewController.SheetContent
     
     var body: some View {
         switch sheetContent {
@@ -113,10 +113,16 @@ struct SheetContent: View {
 struct SectionHeader: View {
     @State private var showRecipeSheet = false
     @State private var searchText = ""
-    let recipes = Recipes.getRecipes()
-    let name: String
-    let weekday: RecipePlanViewModel.WeekDays
-    let viewModel: RecipePlanViewModel
+    private let recipes = Recipes.getRecipes()
+    private let name: String
+    private let weekday: RecipePlanViewController.WeekDays
+    private let viewModel: RecipePlanViewController
+    
+    init(name: String, weekday: RecipePlanViewController.WeekDays, viewModel: RecipePlanViewController) {
+        self.name = name
+        self.weekday = weekday
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -159,11 +165,11 @@ struct SectionHeader: View {
 }
 
 struct RecipesOfWeekDay: View {
-    let weekday: RecipePlanViewModel.WeekDays
-    let viewModel: RecipePlanViewModel
-    let recipes: [RecipePlanViewModel.PlanRecipe]
+    private let weekday: RecipePlanViewController.WeekDays
+    private let viewModel: RecipePlanViewController
+    private let recipes: [RecipePlanViewController.PlanRecipe]
         
-    init(_ weekday: RecipePlanViewModel.WeekDays, viewModel: RecipePlanViewModel) {
+    init(_ weekday: RecipePlanViewController.WeekDays, viewModel: RecipePlanViewController) {
         self.weekday = weekday
         self.viewModel = viewModel
         
@@ -216,7 +222,7 @@ struct RecipesOfWeekDay: View {
 }
 
 struct SheetContentSavePlan: View {
-    @ObservedObject var viewModel: RecipePlanViewModel
+    @ObservedObject var viewModel: RecipePlanViewController
     @Binding var showSheet: Bool
     @State var recentlySavedName = ""
     
@@ -234,7 +240,7 @@ struct SheetContentSavePlan: View {
 }
 
 struct SheetContentLoadPlan: View {
-    @ObservedObject var viewModel: RecipePlanViewModel
+    @ObservedObject var viewModel: RecipePlanViewController
     @Binding var showSheet: Bool
     
     var body: some View {
@@ -256,7 +262,7 @@ struct SheetContentLoadPlan: View {
 }
 
 struct SheetContentDeletePlan: View {
-    @ObservedObject var viewModel: RecipePlanViewModel
+    @ObservedObject var viewModel: RecipePlanViewController
     @Binding var showSheet: Bool
     @State var showDeleteAlert = false
     

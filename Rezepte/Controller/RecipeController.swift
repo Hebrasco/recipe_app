@@ -1,5 +1,5 @@
 //
-//  RecipeViewModel.swift
+//  RecipeController.swift
 //  Rezepte
 //
 //  Created by Daniel Bedrich on 11.03.20.
@@ -10,13 +10,13 @@ import Foundation
 import CoreData
 import UIKit
 
-class RecipeViewModel: ObservableObject {
+final class RecipeController: ObservableObject {
     @Published var amountCount = 1
     @Published var recipe: Recipe
     @Published var isFavorite: Bool
     var ingredients: [Recipe.Ingredient]
-    var favoriteObj: NSManagedObject?
-    let context: NSManagedObjectContext
+    private var favoriteObj: NSManagedObject?
+    private let context: NSManagedObjectContext
     
     init(recipe: Recipe) {
         func formatIngredients(_ recipe: Recipe) -> [Recipe.Ingredient]{

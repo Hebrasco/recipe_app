@@ -9,10 +9,10 @@
 import SwiftUI
 
 struct RecipeCategoryList: View {
-    @State var recipes: [Recipe] = []
-    let categoryTitle: String
-    let secondaryCategories: [RecipeCategory]
-    let isRecipeView: Bool
+    @State private var recipes: [Recipe] = []
+    private let categoryTitle: String
+    private let secondaryCategories: [RecipeCategory]
+    private let isRecipeView: Bool
     
     init(category: RecipeCategory.Category) {
         self.categoryTitle = category.title

@@ -9,8 +9,8 @@
 import SwiftUI
 
 struct FavoritesView: View {
-    @ObservedObject var viewModel = FavoritesViewModel()
-    @State var recipes: [Recipe] = []
+    @ObservedObject private var viewModel = FavoritesViewController()
+    @State private var recipes: [Recipe] = []
     
     var body: some View {
         NavigationView {

@@ -9,15 +9,15 @@
 import SwiftUI
 
 struct RecipeSearchBarList: View {
-    @ObservedObject var viewModel: SearchViewModel
-    @State var recipes: [Recipe] = []
-    @State var filters: [FilterViewModel.Filter] = []
-    @State var showFilterSheet = false
-    let categoryTitle: String
+    @ObservedObject private var viewModel: SearchViewController
+    @State private var recipes: [Recipe] = []
+    @State private var filters: [FilterController.Filter] = []
+    @State private var showFilterSheet = false
+    private let categoryTitle: String
     
     init(categoryTitle: String) {
         self.categoryTitle = categoryTitle
-        self.viewModel = SearchViewModel()
+        self.viewModel = SearchViewController()
         self.showFilterSheet = false
         self.recipes = Recipes.getRecipes().filter{$0.secondaryCategory.contains(categoryTitle)}
     }
@@ -56,6 +56,7 @@ struct RecipeSearchBarList: View {
             self.showFilterSheet.toggle()
         }, label: {
             Image(systemName: "line.horizontal.3.decrease.circle")
+                .imageScale(.large)
         }))
     }
 }
