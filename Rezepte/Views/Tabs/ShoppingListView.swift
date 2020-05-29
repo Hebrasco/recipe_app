@@ -36,6 +36,7 @@ struct ShoppingListView: View {
         .onAppear(perform: {
             self.viewModel.loadItems()
         })
+        .padding()
     }
 }
 

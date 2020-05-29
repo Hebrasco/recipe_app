@@ -52,6 +52,7 @@ struct SearchView: View {
                     .imageScale(.large)
             }))
         }
+        .padding()
     }
 }
 
