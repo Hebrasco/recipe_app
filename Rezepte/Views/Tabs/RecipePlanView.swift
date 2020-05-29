@@ -52,7 +52,7 @@ struct RecipePlanView: View {
                              sheetContent: self.$sheetContent)
             })
             .actionSheet(isPresented: $showActionSheet, content: {
-                ActionSheet(title: Text("Wochenplan bearbeiten"),
+                ActionSheet(title: Text("Speiseplan bearbeiten"),
                             buttons: [.default(Text("Speichern"), action: {
                                         self.sheetContent = .save
                                         self.showSheet.toggle()
@@ -69,14 +69,14 @@ struct RecipePlanView: View {
                                       .cancel(Text("Abbrechen"))])
             })
             .alert(isPresented: $showDismissAlert, content: {
-                Alert(title: Text("Wochenplan verwerfen"),
-                     message: Text("Sind Sie sicher, dass Sie den Aktuellen Wochenplan verwerfen möchten?"),
+                Alert(title: Text("Speiseplan verwerfen"),
+                     message: Text("Sind Sie sicher, dass Sie den Aktuellen Speiseplan verwerfen möchten?"),
                      primaryButton: .destructive(Text("Verwerfen"), action: {
                         self.viewModel.removeLoadedRecipes()
                      }),
                      secondaryButton: .cancel(Text("Abbrechen")))
             })
-            .navigationBarTitle("Wochenplan")
+            .navigationBarTitle("Speiseplan")
             .navigationBarItems(trailing: HStack{
                 Button(action: {
                     self.showActionSheet.toggle()
@@ -280,8 +280,8 @@ struct SheetContentDeletePlan: View {
                     }
                 })
                 .alert(isPresented: self.$showDeleteAlert, content: {
-                    Alert(title: Text("Wochenplan löschen"),
-                          message: Text("Sind Sie sicher, dass die den Wochenplan löschen wollen?"),
+                    Alert(title: Text("Speiseplan löschen"),
+                          message: Text("Sind Sie sicher, dass die den Speiseplan löschen wollen?"),
                           primaryButton: .cancel(Text("Abbrechen")),
                           secondaryButton: .destructive(Text("Löschen"), action: {
                             self.viewModel.deleteReciePlan(plan)

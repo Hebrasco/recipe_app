@@ -30,7 +30,7 @@ struct ContentView: View {
                     VStack {
                         Image(systemName: "calendar")
                             .imageScale(.large)
-                        Text("Wochenplan")
+                        Text("Speiseplan")
                     }
                 }
                 .tag(1)
