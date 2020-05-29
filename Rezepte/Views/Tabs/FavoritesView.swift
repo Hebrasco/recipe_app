@@ -33,7 +33,7 @@ struct FavoritesView: View {
             .resignKeyboardOnDragGesture()
             .navigationBarTitle("Favoriten")
         }
-        .padding()
+        .padding(.leading, 1)
     }
 }
 

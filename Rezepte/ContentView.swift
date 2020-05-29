@@ -16,7 +16,7 @@ struct ContentView: View {
                 NavigationView {
                     RecipeCategoryList(category: .init(.recipes))
                 }
-                .padding()
+                .padding(.leading, 1)
                 .tabItem {
                     VStack {
                         Image(systemName: "book")

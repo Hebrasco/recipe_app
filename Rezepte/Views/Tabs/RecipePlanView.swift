@@ -93,7 +93,7 @@ struct RecipePlanView: View {
                 })
             })
         }
-        .padding()
+        .padding(.leading, 1)
     }
 }
 
